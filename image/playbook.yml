@@ -1,0 +1,29 @@
+---
+- name: 'Provision Image'
+  hosts: default
+  become: true
+
+  tasks:
+    - name: Install system dependencies
+      package:
+        name:
+          - curl
+          - wget
+          - gnupg
+          - apt-transport-https
+          - lsb-release
+          - ca-certificates
+          - acl # become を上手く機能するために必要
+        state: present
+
+    - name: Get Node.js setup
+      get_url:
+        url: https://deb.nodesource.com/setup_16.x
+        dest: /root/node_setup.sh
+        mode: '0777'
+    - name: Install Node.js
+      shell: |
+        bash /root/node_setup.sh
+        apt install -y nodejs
+        corepack enable
+        yarn set version stable
