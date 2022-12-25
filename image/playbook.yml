@@ -27,3 +27,9 @@
         apt install -y nodejs
         corepack enable
         yarn set version stable
+
+    - name: Install packages
+      package:
+        name:
+          - nginx
+        state: present
