@@ -6,17 +6,13 @@ resource "aws_s3_bucket" "main" {
 data "aws_iam_policy_document" "main" {
   version = "2012-10-17"
   statement {
-    sid    = "CloudfrontRead"
-    effect = "Allow"
     principals {
       type        = "Service"
       identifiers = ["cloudfront.amazonaws.com"]
     }
-
     actions = ["s3:GetObject"]
-
     resources = [
-      "aws_s3_bucket.main.arn",
+      "${aws_s3_bucket.main.arn}",
       "${aws_s3_bucket.main.arn}/*"
     ]
     condition {
