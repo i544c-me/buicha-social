@@ -9,8 +9,8 @@ data "aws_iam_policy_document" "main" {
     sid    = "PublicRead"
     effect = "Allow"
     principals {
-      type        = "AWS"
-      identifiers = [aws_iam_user.s3_rw.arn]
+      type        = "*"
+      identifiers = ["*"]
     }
 
     actions = [
