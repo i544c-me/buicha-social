@@ -12,11 +12,18 @@ terraform {
     }
   }
 
-  backend "s3" {
-    bucket = "tf-example-private"
-    key    = "buichasocial/terraform.tfstate"
-    region = "us-east-1"
+  cloud {
+    organization = "defaultcf"
+    workspaces {
+      name = "buicha-social"
+    }
   }
+
+  #backend "s3" {
+  #  bucket = "tf-example-private"
+  #  key    = "buichasocial/terraform.tfstate"
+  #  region = "us-east-1"
+  #}
 
   required_version = "= 1.3.6"
 }
