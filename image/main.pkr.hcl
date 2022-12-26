@@ -14,7 +14,7 @@ locals {
 
 source "amazon-ebs" "ubuntu" {
   ami_name      = local.project
-  instance_type = "t2.micro"
+  instance_type = "t2.medium"
   region        = local.region
   source_ami_filter {
     filters = {

@@ -28,8 +28,37 @@
         corepack enable
         yarn set version stable
 
-    - name: Install packages
-      package:
-        name:
-          - nginx
-        state: present
+    #- name: Install packages
+    #  package:
+    #    name:
+    #      - nginx
+    #    state: present
+
+    - name: Add user, misskey
+      user:
+        name: misskey
+        shell: /usr/bin/bash
+
+    - name: Clone misskey
+      git:
+        repo: https://github.com/misskey-dev/misskey.git
+        dest: /home/misskey/misskey
+        version: master
+      become_user: misskey
+
+    # Edit https://github.com/misskey-dev/misskey/blob/develop/.config/example.yml
+    - name: Copy config
+      copy:
+        src: ./default.yml
+        dest: /home/misskey/misskey/.config/default.yml
+      become_user: misskey
+
+    - name: Install misskey
+      shell: |
+        cd /home/misskey/misskey && \
+        git submodule update --init && \
+        yarn install && \
+        yarn run build
+      environment:
+        NODE_ENV: production
+      become_user: misskey

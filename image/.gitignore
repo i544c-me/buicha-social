@@ -14,3 +14,6 @@ crash.log
 
 # For built boxes
 *.box
+
+# Credential info
+/default.yml
