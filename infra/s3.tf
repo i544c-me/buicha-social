@@ -6,21 +6,24 @@ resource "aws_s3_bucket" "main" {
 data "aws_iam_policy_document" "main" {
   version = "2012-10-17"
   statement {
-    sid    = "PublicRead"
+    sid    = "CloudfrontRead"
     effect = "Allow"
     principals {
-      type        = "*"
-      identifiers = ["*"]
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
     }
 
-    actions = [
-      "s3:GetObject"
-    ]
+    actions = ["s3:GetObject"]
 
     resources = [
-      aws_s3_bucket.main.arn,
+      "aws_s3_bucket.main.arn",
       "${aws_s3_bucket.main.arn}/*"
     ]
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceArn"
+      values   = [aws_cloudfront_distribution.app.arn]
+    }
   }
 }
 
@@ -32,14 +35,6 @@ resource "aws_s3_bucket_policy" "main" {
 resource "aws_s3_bucket_acl" "main" {
   bucket = aws_s3_bucket.main.id
   acl    = "private"
-}
-
-resource "aws_s3_bucket_website_configuration" "main" {
-  bucket = aws_s3_bucket.main.bucket
-
-  index_document {
-    suffix = "index.html"
-  }
 }
 
 resource "aws_iam_user" "s3_rw" {
