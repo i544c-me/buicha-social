@@ -8,6 +8,13 @@ resource "aws_acm_certificate" "main" {
   }
 }
 
+resource "aws_cloudfront_origin_access_control" "files" {
+  name                              = "s3"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
+}
+
 resource "aws_cloudfront_distribution" "app" {
   enabled         = true
   is_ipv6_enabled = false
@@ -27,8 +34,9 @@ resource "aws_cloudfront_distribution" "app" {
   }
 
   origin {
-    domain_name = aws_s3_bucket.main.bucket_regional_domain_name
-    origin_id   = "files"
+    domain_name              = aws_s3_bucket.main.bucket_regional_domain_name
+    origin_id                = "files"
+    origin_access_control_id = aws_cloudfront_origin_access_control.files.id
   }
 
   default_cache_behavior {
