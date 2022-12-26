@@ -3,26 +3,30 @@ resource "aws_s3_bucket" "main" {
   force_destroy = true
 }
 
-#data "aws_iam_policy_document" "main" {
-#  statement {
-#    sid    = ""
-#    effect = "Allow"
-#
-#    actions = [
-#      "s3:GetObject"
-#    ]
-#
-#    resources = [
-#      "arn:aws:s3:::buichasocial-files",
-#      "arn:aws:s3:::buichasocial-files/*"
-#    ]
-#  }
-#}
+data "aws_iam_policy_document" "main" {
+  statement {
+    sid    = "PublicRead"
+    effect = "Allow"
+
+    actions = [
+      "s3:GetObject"
+    ]
+
+    resources = [
+      "arn:aws:s3:::buichasocial",
+      "arn:aws:s3:::buichasocial/*"
+    ]
+  }
+}
+
+resource "aws_s3_bucket_policy" "main" {
+  bucket = aws_s3_bucket.main.id
+  policy = data.aws_iam_policy_document.main.json
+}
 
 resource "aws_s3_bucket_acl" "main" {
   bucket = aws_s3_bucket.main.id
   acl    = "private"
-  #policy = data.aws_iam_policy_document.main.json
 }
 
 resource "aws_s3_bucket_website_configuration" "main" {
