@@ -4,17 +4,22 @@ resource "aws_s3_bucket" "main" {
 }
 
 data "aws_iam_policy_document" "main" {
+  version = "2012-10-17"
   statement {
     sid    = "PublicRead"
     effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = [aws_iam_user.s3_rw.arn]
+    }
 
     actions = [
       "s3:GetObject"
     ]
 
     resources = [
-      "arn:aws:s3:::buichasocial",
-      "arn:aws:s3:::buichasocial/*"
+      aws_s3_bucket.main.arn,
+      "${aws_s3_bucket.main.arn}/*"
     ]
   }
 }
