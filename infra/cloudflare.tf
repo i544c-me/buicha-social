@@ -1,12 +1,12 @@
 data "cloudflare_zone" "main" {
-  name = "buicha.social"
+  name = local.main_domain
 }
 
 resource "cloudflare_record" "main" {
   zone_id = data.cloudflare_zone.main.id
   name    = "@"
   type    = "CNAME"
-  value   = "d2a6jztqapq0xw.cloudfront.net"
+  value   = aws_cloudfront_distribution.app.domain_name
 }
 
 resource "cloudflare_record" "domain_cert" {

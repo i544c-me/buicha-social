@@ -15,6 +15,10 @@ resource "aws_cloudfront_origin_access_control" "files" {
   signing_protocol                  = "sigv4"
 }
 
+data "aws_cloudfront_cache_policy" "cache_optimized" {
+  name = "Managed-CachingOptimized"
+}
+
 resource "aws_cloudfront_distribution" "app" {
   enabled         = true
   is_ipv6_enabled = false
@@ -63,9 +67,7 @@ resource "aws_cloudfront_distribution" "app" {
     allowed_methods        = ["GET", "HEAD", "OPTIONS"]
     cached_methods         = ["GET", "HEAD", "OPTIONS"]
     target_origin_id       = "files"
-    min_ttl                = 0
-    default_ttl            = 86400
-    max_ttl                = 31536000
+    cache_policy_id        = data.aws_cloudfront_cache_policy.cache_optimized.id
     compress               = true
     viewer_protocol_policy = "redirect-to-https"
 
