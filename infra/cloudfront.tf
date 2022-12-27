@@ -70,15 +70,6 @@ resource "aws_cloudfront_distribution" "app" {
     cache_policy_id        = data.aws_cloudfront_cache_policy.cache_optimized.id
     compress               = true
     viewer_protocol_policy = "redirect-to-https"
-
-    forwarded_values {
-      query_string = false
-      headers      = ["Origin"]
-
-      cookies {
-        forward = "none"
-      }
-    }
   }
 
   viewer_certificate {
