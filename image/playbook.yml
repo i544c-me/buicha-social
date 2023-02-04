@@ -18,7 +18,7 @@
 
     - name: Get Node.js setup
       get_url:
-        url: https://deb.nodesource.com/setup_16.x
+        url: https://deb.nodesource.com/setup_18.x
         dest: /root/node_setup.sh
         mode: '0777'
     - name: Install Node.js
@@ -26,13 +26,13 @@
         bash /root/node_setup.sh
         apt install -y nodejs
         corepack enable
-        yarn set version stable
+        corepack prepare pnpm@latest --activate
 
-    #- name: Install packages
-    #  package:
-    #    name:
-    #      - nginx
-    #    state: present
+    - name: Install packages
+      package:
+        name:
+          - nginx
+        state: present
 
     - name: Add user, misskey
       user:
@@ -43,7 +43,7 @@
       git:
         repo: https://github.com/misskey-dev/misskey.git
         dest: /home/misskey/misskey
-        version: master
+        version: 13.3.1
       become_user: misskey
 
     # Edit https://github.com/misskey-dev/misskey/blob/develop/.config/example.yml
@@ -57,8 +57,8 @@
       shell: |
         cd /home/misskey/misskey && \
         git submodule update --init && \
-        yarn install && \
-        yarn run build
+        pnpm install --frozen-lockfile && \
+        pnpm run build
       environment:
         NODE_ENV: production
       become_user: misskey
