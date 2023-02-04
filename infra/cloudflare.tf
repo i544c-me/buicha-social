@@ -23,3 +23,35 @@ resource "cloudflare_record" "domain_cert" {
   type    = each.value.type
   value   = each.value.value
 }
+
+resource "cloudflare_record" "ses_txt" {
+  zone_id = data.cloudflare_zone.main.id
+  name    = "_amazonses.${local.main_domain}"
+  type    = "TXT"
+  value   = aws_ses_domain_identity.buicha_social.verification_token
+}
+
+#resource "cloudflare_record" "ses_dkim" {
+#  for_each = aws_ses_domain_dkim.buicha_social.dkim_tokens
+#
+#  zone_id = data.cloudflare_zone.main.id
+#  name    = "${each.value}._domainkey.${local.main_domain}"
+#  type    = "CNAME"
+#  value   = "${each.value}.dkim.amazonses.com"
+#
+#  depends_on = [aws_ses_domain_dkim.buicha_social]
+#}
+
+resource "cloudflare_record" "ses_spf" {
+  zone_id = data.cloudflare_zone.main.id
+  name    = aws_ses_domain_mail_from.buicha_social.mail_from_domain
+  type    = "TXT"
+  value   = "v=spf1 include:amazonses.com ~all"
+}
+
+resource "cloudflare_record" "ses_dmark" {
+  zone_id = data.cloudflare_zone.main.id
+  name    = "_dmarc.${local.main_domain}"
+  type    = "TXT"
+  value   = "v=DMARC1;p=quarantine;pct=25;rua=mailto:report@buicha.social"
+}
