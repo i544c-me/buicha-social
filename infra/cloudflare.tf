@@ -50,11 +50,11 @@ resource "cloudflare_record" "ses_spf" {
 }
 
 resource "cloudflare_record" "ses_mailfrom" {
-  zone_id = data.cloudflare_zone.main.id
-  name    = aws_ses_domain_mail_from.buicha_social.mail_from_domain
-  type    = "MX"
+  zone_id  = data.cloudflare_zone.main.id
+  name     = aws_ses_domain_mail_from.buicha_social.mail_from_domain
+  type     = "MX"
   priority = 10
-  value   = "feedback-smtp.ap-northeast-1.amazonses.com"
+  value    = "feedback-smtp.ap-northeast-1.amazonses.com"
 }
 
 
@@ -62,5 +62,5 @@ resource "cloudflare_record" "ses_dmark" {
   zone_id = data.cloudflare_zone.main.id
   name    = "_dmarc.${local.main_domain}"
   type    = "TXT"
-  value   = "v=DMARC1;p=quarantine;adkim=r;aspf=r;rua=mailto:report@default.cf;"
+  value   = "v=DMARC1;p=quarantine;adkim=r;aspf=r;rua=mailto:report@i544c.me;"
 }
