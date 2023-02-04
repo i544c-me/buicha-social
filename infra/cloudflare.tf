@@ -31,16 +31,16 @@ resource "cloudflare_record" "ses_txt" {
   value   = aws_ses_domain_identity.buicha_social.verification_token
 }
 
-#resource "cloudflare_record" "ses_dkim" {
-#  for_each = aws_ses_domain_dkim.buicha_social.dkim_tokens
-#
-#  zone_id = data.cloudflare_zone.main.id
-#  name    = "${each.value}._domainkey.${local.main_domain}"
-#  type    = "CNAME"
-#  value   = "${each.value}.dkim.amazonses.com"
-#
-#  depends_on = [aws_ses_domain_dkim.buicha_social]
-#}
+resource "cloudflare_record" "ses_dkim" {
+  for_each = toset(aws_ses_domain_dkim.buicha_social.dkim_tokens)
+
+  zone_id = data.cloudflare_zone.main.id
+  name    = "${each.value}._domainkey.${local.main_domain}"
+  type    = "CNAME"
+  value   = "${each.value}.dkim.amazonses.com"
+
+  depends_on = [aws_ses_domain_dkim.buicha_social]
+}
 
 resource "cloudflare_record" "ses_spf" {
   zone_id = data.cloudflare_zone.main.id
