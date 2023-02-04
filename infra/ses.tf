@@ -8,5 +8,5 @@ resource "aws_ses_domain_dkim" "buicha_social" {
 
 resource "aws_ses_domain_mail_from" "buicha_social" {
   domain           = aws_ses_domain_identity.buicha_social.domain
-  mail_from_domain = "bounce.${aws_ses_domain_identity.buicha_social.domain}"
+  mail_from_domain = "mail.${aws_ses_domain_identity.buicha_social.domain}"
 }

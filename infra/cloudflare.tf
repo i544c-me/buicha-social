@@ -49,9 +49,17 @@ resource "cloudflare_record" "ses_spf" {
   value   = "v=spf1 include:amazonses.com ~all"
 }
 
+resource "cloudflare_record" "ses_mailfrom" {
+  zone_id = data.cloudflare_zone.main.id
+  name    = aws_ses_domain_mail_from.buicha_social.mail_from_domain
+  type    = "MX"
+  value   = "10 feedback-smtp.ap-northeast-1.amazonses.com"
+}
+
+
 resource "cloudflare_record" "ses_dmark" {
   zone_id = data.cloudflare_zone.main.id
   name    = "_dmarc.${local.main_domain}"
   type    = "TXT"
-  value   = "v=DMARC1;p=quarantine;pct=25;rua=mailto:report@buicha.social"
+  value   = "v=DMARC1;p=quarantine;adkim=r;aspf=r;rua=mailto:report@default.cf;"
 }
