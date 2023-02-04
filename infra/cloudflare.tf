@@ -53,7 +53,8 @@ resource "cloudflare_record" "ses_mailfrom" {
   zone_id = data.cloudflare_zone.main.id
   name    = aws_ses_domain_mail_from.buicha_social.mail_from_domain
   type    = "MX"
-  value   = "10 feedback-smtp.ap-northeast-1.amazonses.com"
+  priority = 10
+  value   = "feedback-smtp.ap-northeast-1.amazonses.com"
 }
 
 
