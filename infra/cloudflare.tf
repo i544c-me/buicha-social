@@ -9,6 +9,13 @@ resource "cloudflare_record" "main" {
   value   = aws_cloudfront_distribution.app.domain_name
 }
 
+resource "cloudflare_record" "media" {
+  zone_id = data.cloudflare_zone.main.id
+  name    = "media.${local.main_domain}"
+  type    = "CNAME"
+  value   = aws_cloudfront_distribution.media.domain_name
+}
+
 resource "cloudflare_record" "domain_cert" {
   for_each = {
     for r in aws_acm_certificate.main.domain_validation_options : r.domain_name => {
