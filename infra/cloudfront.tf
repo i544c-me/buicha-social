@@ -87,3 +87,52 @@ resource "aws_cloudfront_distribution" "app" {
     Name = "${local.project}-app"
   }
 }
+
+
+### Media ###
+
+resource "aws_acm_certificate" "media" {
+  provider          = aws.us_east_1
+  domain_name       = "media.${local.main_domain}"
+  validation_method = "DNS"
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_cloudfront_distribution" "media" {
+  enabled         = true
+  is_ipv6_enabled = false
+  aliases         = ["media.${local.main_domain}"]
+
+  origin {
+    domain_name              = aws_s3_bucket.main.bucket_regional_domain_name
+    origin_id                = "media"
+    origin_access_control_id = aws_cloudfront_origin_access_control.files.id
+  }
+
+  default_cache_behavior {
+    allowed_methods        = ["GET", "HEAD", "OPTIONS"]
+    cached_methods         = ["GET", "HEAD", "OPTIONS"]
+    target_origin_id       = "media"
+    cache_policy_id        = data.aws_cloudfront_cache_policy.cache_optimized.id
+    compress               = true
+    viewer_protocol_policy = "redirect-to-https"
+  }
+
+  viewer_certificate {
+    acm_certificate_arn = aws_acm_certificate.media.arn
+    ssl_support_method  = "sni-only"
+  }
+
+  restrictions {
+    geo_restriction {
+      restriction_type = "none"
+    }
+  }
+
+  tags = {
+    Name = "${local.project}-media"
+  }
+}
