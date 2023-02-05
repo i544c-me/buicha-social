@@ -18,7 +18,10 @@ data "aws_iam_policy_document" "main" {
     condition {
       test     = "StringEquals"
       variable = "aws:SourceArn"
-      values   = [aws_cloudfront_distribution.app.arn]
+      values = [
+        aws_cloudfront_distribution.app.arn,
+        aws_cloudfront_distribution.media.arn
+      ]
     }
   }
 }
