@@ -34,8 +34,11 @@
           - nginx
         state: present
 
-    # TODO: Setup Nginx
     # Ref: https://misskey-hub.net/docs/admin/nginx.html
+    - name: Copy Nginx config
+      copy:
+        src: ./nginx.conf
+        dest: /etc/nginx/sites-enabled/default
 
     - name: Add user, misskey
       user:
@@ -46,7 +49,7 @@
       git:
         repo: https://github.com/misskey-dev/misskey.git
         dest: /home/misskey/misskey
-        version: 13.3.1
+        version: 13.3.3
       become_user: misskey
 
     # Edit https://github.com/misskey-dev/misskey/blob/develop/.config/example.yml
@@ -66,5 +69,14 @@
         NODE_ENV: production
       become_user: misskey
 
-    # TODO: Install misskey service and setup
     # Ref: https://misskey-hub.net/docs/install/manual.html#%E8%B5%B7%E5%8B%95
+    - name: Install misskey service
+      copy:
+        src: ./misskey.service
+        dest: /etc/systemd/system/misskey.service
+
+    - name: Enable misskey service
+      service:
+        name: misskey
+        daemon_reload: true
+        enabled: true

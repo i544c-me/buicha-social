@@ -83,6 +83,12 @@ resource "aws_cloudfront_distribution" "app" {
     }
   }
 
+  custom_error_response {
+    error_code         = 403
+    response_code      = 503
+    response_page_path = "/files/error.html"
+  }
+
   tags = {
     Name = "${local.project}-app"
   }
@@ -135,4 +141,12 @@ resource "aws_cloudfront_distribution" "media" {
   tags = {
     Name = "${local.project}-media"
   }
+}
+
+resource "aws_cloudfront_function" "maintenance" {
+  name    = "maintenance"
+  runtime = "cloudfront-js-1.0"
+  comment = "redirect to maintenance page"
+  publish = true
+  code    = file("${path.module}/functions/maintenance.js")
 }
