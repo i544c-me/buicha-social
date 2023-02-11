@@ -1,0 +1,17 @@
+[Unit]
+Description=Misskey daemon
+
+[Service]
+Type=simple
+User=misskey
+ExecStart=/usr/bin/npm start
+WorkingDirectory=/home/misskey/misskey
+Environment="NODE_ENV=production"
+TimeoutSec=60
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=misskey
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
