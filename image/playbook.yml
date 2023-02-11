@@ -3,6 +3,10 @@
   hosts: default
   become: true
 
+  vars:
+    misskey_version: 13.6.0
+    nodejs_version: 18.x
+
   tasks:
     - name: Install system dependencies
       package:
@@ -18,7 +22,7 @@
 
     - name: Get Node.js setup
       get_url:
-        url: https://deb.nodesource.com/setup_18.x
+        url: "https://deb.nodesource.com/setup_{{ nodejs_version }}"
         dest: /root/node_setup.sh
         mode: '0777'
     - name: Install Node.js
@@ -49,7 +53,7 @@
       git:
         repo: https://github.com/misskey-dev/misskey.git
         dest: /home/misskey/misskey
-        version: 13.3.1
+        version: "{{ misskey_version }}"
       become_user: misskey
 
     # Edit https://github.com/misskey-dev/misskey/blob/develop/.config/example.yml

@@ -60,6 +60,12 @@ resource "aws_cloudfront_distribution" "app" {
         forward = "all"
       }
     }
+
+    # メンテナンス表示
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.maintenance.arn
+    }
   }
 
   ordered_cache_behavior {
