@@ -1,5 +1,5 @@
 function handler(event) {
-    const response = {
+    var response = {
         statusCode: 302,
         statusDescription: '302 Found',
         headers: {
