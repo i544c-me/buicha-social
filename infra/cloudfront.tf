@@ -89,11 +89,11 @@ resource "aws_cloudfront_distribution" "app" {
     }
   }
 
-  custom_error_response {
-    error_code         = 403
-    response_code      = 503
-    response_page_path = "/files/error.html"
-  }
+  #custom_error_response {
+  #  error_code         = 403
+  #  response_code      = 503
+  #  response_page_path = "/files/error.html"
+  #}
 
   tags = {
     Name = "${local.project}-app"
