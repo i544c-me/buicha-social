@@ -50,27 +50,27 @@ resource "aws_lb_listener" "app" {
   }
 }
 
-resource "aws_lb_listener_rule" "maintenance" {
-  listener_arn = aws_lb_listener.app.arn
-  priority     = 100
-
-  action {
-    type = "fixed-response"
-
-    fixed_response {
-      content_type = "text/html"
-      message_body = file("${path.module}/error_page/error.html")
-      status_code  = "503"
-    }
-  }
-
-  condition {
-    http_header {
-      http_header_name = "X-Forwarded-For"
-      values           = ["126.89.42.68"]
-    }
-  }
-}
+#resource "aws_lb_listener_rule" "maintenance" {
+#  listener_arn = aws_lb_listener.app.arn
+#  priority     = 100
+#
+#  action {
+#    type = "fixed-response"
+#
+#    fixed_response {
+#      content_type = "text/html"
+#      message_body = file("${path.module}/error_page/error.html")
+#      status_code  = "503"
+#    }
+#  }
+#
+#  condition {
+#    http_header {
+#      http_header_name = "X-Forwarded-For"
+#      values           = ["126.89.42.68"]
+#    }
+#  }
+#}
 
 resource "aws_lb_target_group_attachment" "app" {
   target_group_arn = aws_lb_target_group.app.arn
