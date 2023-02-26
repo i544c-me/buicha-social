@@ -7,28 +7,18 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2/dist/tailwind.min.css" rel="stylesheet" type="text/css" />
 </html>
 <body>
-    <div class="hero min-h-screen" style="">
-        <div class="hero-overlay bg-opacity-60"></div>
-        <div class="hero-content text-center text-neutral-content">
-            <div class="max-w-md">
-                <h1 class="mb-5 text-5xl font-bold">サーバーエラー</h1>
-                <p class="mb-5">buicha.social は現在おそらくメンテナンス中です。<br>
-                もしかしたら <a class="link" href="https://twitch.tv/i544c_me">Twitch</a> で作業を配信していますので、よければ見てね👇</p>
-                
-                <!-- Add a placeholder for the Twitch embed -->
-                <div id="twitch-embed"></div>
-                
-                <!-- Load the Twitch embed script -->
-                <script src="https://player.twitch.tv/js/embed/v1.js"></script>
-                
-                <!-- Create a Twitch.Player object. This will render within the placeholder div -->
-                <script type="text/javascript">
-                    new Twitch.Player("twitch-embed", {
-                        channel: "i544c_me"
-                    });
-                </script>
-            </div>
-        </div>
+    <div class="hero min-h-screen">
+        <h1 class="mb-5 text-5xl font-bold">Maintenance</h1>
+        <!-- Add a placeholder for the Twitch embed -->
+        <div id="twitch-embed"></div>
+        <!-- Load the Twitch embed script -->
+        <script src="https://player.twitch.tv/js/embed/v1.js"></script>
+        <!-- Create a Twitch.Player object. This will render within the placeholder div -->
+        <script type="text/javascript">
+            new Twitch.Player("twitch-embed", {
+                channel: "i544c_me"
+            });
+        </script>
     </div>
 </body>
 </html>
