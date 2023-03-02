@@ -45,8 +45,16 @@ resource "aws_lb_listener" "app" {
   protocol          = "HTTP"
 
   default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.app.arn
+    #type             = "forward"
+    #target_group_arn = aws_lb_target_group.app.arn
+
+    # Maintenance
+    type = "fixed-response"
+    fixed_response {
+      content_type = "text/html"
+      message_body = file("${path.module}/error_page/error.html")
+      status_code  = "503"
+    }
   }
 }
 
@@ -55,13 +63,8 @@ resource "aws_lb_listener_rule" "maintenance" {
   priority     = 100
 
   action {
-    type = "fixed-response"
-
-    fixed_response {
-      content_type = "text/html"
-      message_body = file("${path.module}/error_page/error.html")
-      status_code  = "503"
-    }
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.app.arn
   }
 
   condition {
