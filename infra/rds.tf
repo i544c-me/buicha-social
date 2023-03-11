@@ -1,6 +1,6 @@
 resource "aws_db_subnet_group" "main" {
   name       = local.project
-  subnet_ids = [for k, v in local.subnets : aws_subnet.main[k].id if v.public == false]
+  subnet_ids = [for k, v in local.subnets : aws_subnet.main[k].id if !v.public]
 }
 
 resource "aws_security_group" "rds" {
