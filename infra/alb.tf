@@ -28,7 +28,7 @@ resource "aws_security_group" "alb" {
 resource "aws_lb" "app" {
   name               = "${local.project}-app"
   load_balancer_type = "application"
-  subnets            = [for k, v in local.subnets : aws_subnet.main[k].id if v.public == true]
+  subnets            = [for k, v in local.subnets : aws_subnet.main[k].id if v.public]
   security_groups    = [aws_security_group.alb.id]
 }
 

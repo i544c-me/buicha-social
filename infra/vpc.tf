@@ -53,7 +53,7 @@ resource "aws_internet_gateway" "main" {
 }
 
 resource "aws_route_table" "main" {
-  for_each = { for k, v in local.subnets : k => v if v.public == true }
+  for_each = { for k, v in local.subnets : k => v if v.public }
 
   vpc_id = aws_vpc.main.id
   route {
@@ -67,7 +67,7 @@ resource "aws_route_table" "main" {
 }
 
 resource "aws_route_table_association" "main" {
-  for_each = { for k, v in local.subnets : k => v if v.public == true }
+  for_each = { for k, v in local.subnets : k => v if v.public }
 
   subnet_id      = aws_subnet.main[each.key].id
   route_table_id = aws_route_table.main[each.key].id
