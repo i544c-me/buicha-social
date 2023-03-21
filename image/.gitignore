@@ -16,5 +16,7 @@ crash.log
 *.box
 
 # Credential info
+/.envrc
 /default.yml
 /default_old.yml
+/pass.txt

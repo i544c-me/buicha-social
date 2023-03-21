@@ -36,7 +36,9 @@ build {
     "source.amazon-ebs.ubuntu"
   ]
   provisioner "ansible" {
-    playbook_file = "./playbook.yml"
-    use_proxy     = false
+    playbook_file   = "./playbook.yml"
+    extra_arguments = ["--vault-password-file=pass.txt"]
+    use_proxy       = false
+    galaxy_file     = "./galaxy.yml"
   }
 }

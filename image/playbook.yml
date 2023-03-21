@@ -2,10 +2,20 @@
 - name: 'Provision Image'
   hosts: default
   become: true
+  roles:
+    - role: datadog.datadog
+      become: yes
 
+  vars_files:
+    - vault.yml
   vars:
-    misskey_version: 13.6.0
+    misskey_version: 13.9.2
     nodejs_version: 18.x
+    datadog_checks:
+      init_config:
+      instances:
+        - name: Misskey
+          search_string: ["Misskey"]
 
   tasks:
     - name: Install system dependencies
