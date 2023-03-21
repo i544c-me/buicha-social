@@ -66,10 +66,11 @@ resource "aws_launch_template" "app" {
 }
 
 resource "aws_autoscaling_group" "app" {
-  name             = "${local.project}-app"
-  max_size         = 3
-  min_size         = 1
-  desired_capacity = 1
+  name                = "${local.project}-app"
+  vpc_zone_identifier = [for k, v in local.subnets : aws_subnet.main[k].id if v.public]
+  max_size            = 3
+  min_size            = 1
+  desired_capacity    = 1
 
   health_check_type         = "ELB"
   health_check_grace_period = 300
