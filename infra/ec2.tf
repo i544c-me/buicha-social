@@ -54,8 +54,39 @@ resource "aws_instance" "app" {
   instance_type          = "t2.medium"
   subnet_id              = aws_subnet.main["public-1"].id
   vpc_security_group_ids = [aws_security_group.app.id]
+  iam_instance_profile   = aws_iam_instance_profile.ec2.arn
 
   tags = {
     Name = "${local.project}-app"
   }
+}
+
+resource "aws_iam_role" "ec2" {
+  name = "${local.project}-ec2"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+data "aws_iam_policy" "ssm_managed_instance_core" {
+  arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+resource "aws_iam_role_policy_attachment" "ec2" {
+  role       = aws_iam_role.ec2.name
+  policy_arn = data.aws_iam_policy.ssm_managed_instance_core.arn
+}
+
+resource "aws_iam_instance_profile" "ec2" {
+  name = "${local.project}-ec2"
+  role = aws_iam_role.ec2.name
 }
