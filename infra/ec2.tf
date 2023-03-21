@@ -54,7 +54,7 @@ resource "aws_instance" "app" {
   instance_type          = "t2.medium"
   subnet_id              = aws_subnet.main["public-1"].id
   vpc_security_group_ids = [aws_security_group.app.id]
-  iam_instance_profile   = aws_iam_instance_profile.ec2.arn
+  iam_instance_profile   = aws_iam_instance_profile.ec2.id
 
   tags = {
     Name = "${local.project}-app"
