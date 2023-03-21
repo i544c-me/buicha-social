@@ -63,6 +63,7 @@ resource "aws_launch_template" "app" {
   image_id                             = data.aws_ami.ubuntu.id
   instance_initiated_shutdown_behavior = "terminate"
   instance_type                        = "t2.small"
+  vpc_security_group_ids               = [aws_security_group.app.id]
 }
 
 resource "aws_autoscaling_group" "app" {
@@ -71,6 +72,7 @@ resource "aws_autoscaling_group" "app" {
   max_size            = 3
   min_size            = 1
   desired_capacity    = 1
+  load_balancers      = [aws_lb.app.id]
 
   health_check_type         = "ELB"
   health_check_grace_period = 300
