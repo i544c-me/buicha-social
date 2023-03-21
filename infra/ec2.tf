@@ -23,14 +23,6 @@ resource "aws_security_group" "app" {
   vpc_id = aws_vpc.main.id
 
   ingress {
-    from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
-    # curl -s https://ip-ranges.amazonaws.com/ip-ranges.json | jq -r '.prefixes[] | select(.service == "EC2_INSTANCE_CONNECT" and .region == "us-east-1") | .ip_prefix'
-    cidr_blocks = ["3.112.23.0/29"]
-  }
-
-  ingress {
     from_port       = 80
     to_port         = 80
     protocol        = "tcp"
@@ -60,6 +52,35 @@ resource "aws_instance" "app" {
     Name = "${local.project}-app"
   }
 }
+
+resource "aws_launch_template" "app" {
+  name = "${local.project}-app"
+
+  iam_instance_profile {
+    name = aws_iam_instance_profile.ec2.id
+  }
+
+  image_id                             = data.aws_ami.ubuntu.id
+  instance_initiated_shutdown_behavior = "terminate"
+  instance_type                        = "t2.small"
+}
+
+resource "aws_autoscaling_group" "app" {
+  name             = "${local.project}-app"
+  max_size         = 3
+  min_size         = 1
+  desired_capacity = 1
+
+  health_check_type         = "ELB"
+  health_check_grace_period = 300
+
+  launch_template {
+    id      = aws_launch_template.app.id
+    version = "$Latest"
+  }
+}
+
+### SSM ###
 
 resource "aws_iam_role" "ec2" {
   name = "${local.project}-ec2"
