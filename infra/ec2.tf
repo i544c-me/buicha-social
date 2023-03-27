@@ -41,18 +41,6 @@ resource "aws_security_group" "app" {
   }
 }
 
-resource "aws_instance" "app" {
-  ami                    = data.aws_ami.ubuntu.id
-  instance_type          = "t2.medium"
-  subnet_id              = aws_subnet.main["public-1"].id
-  vpc_security_group_ids = [aws_security_group.app.id]
-  iam_instance_profile   = aws_iam_instance_profile.ec2.id
-
-  tags = {
-    Name = "${local.project}-app"
-  }
-}
-
 resource "aws_launch_template" "app" {
   name = "${local.project}-app"
 
@@ -64,6 +52,12 @@ resource "aws_launch_template" "app" {
   instance_initiated_shutdown_behavior = "terminate"
   instance_type                        = "t2.small"
   vpc_security_group_ids               = [aws_security_group.app.id]
+
+  tag_specifications {
+    tags = {
+      Name = "${local.project}-app"
+    }
+  }
 }
 
 resource "aws_autoscaling_group" "app" {
@@ -80,6 +74,19 @@ resource "aws_autoscaling_group" "app" {
   launch_template {
     id      = aws_launch_template.app.id
     version = "$Latest"
+  }
+}
+
+resource "aws_autoscaling_policy" "app" {
+  name                   = "${local.project}-app"
+  autoscaling_group_name = aws_autoscaling_group.app.name
+  policy_type            = "TargetTrackingScaling"
+
+  target_tracking_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ASGTotalCPUUtilization"
+    }
+    target_value = 50.0
   }
 }
 
