@@ -10,6 +10,11 @@ terraform {
       source  = "cloudflare/cloudflare"
       version = "= 3.30.0"
     }
+
+    tls = {
+      source  = "hashicorp/tls"
+      version = "= 4.0.4"
+    }
   }
 
   cloud {
@@ -53,12 +58,12 @@ resource "aws_iam_role" "tfc_role" {
       {
         "Effect" : "Allow",
         "Principal" : {
-          "Federated" : "${aws_iam_openid_connect_provider.tfc_provider.arn}"
+          "Federated" : aws_iam_openid_connect_provider.tfc_provider.arn
         },
         "Action" : "sts:AssumeRoleWithWebIdentity",
         "Condition" : {
           "StringEquals" : {
-            "${var.tfc_hostname}:aud" : "${one(aws_iam_openid_connect_provider.tfc_provider.client_id_list)}"
+            "${var.tfc_hostname}:aud" : one(aws_iam_openid_connect_provider.tfc_provider.client_id_list)
           },
           "StringLike" : {
             "${var.tfc_hostname}:sub" : [
