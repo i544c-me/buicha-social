@@ -3,5 +3,17 @@
   "extends": [
     "config:base"
   ],
-  "dependencyDashboard": true
+  "dependencyDashboard": true,
+  "packageRules": [
+    {
+      "groupName": "terraform-version",
+      "matchManagers": ["terraform"],
+      "matchDepTypes": ["required_version"]
+    },
+    {
+      "groupName": "terraform-version",
+      "matchManagers": ["asdf"],
+      "matchDepNames": ["terraform"]
+    }
+  ]
 }
