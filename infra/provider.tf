@@ -77,22 +77,8 @@ resource "aws_iam_role" "tfc_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "tfc_role" {
-  for_each = toset([
-    "AmazonEC2FullAccess",
-    "AmazonElastiCacheFullAccess",
-    "AmazonRDSFullAccess",
-    "AmazonRoute53FullAccess",
-    "AmazonS3FullAccess",
-    "AmazonSESFullAccess",
-    "AWSCertificateManagerFullAccess",
-    "AWSWAFFullAccess",
-    "CloudFrontFullAccess",
-    "IAMFullAccess",
-    "CloudWatchSyntheticsFullAccess",
-  ])
-
   role       = aws_iam_role.tfc_role.name
-  policy_arn = "arn:aws:iam::aws:policy/${each.key}"
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
 
 data "aws_caller_identity" "current" {}

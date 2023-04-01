@@ -86,11 +86,12 @@ resource "aws_synthetics_canary" "app" {
   name                 = "${local.project}-app"
   artifact_s3_location = "s3://${aws_s3_bucket.synthetics_canary.id}/"
   s3_bucket            = aws_s3_bucket.synthetics_canary.bucket
-  s3_key               = "pageLoadBlueprint.js"
+  s3_key               = "cwsyn-tmp-buicha-social-de23de9b-86a4-459d-a3c0-49f290f21d8a-996de482-b9a9-4001-bbea-d1fafb0025bf.zip"
   execution_role_arn   = aws_iam_role.synthetics_canary.arn
   handler              = "pageLoadBlueprint.handler"
   runtime_version      = "syn-nodejs-puppeteer-3.9"
   delete_lambda        = true
+  start_canary         = true
 
   schedule {
     expression = "rate(5 minutes)"
