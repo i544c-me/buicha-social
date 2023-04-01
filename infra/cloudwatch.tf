@@ -84,12 +84,12 @@ resource "aws_iam_role_policy_attachment" "syntetics_canary" {
 
 resource "aws_synthetics_canary" "app" {
   name                 = "${local.project}-app"
-  artifact_s3_location = "s3://${aws_s3_bucket.synthetics_canary.id}"
+  artifact_s3_location = "s3://${aws_s3_bucket.synthetics_canary.id}/"
   execution_role_arn   = aws_iam_role.synthetics_canary.arn
   handler              = "pageLoadBlueprint.handler"
   runtime_version      = "syn-nodejs-puppeteer-3.9"
 
   schedule {
-    expression = "rate(5 minute)"
+    expression = "rate(5 minutes)"
   }
 }
