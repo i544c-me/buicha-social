@@ -88,6 +88,7 @@ resource "aws_iam_role_policy_attachment" "tfc_role" {
     "AWSWAFFullAccess",
     "CloudFrontFullAccess",
     "IAMFullAccess",
+    "CloudWatchSyntheticsFullAccess",
   ])
 
   role       = aws_iam_role.tfc_role.name
