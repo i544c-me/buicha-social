@@ -68,6 +68,12 @@ resource "aws_autoscaling_group" "app" {
   min_size            = 1
   desired_capacity    = 1
   target_group_arns   = [aws_lb_target_group.app.arn]
+  enabled_metrics = [
+    "GroupInServiceInstances",
+    "GroupPendingInstances",
+    "GroupStandbyInstances",
+    "GroupTerminatingInstances",
+  ]
 
   health_check_type         = "ELB"
   health_check_grace_period = 300
