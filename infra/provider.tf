@@ -93,3 +93,8 @@ resource "aws_iam_role_policy_attachment" "tfc_role" {
   role       = aws_iam_role.tfc_role.name
   policy_arn = "arn:aws:iam::aws:policy/${each.key}"
 }
+
+data "aws_caller_identity" "current" {}
+locals {
+  account_id = data.aws_caller_identity.current.account_id
+}
