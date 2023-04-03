@@ -5,6 +5,7 @@
   ],
   "dependencyDashboard": true,
   "packageRules": [
+    // required_version と .tool-versions を同時にアップデートする
     {
       "groupName": "terraform-version",
       "matchManagers": ["terraform"],
