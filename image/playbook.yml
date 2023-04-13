@@ -9,7 +9,7 @@
   vars_files:
     - vault.yml
   vars:
-    misskey_version: 13.10.3
+    misskey_version: 13.11.3
     nodejs_version: 18.x
     datadog_checks:
       init_config:

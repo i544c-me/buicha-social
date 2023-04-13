@@ -8,12 +8,14 @@ packer {
 }
 
 locals {
-  region  = "ap-northeast-1"
-  project = "buichasocial-ubuntu"
+  region   = "ap-northeast-1"
+  project  = "buichasocial-ubuntu"
+  date     = formatdate("YYYYMMDDHHmm", timestamp())
+  ami_name = "${local.project}-${local.date}"
 }
 
 source "amazon-ebs" "ubuntu" {
-  ami_name      = local.project
+  ami_name      = local.ami_name
   instance_type = "t2.medium"
   region        = local.region
   source_ami_filter {
@@ -26,12 +28,11 @@ source "amazon-ebs" "ubuntu" {
     owners      = ["099720109477"]
   }
   ssh_username          = "ubuntu"
-  force_deregister      = true
   force_delete_snapshot = true
 }
 
 build {
-  name = local.project
+  name = local.ami_name
   sources = [
     "source.amazon-ebs.ubuntu"
   ]
