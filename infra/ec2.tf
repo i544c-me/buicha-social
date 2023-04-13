@@ -4,7 +4,7 @@ data "aws_ami" "ubuntu" {
 
   filter {
     name   = "name"
-    values = ["buichasocial-ubuntu"]
+    values = ["buichasocial-ubuntu-*"]
   }
 
   filter {
@@ -48,10 +48,9 @@ resource "aws_launch_template" "app" {
     name = aws_iam_instance_profile.ec2.id
   }
 
-  image_id                             = data.aws_ami.ubuntu.id
-  instance_initiated_shutdown_behavior = "terminate"
-  instance_type                        = "t2.small"
-  vpc_security_group_ids               = [aws_security_group.app.id]
+  image_id               = data.aws_ami.ubuntu.id
+  instance_type          = "t2.small"
+  vpc_security_group_ids = [aws_security_group.app.id]
 
   tag_specifications {
     resource_type = "instance"
