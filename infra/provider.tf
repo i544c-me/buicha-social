@@ -18,7 +18,7 @@ terraform {
   }
 
   cloud {
-    organization = "defaultcf"
+    organization = "i544c-me"
     workspaces {
       name = "buicha-social"
     }
