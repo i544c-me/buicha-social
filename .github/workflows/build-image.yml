@@ -1,0 +1,29 @@
+name: Build Image
+
+on:
+  push:
+    #branches:
+    #  - main
+
+defaults:
+  run:
+    working-directory: image
+
+jobs:
+  packer:
+    runs-on: ubuntu-latest
+    name: Build Image
+    steps:
+      - uses: actions/checkout@v3
+      - uses: marocchino/tool-versions-action@v1
+        id: versions
+        with:
+          path: image/.tool-versions
+      - uses: hashicorp/setup-packer@v2.0.0
+        with:
+          version: ${{ steps.versions.outputs.packer }}
+
+      - name: Init Packer
+        run: packer init ./main.pkr.hcl
+      - name: Validate Packer
+        run: packer validate ./main.pkr.hcl
