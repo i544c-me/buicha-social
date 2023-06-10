@@ -60,6 +60,16 @@ resource "aws_launch_template" "app" {
   }
 }
 
+resource "aws_instance" "temp_for_upgrade" {
+  subnet_id = [for k, v in local.subnets : aws_subnet.main[k].id if v.public][0]
+  ami = "ami-0014b861bc680eb9a" # buichasocial-ubuntu-202306100812
+
+  launch_template {
+    id      = aws_launch_template.app.id
+    version = aws_launch_template.app.latest_version
+  }
+}
+
 resource "aws_autoscaling_group" "app" {
   name                = "${local.project}-app"
   vpc_zone_identifier = [for k, v in local.subnets : aws_subnet.main[k].id if v.public]
