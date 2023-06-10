@@ -24,7 +24,7 @@ provider "registry.terraform.io/cloudflare/cloudflare" {
 
 provider "registry.terraform.io/hashicorp/aws" {
   version     = "5.2.0"
-  constraints = "5.2"
+  constraints = "5.2.0"
   hashes = [
     "h1:0ZhoCjomgw9A8s5EoarNRp0s2Ajri9mDhAVNTL977q0=",
     "h1:3zID2WiDrjYQQAbVz/hBnhfES8VGnbJRjrpzrGaksUc=",
