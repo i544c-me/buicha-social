@@ -80,6 +80,12 @@
         src: ./misskey.service
         dest: /etc/systemd/system/misskey.service
 
+    - name: Create log dir
+      shell: |
+        mkdir /var/log/misskey && \
+        chown misskey:misskey /var/log/misskey && \
+        chmod 700 /var/log/misskey
+
     - name: Enable misskey service
       service:
         name: misskey
