@@ -123,9 +123,18 @@ data "aws_iam_policy" "ssm_managed_instance_core" {
   arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
-resource "aws_iam_role_policy_attachment" "ec2" {
+data "aws_iam_policy" "cloud_watch_agent_server_policy" {
+  arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "ssm_managed_instance_core" {
   role       = aws_iam_role.ec2.name
   policy_arn = data.aws_iam_policy.ssm_managed_instance_core.arn
+}
+
+resource "aws_iam_role_policy_attachment" "cloud_watch_agent_server_policy" {
+  role       = aws_iam_role.ec2.name
+  policy_arn = data.aws_iam_policy.cloud_watch_agent_server_policy.arn
 }
 
 resource "aws_iam_instance_profile" "ec2" {
