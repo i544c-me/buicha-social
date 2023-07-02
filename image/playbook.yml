@@ -4,7 +4,7 @@
   become: true
 
   vars:
-    misskey_version: 13.13.1
+    misskey_version: 13.13.2
     nodejs_version: 18.x
 
   tasks:
