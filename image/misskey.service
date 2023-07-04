@@ -8,8 +8,8 @@ ExecStart=/usr/bin/npm start
 WorkingDirectory=/home/misskey/misskey
 Environment="NODE_ENV=production"
 TimeoutSec=60
-StandardOutput=journal
-StandardError=journal
+StandardOutput=append:/var/log/misskey/output.log
+StandardError=append:/var/log/misskey/error.log
 SyslogIdentifier=misskey
 Restart=always
 
