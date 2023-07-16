@@ -24,7 +24,7 @@ resource "aws_db_instance" "main" {
   identifier             = local.project
   db_name                = local.project
   engine                 = "postgres"
-  engine_version         = "13.7"
+  engine_version         = "13.10"
   instance_class         = "db.t4g.large"
   username               = var.rds_username
   password               = var.rds_password
