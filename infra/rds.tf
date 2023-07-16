@@ -30,8 +30,19 @@ resource "aws_db_instance" "main" {
   password                    = var.rds_password
   db_subnet_group_name        = aws_db_subnet_group.main.id
   vpc_security_group_ids      = [aws_security_group.rds.id]
+  parameter_group_name        = aws_db_parameter_group.default.id
   skip_final_snapshot         = true
   apply_immediately           = true
   allow_major_version_upgrade = true
   deletion_protection         = true
+}
+
+resource "aws_db_parameter_group" "default" {
+  name   = "rds-pg"
+  family = "postgres15"
+
+  parameter {
+    name  = "rds.force_ssl"
+    value = 0
+  }
 }
