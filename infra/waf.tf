@@ -1,7 +1,12 @@
-resource "aws_wafv2_rule_group" "app" {
-  name     = "${local.project}-app-rule-group"
-  scope    = "CLOUDFRONT"
-  capacity = 800
+resource "aws_wafv2_web_acl" "app" {
+  provider    = aws.us_east_1
+  name        = "${local.project}-app-rule"
+  description = "${local.project}-app-rule"
+  scope       = "CLOUDFRONT"
+
+  default_action {
+    allow {}
+  }
 
   rule {
     priority = 0
@@ -66,28 +71,7 @@ resource "aws_wafv2_rule_group" "app" {
       sampled_requests_enabled   = true
     }
   }
-}
 
-resource "aws_wafv2_web_acl" "app" {
-  provider    = aws.us_east_1
-  name        = "${local.project}-app-rule"
-  description = "${local.project}-app-rule"
-  scope       = "CLOUDFRONT"
-
-  default_action {
-    allow {}
-  }
-
-  rule {
-    name     = "${local.project}-app-rule-group"
-    priority = 1
-
-    statement {
-      rule_group_reference_statement {
-        arn = aws_wafv2_rule_group.app.arn
-      }
-    }
-  }
 
   visibility_config {
     cloudwatch_metrics_enabled = false
