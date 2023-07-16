@@ -11,12 +11,18 @@ resource "aws_wafv2_web_acl" "app" {
   rule {
     priority = 0
     name     = "AWS-AWSManagedRulesKnownBadInputsRuleSet"
+
     statement {
       managed_rule_group_statement {
         name        = "AWSManagedRulesKnownBadInputsRuleSet"
         vendor_name = "AWS"
       }
     }
+
+    override_action {
+      none {}
+    }
+
     visibility_config {
       cloudwatch_metrics_enabled = true
       metric_name                = "AWS-AWSManagedRulesKnownBadInputsRuleSet"
@@ -27,12 +33,18 @@ resource "aws_wafv2_web_acl" "app" {
   rule {
     priority = 1
     name     = "AWS-AWSManagedRulesLinuxRuleSet"
+
     statement {
       managed_rule_group_statement {
         name        = "AWSManagedRulesLinuxRuleSet"
         vendor_name = "AWS"
       }
     }
+
+    override_action {
+      none {}
+    }
+
     visibility_config {
       cloudwatch_metrics_enabled = true
       metric_name                = "AWS-AWSManagedRulesLinuxRuleSet"
@@ -43,12 +55,18 @@ resource "aws_wafv2_web_acl" "app" {
   rule {
     priority = 2
     name     = "AWS-AWSManagedRulesSQLiRuleSet"
+
     statement {
       managed_rule_group_statement {
         name        = "AWSManagedRulesSQLiRuleSet"
         vendor_name = "AWS"
       }
     }
+
+    override_action {
+      none {}
+    }
+
     visibility_config {
       cloudwatch_metrics_enabled = true
       metric_name                = "AWS-AWSManagedRulesSQLiRuleSet"
@@ -59,19 +77,24 @@ resource "aws_wafv2_web_acl" "app" {
   rule {
     priority = 3
     name     = "AWS-AWSManagedRulesAmazonIpReputationList"
+
     statement {
       managed_rule_group_statement {
         name        = "AWSManagedRulesAmazonIpReputationList"
         vendor_name = "AWS"
       }
     }
+
+    override_action {
+      none {}
+    }
+
     visibility_config {
       cloudwatch_metrics_enabled = true
       metric_name                = "AWS-AWSManagedRulesAmazonIpReputationList"
       sampled_requests_enabled   = true
     }
   }
-
 
   visibility_config {
     cloudwatch_metrics_enabled = false
