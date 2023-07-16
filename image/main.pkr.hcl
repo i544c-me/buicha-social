@@ -9,7 +9,7 @@ packer {
 
 locals {
   region   = "ap-northeast-1"
-  project  = "tmp-buichasocial-ubuntu"
+  project  = "buichasocial-ubuntu-arm64"
   date     = formatdate("YYYYMMDDHHmm", timestamp())
   ami_name = "${local.project}-${local.date}"
 }
