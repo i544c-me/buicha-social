@@ -9,18 +9,18 @@ packer {
 
 locals {
   region   = "ap-northeast-1"
-  project  = "buichasocial-ubuntu"
+  project  = "buichasocial-ubuntu-arm64"
   date     = formatdate("YYYYMMDDHHmm", timestamp())
   ami_name = "${local.project}-${local.date}"
 }
 
 source "amazon-ebs" "ubuntu" {
   ami_name      = local.ami_name
-  instance_type = "t2.medium"
+  instance_type = "t4g.medium"
   region        = local.region
   source_ami_filter {
     filters = {
-      name                = "ubuntu/images/*ubuntu-focal-20.04-amd64-server-*"
+      name                = "ubuntu/images/*ubuntu-focal-20.04-arm64-server-*"
       root-device-type    = "ebs"
       virtualization-type = "hvm"
     }

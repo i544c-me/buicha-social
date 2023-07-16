@@ -4,7 +4,7 @@ data "aws_ami" "ubuntu" {
 
   filter {
     name   = "name"
-    values = ["buichasocial-ubuntu-*"]
+    values = ["buichasocial-ubuntu-arm64*"]
   }
 
   filter {
@@ -19,7 +19,7 @@ data "aws_ami" "ubuntu" {
 
   filter {
     name   = "architecture"
-    values = ["x86_64"]
+    values = ["arm64"]
   }
 }
 
@@ -54,7 +54,7 @@ resource "aws_launch_template" "app" {
   }
 
   image_id               = data.aws_ami.ubuntu.id
-  instance_type          = "t2.medium"
+  instance_type          = "t4g.medium"
   vpc_security_group_ids = [aws_security_group.app.id]
 
   tag_specifications {
