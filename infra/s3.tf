@@ -1,6 +1,5 @@
 resource "aws_s3_bucket" "main" {
   bucket        = "buichasocial"
-  force_destroy = true
 }
 
 data "aws_iam_policy_document" "main" {
@@ -22,6 +21,24 @@ data "aws_iam_policy_document" "main" {
         aws_cloudfront_distribution.app.arn,
         aws_cloudfront_distribution.media.arn
       ]
+    }
+  }
+
+  // Cloudflare
+  statement {
+    principals {
+      type = "*"
+      identifiers = ["*"]
+    }
+    actions = ["s3:GetObject"]
+    resources = [
+      aws_s3_bucket.main.arn,
+      "${aws_s3_bucket.main.arn}/*"
+    ]
+    condition {
+      test = "StringEquals"
+      variable = "aws:SourceIp"
+      values = data.cloudflare_ip_ranges.cloudflare.ipv4_cidr_blocks
     }
   }
 }
