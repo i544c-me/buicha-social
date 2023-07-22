@@ -2,6 +2,8 @@ data "aws_ec2_managed_prefix_list" "cloudfront" {
   name = "com.amazonaws.global.cloudfront.origin-facing"
 }
 
+data "cloudflare_ip_ranges" "cloudflare" {}
+
 resource "aws_security_group" "alb" {
   name   = "${local.project}-alb"
   vpc_id = aws_vpc.main.id
@@ -11,6 +13,13 @@ resource "aws_security_group" "alb" {
     to_port         = 80
     protocol        = "tcp"
     prefix_list_ids = [data.aws_ec2_managed_prefix_list.cloudfront.id]
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = data.cloudflare_ip_ranges.cloudflare.ipv4_cidr_blocks
   }
 
   egress {
