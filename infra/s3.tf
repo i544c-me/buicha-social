@@ -41,6 +41,24 @@ data "aws_iam_policy_document" "main" {
       values = data.cloudflare_ip_ranges.cloudflare.ipv4_cidr_blocks
     }
   }
+
+  // Admin
+  statement {
+    principals {
+      type = "*"
+      identifiers = ["*"]
+    }
+    actions = ["s3:GetObject"]
+    resources = [
+      aws_s3_bucket.main.arn,
+      "${aws_s3_bucket.main.arn}/*"
+    ]
+    condition {
+      test = "StringEquals"
+      variable = "aws:SourceIp"
+      values = [for ip in var.admin_ips : "${ip}/32"]
+    }
+  }
 }
 
 resource "aws_s3_bucket_policy" "main" {

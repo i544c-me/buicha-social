@@ -22,6 +22,13 @@ resource "aws_security_group" "alb" {
     cidr_blocks = data.cloudflare_ip_ranges.cloudflare.ipv4_cidr_blocks
   }
 
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = [for ip in var.admin_ips : "${ip}/32"]
+  }
+
   egress {
     from_port   = 80
     to_port     = 80
@@ -79,7 +86,7 @@ resource "aws_lb_listener" "app" {
 #  condition {
 #    http_header {
 #      http_header_name = "X-Forwarded-For"
-#      values           = ["126.89.42.68"]
+#      values           = var.admin_ips
 #    }
 #  }
 #}
