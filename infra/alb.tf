@@ -2,6 +2,8 @@ data "aws_ec2_managed_prefix_list" "cloudfront" {
   name = "com.amazonaws.global.cloudfront.origin-facing"
 }
 
+data "cloudflare_ip_ranges" "cloudflare" {}
+
 resource "aws_security_group" "alb" {
   name   = "${local.project}-alb"
   vpc_id = aws_vpc.main.id
@@ -11,6 +13,20 @@ resource "aws_security_group" "alb" {
     to_port         = 80
     protocol        = "tcp"
     prefix_list_ids = [data.aws_ec2_managed_prefix_list.cloudfront.id]
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = data.cloudflare_ip_ranges.cloudflare.ipv4_cidr_blocks
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = [for ip in var.admin_ips : "${ip}/32"]
   }
 
   egress {
@@ -70,7 +86,7 @@ resource "aws_lb_listener" "app" {
 #  condition {
 #    http_header {
 #      http_header_name = "X-Forwarded-For"
-#      values           = ["126.89.42.68"]
+#      values           = var.admin_ips
 #    }
 #  }
 #}
