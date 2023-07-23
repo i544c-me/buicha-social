@@ -14,7 +14,6 @@ resource "cloudflare_record" "media" {
   name    = "media.${local.main_domain}"
   type    = "CNAME"
   value   = aws_s3_bucket_website_configuration.main.website_endpoint
-  proxied = true
 }
 
 resource "cloudflare_record" "domain_cert_main" {
