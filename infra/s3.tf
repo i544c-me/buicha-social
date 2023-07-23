@@ -36,7 +36,7 @@ data "aws_iam_policy_document" "main" {
       "${aws_s3_bucket.main.arn}/*"
     ]
     condition {
-      test = "StringEquals"
+      test = "IpAddress"
       variable = "aws:SourceIp"
       values = data.cloudflare_ip_ranges.cloudflare.ipv4_cidr_blocks
     }
@@ -54,7 +54,7 @@ data "aws_iam_policy_document" "main" {
       "${aws_s3_bucket.main.arn}/*"
     ]
     condition {
-      test = "StringEquals"
+      test = "IpAddress"
       variable = "aws:SourceIp"
       values = [for ip in var.admin_ips : "${ip}/32"]
     }
@@ -82,4 +82,8 @@ data "aws_iam_policy" "s3_rw" {
 resource "aws_iam_user_policy_attachment" "s3_rw" {
   user       = aws_iam_user.s3_rw.name
   policy_arn = data.aws_iam_policy.s3_rw.arn
+}
+
+resource "aws_s3_bucket_website_configuration" "main" {
+  bucket = aws_s3_bucket.main.id
 }
