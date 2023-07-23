@@ -86,4 +86,7 @@ resource "aws_iam_user_policy_attachment" "s3_rw" {
 
 resource "aws_s3_bucket_website_configuration" "main" {
   bucket = aws_s3_bucket.main.id
+  index_document {
+    suffix = "index.html"
+  }
 }
