@@ -13,7 +13,7 @@ resource "cloudflare_record" "media" {
   zone_id = data.cloudflare_zone.main.id
   name    = "media.${local.main_domain}"
   type    = "CNAME"
-  value   = aws_s3_bucket_website_configuration.main.website_endpoint
+  value   = data.aws_s3_bucket.media.website_endpoint
   proxied = true
 }
 
