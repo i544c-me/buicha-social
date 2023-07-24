@@ -1,5 +1,9 @@
 resource "aws_s3_bucket" "main" {
-  bucket        = "buichasocial"
+  bucket = "buichasocial"
+}
+
+data "aws_s3_bucket" "media" {
+  bucket = "media.buicha.social"
 }
 
 data "aws_iam_policy_document" "main" {
@@ -27,7 +31,7 @@ data "aws_iam_policy_document" "main" {
   // Cloudflare
   statement {
     principals {
-      type = "*"
+      type        = "*"
       identifiers = ["*"]
     }
     actions = ["s3:GetObject"]
@@ -36,16 +40,16 @@ data "aws_iam_policy_document" "main" {
       "${aws_s3_bucket.main.arn}/*"
     ]
     condition {
-      test = "IpAddress"
+      test     = "IpAddress"
       variable = "aws:SourceIp"
-      values = data.cloudflare_ip_ranges.cloudflare.ipv4_cidr_blocks
+      values   = data.cloudflare_ip_ranges.cloudflare.ipv4_cidr_blocks
     }
   }
 
   // Admin
   statement {
     principals {
-      type = "*"
+      type        = "*"
       identifiers = ["*"]
     }
     actions = ["s3:GetObject"]
@@ -54,9 +58,9 @@ data "aws_iam_policy_document" "main" {
       "${aws_s3_bucket.main.arn}/*"
     ]
     condition {
-      test = "IpAddress"
+      test     = "IpAddress"
       variable = "aws:SourceIp"
-      values = [for ip in var.admin_ips : "${ip}/32"]
+      values   = [for ip in var.admin_ips : "${ip}/32"]
     }
   }
 }

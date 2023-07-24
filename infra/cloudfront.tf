@@ -119,7 +119,7 @@ resource "aws_cloudfront_distribution" "media" {
   aliases         = ["media.${local.main_domain}"]
 
   origin {
-    domain_name              = aws_s3_bucket.main.bucket_regional_domain_name
+    domain_name              = data.aws_s3_bucket.media.bucket_regional_domain_name
     origin_id                = "media"
     origin_access_control_id = aws_cloudfront_origin_access_control.files.id
   }
