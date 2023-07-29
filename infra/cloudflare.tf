@@ -9,6 +9,15 @@ resource "cloudflare_record" "main" {
   value   = aws_cloudfront_distribution.app.domain_name
 }
 
+resource "cloudflare_page_rule" "api" {
+  zone_id = data.cloudflare_zone.main.id
+  target = "buicha.social/api/*"
+
+  actions {
+    cache_level = "bypass"
+  }
+}
+
 resource "cloudflare_record" "media" {
   zone_id = data.cloudflare_zone.main.id
   name    = "media.${local.main_domain}"
