@@ -6,12 +6,13 @@ resource "cloudflare_record" "main" {
   zone_id = data.cloudflare_zone.main.id
   name    = "@"
   type    = "CNAME"
-  value   = aws_cloudfront_distribution.app.domain_name
+  value   = aws_lb.app.dns_name
+  proxied = true
 }
 
 resource "cloudflare_page_rule" "api" {
   zone_id = data.cloudflare_zone.main.id
-  target = "buicha.social/api/*"
+  target  = "buicha.social/api/*"
 
   actions {
     cache_level = "bypass"
