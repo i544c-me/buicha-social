@@ -19,6 +19,18 @@ resource "cloudflare_page_rule" "api" {
   }
 }
 
+resource "cloudflare_page_rule" "old_media" {
+  zone_id = data.cloudflare_zone.main.id
+  target  = "buicha.social/files/*"
+
+  actions {
+    forwarding_url {
+      url         = "https://media.buicha.social/files/$1"
+      status_code = "301"
+    }
+  }
+}
+
 resource "cloudflare_record" "media" {
   zone_id = data.cloudflare_zone.main.id
   name    = "media.${local.main_domain}"
