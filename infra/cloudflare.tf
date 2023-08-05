@@ -39,36 +39,6 @@ resource "cloudflare_record" "media" {
   proxied = true
 }
 
-resource "cloudflare_record" "domain_cert_main" {
-  for_each = {
-    for r in aws_acm_certificate.main.domain_validation_options : r.domain_name => {
-      name  = r.resource_record_name
-      type  = r.resource_record_type
-      value = r.resource_record_value
-    }
-  }
-
-  zone_id = data.cloudflare_zone.main.id
-  name    = each.value.name
-  type    = each.value.type
-  value   = each.value.value
-}
-
-resource "cloudflare_record" "domain_cert_media" {
-  for_each = {
-    for r in aws_acm_certificate.media.domain_validation_options : r.domain_name => {
-      name  = r.resource_record_name
-      type  = r.resource_record_type
-      value = r.resource_record_value
-    }
-  }
-
-  zone_id = data.cloudflare_zone.main.id
-  name    = each.value.name
-  type    = each.value.type
-  value   = each.value.value
-}
-
 resource "cloudflare_record" "ses_txt" {
   zone_id = data.cloudflare_zone.main.id
   name    = "_amazonses.${local.main_domain}"
