@@ -11,8 +11,9 @@ resource "cloudflare_record" "main" {
 }
 
 resource "cloudflare_page_rule" "api" {
-  zone_id = data.cloudflare_zone.main.id
-  target  = "buicha.social/api/*"
+  zone_id  = data.cloudflare_zone.main.id
+  target   = "buicha.social/api/*"
+  priority = 10
 
   actions {
     cache_level = "bypass"
@@ -20,8 +21,9 @@ resource "cloudflare_page_rule" "api" {
 }
 
 resource "cloudflare_page_rule" "old_media" {
-  zone_id = data.cloudflare_zone.main.id
-  target  = "buicha.social/files/*"
+  zone_id  = data.cloudflare_zone.main.id
+  target   = "buicha.social/files/*"
+  priority = 1
 
   actions {
     forwarding_url {
