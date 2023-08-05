@@ -1,31 +1,4 @@
-data "aws_ec2_managed_prefix_list" "cloudfront" {
-  name = "com.amazonaws.global.cloudfront.origin-facing"
-}
-
 data "cloudflare_ip_ranges" "cloudflare" {}
-
-resource "aws_security_group" "alb_cloudfront" {
-  name   = "${local.project}-alb-cloudfront"
-  vpc_id = aws_vpc.main.id
-
-  ingress {
-    from_port       = 80
-    to_port         = 80
-    protocol        = "tcp"
-    prefix_list_ids = [data.aws_ec2_managed_prefix_list.cloudfront.id]
-  }
-
-  egress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "${local.project}-alb-cloudfront"
-  }
-}
 
 resource "aws_security_group" "alb_cloudflare" {
   name   = "${local.project}-alb-cloudflare"
@@ -60,7 +33,7 @@ resource "aws_lb" "app" {
   name               = "${local.project}-app"
   load_balancer_type = "application"
   subnets            = [for k, v in local.subnets : aws_subnet.main[k].id if v.public]
-  security_groups    = [aws_security_group.alb_cloudfront.id, aws_security_group.alb_cloudflare.id]
+  security_groups    = [aws_security_group.alb_cloudflare.id]
 }
 
 resource "aws_lb_target_group" "app" {
