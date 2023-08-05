@@ -47,11 +47,6 @@ resource "aws_s3_bucket_policy" "main" {
   policy = data.aws_iam_policy_document.main.json
 }
 
-resource "aws_s3_bucket_acl" "main" {
-  bucket = data.aws_s3_bucket.media.id
-  acl    = "private"
-}
-
 resource "aws_iam_user" "s3_rw" {
   name = "${local.project}-s3-rw"
 }
