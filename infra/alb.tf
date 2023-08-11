@@ -73,7 +73,7 @@ resource "aws_lb_listener_rule" "maintenance" {
 
   condition {
     http_header {
-      http_header_name = "X-Forwarded-For"
+      http_header_name = "CF-Connecting-IP"
       values           = var.admin_ips
     }
   }

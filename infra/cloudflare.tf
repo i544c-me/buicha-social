@@ -33,14 +33,6 @@ resource "cloudflare_page_rule" "old_media" {
   }
 }
 
-resource "cloudflare_record" "media" {
-  zone_id = data.cloudflare_zone.main.id
-  name    = "media.${local.main_domain}"
-  type    = "CNAME"
-  value   = data.aws_s3_bucket.media.website_endpoint
-  proxied = true
-}
-
 resource "cloudflare_record" "ses_txt" {
   zone_id = data.cloudflare_zone.main.id
   name    = "_amazonses.${local.main_domain}"
