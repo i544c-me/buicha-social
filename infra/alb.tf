@@ -19,20 +19,6 @@ resource "aws_security_group" "alb_cloudflare" {
   vpc_id = aws_vpc.main.id
 
   ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = data.cloudflare_ip_ranges.cloudflare.ipv4_cidr_blocks
-  }
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = [for ip in var.admin_ips : "${ip}/32"]
-  }
-
-  ingress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
@@ -46,6 +32,7 @@ resource "aws_security_group" "alb_cloudflare" {
     cidr_blocks = [for ip in var.admin_ips : "${ip}/32"]
   }
 
+  # For health check
   egress {
     from_port   = 80
     to_port     = 80
@@ -71,42 +58,6 @@ resource "aws_lb_target_group" "app" {
   vpc_id   = aws_vpc.main.id
 }
 
-resource "aws_lb_listener" "app" {
-  load_balancer_arn = aws_lb.app.arn
-  protocol          = "HTTP"
-  port              = 80
-
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.app.arn
-
-    ## Maintenance
-    #type = "fixed-response"
-    #fixed_response {
-    #  content_type = "text/html"
-    #  message_body = file("${path.module}/error_page/error.html")
-    #  status_code  = "503"
-    #}
-  }
-}
-
-#resource "aws_lb_listener_rule" "maintenance" {
-#  listener_arn = aws_lb_listener.app.arn
-#  priority     = 100
-#
-#  action {
-#    type             = "forward"
-#    target_group_arn = aws_lb_target_group.app.arn
-#  }
-#
-#  condition {
-#    http_header {
-#      http_header_name = "CF-Connecting-IP"
-#      values           = var.admin_ips
-#    }
-#  }
-#}
-
 resource "aws_lb_listener" "app_https" {
   load_balancer_arn = aws_lb.app.arn
   protocol          = "HTTPS"
@@ -131,3 +82,21 @@ resource "aws_lb_listener" "app_https" {
     aws_acm_certificate_validation.example
   ]
 }
+
+#resource "aws_lb_listener_rule" "maintenance" {
+#  listener_arn = aws_lb_listener.app_https.arn
+#  priority     = 100
+#
+#  action {
+#    type             = "forward"
+#    target_group_arn = aws_lb_target_group.app.arn
+#  }
+#
+#  condition {
+#    http_header {
+#      http_header_name = "CF-Connecting-IP"
+#      values           = var.admin_ips
+#    }
+#  }
+#}
+
