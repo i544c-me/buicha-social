@@ -1,7 +1,7 @@
 data "cloudflare_ip_ranges" "cloudflare" {}
 
 resource "aws_acm_certificate" "alb" {
-  domain_name       = "alb.internal.${local.main_domain}"
+  domain_name       = local.main_domain
   validation_method = "DNS"
 
   lifecycle {
