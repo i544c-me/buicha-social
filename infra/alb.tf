@@ -9,6 +9,11 @@ resource "aws_acm_certificate" "alb" {
   }
 }
 
+resource "aws_acm_certificate_validation" "example" {
+  certificate_arn         = aws_acm_certificate.alb.arn
+  validation_record_fqdns = [for record in cloudflare_record.domain_cert_alb : record.hostname]
+}
+
 resource "aws_security_group" "alb_cloudflare" {
   name   = "${local.project}-alb-cloudflare"
   vpc_id = aws_vpc.main.id
@@ -121,4 +126,8 @@ resource "aws_lb_listener" "app_https" {
     #  status_code  = "503"
     #}
   }
+
+  depends_on = [
+    aws_acm_certificate_validation.example
+  ]
 }
