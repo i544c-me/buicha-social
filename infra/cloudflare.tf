@@ -13,7 +13,7 @@ resource "cloudflare_record" "main" {
 resource "cloudflare_page_rule" "api" {
   zone_id  = data.cloudflare_zone.main.id
   target   = "buicha.social/api/*"
-  priority = 10
+  priority = 2
 
   actions {
     cache_level = "bypass"
@@ -72,4 +72,21 @@ resource "cloudflare_record" "ses_dmark" {
   name    = "_dmarc.${local.main_domain}"
   type    = "TXT"
   value   = "v=DMARC1;p=quarantine;adkim=r;aspf=r;rua=mailto:report@i544c.me;"
+}
+
+// ACM
+
+resource "cloudflare_record" "domain_cert_alb" {
+  for_each = {
+    for r in aws_acm_certificate.alb.domain_validation_options : r.domain_name => {
+      name  = r.resource_record_name
+      type  = r.resource_record_type
+      value = r.resource_record_value
+    }
+  }
+
+  zone_id = data.cloudflare_zone.main.id
+  name    = each.value.name
+  type    = each.value.type
+  value   = each.value.value
 }
