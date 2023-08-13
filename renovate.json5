@@ -6,9 +6,6 @@
     "schedule:weekly"
   ],
   "dependencyDashboard": true,
-  "lockFileMaintenance": {
-    "enabled": true
-  },
   "packageRules": [
     // required_version と .tool-versions を同時にアップデートする
     {
