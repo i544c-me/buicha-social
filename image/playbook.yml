@@ -8,6 +8,12 @@
     nodejs_version: 20.x
 
   tasks:
+    - name: apt update
+      apt:
+        update_cache: yes
+        state: present
+      become: yes
+
     - name: Install system dependencies
       package:
         name:
@@ -19,7 +25,9 @@
           - ca-certificates
           - acl # become を上手く機能するために必要
           - build-essential # ARM でのビルドに必要
+          - collectd # CloudWatch Agent で必要
         state: present
+      become: yes
 
     - name: Get Node.js setup
       get_url:
@@ -106,3 +114,17 @@
       apt:
         deb: /tmp/amazon-cloudwatch-agent.deb
       become: yes
+
+    - name: Copy CloudWatch Agent Config
+      copy:
+        src: ./files/cloudwatch.json
+        dest: /opt/aws/amazon-cloudwatch-agent/bin/config.json
+
+    - name: Setup CloudWatch Agent
+      shell: |
+        /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json
+      become: yes
+
+    - name: Clean
+      shell: |
+        rm -rf /var/lib/apt/lists/*

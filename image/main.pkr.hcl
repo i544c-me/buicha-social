@@ -20,7 +20,7 @@ source "amazon-ebs" "ubuntu" {
   region        = local.region
   source_ami_filter {
     filters = {
-      name                = "ubuntu/images/*ubuntu-focal-20.04-arm64-server-*"
+      name                = "ubuntu/images/*ubuntu-jammy-22.04-arm64-server-*"
       root-device-type    = "ebs"
       virtualization-type = "hvm"
     }
