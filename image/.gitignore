@@ -17,6 +17,6 @@ crash.log
 
 # Credential info
 /.envrc
-/default.yml
-/default_old.yml
+/files/default.yml
+/files/default_old.yml
 /pass.txt

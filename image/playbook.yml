@@ -8,6 +8,12 @@
     nodejs_version: 20.x
 
   tasks:
+    - name: apt update
+      apt:
+        update_cache: yes
+        state: present
+      become: yes
+
     - name: Install system dependencies
       package:
         name:
@@ -19,7 +25,9 @@
           - ca-certificates
           - acl # become を上手く機能するために必要
           - build-essential # ARM でのビルドに必要
+          - collectd # CloudWatch Agent で必要
         state: present
+      become: yes
 
     - name: Get Node.js setup
       get_url:
@@ -42,7 +50,7 @@
     # Ref: https://misskey-hub.net/docs/admin/nginx.html
     - name: Copy Nginx config
       copy:
-        src: ./nginx.conf
+        src: ./files/nginx.conf
         dest: /etc/nginx/sites-enabled/default
 
     - name: Add user, misskey
@@ -60,7 +68,7 @@
     # Edit https://github.com/misskey-dev/misskey/blob/develop/.config/example.yml
     - name: Copy config
       copy:
-        src: ./default.yml
+        src: ./files/default.yml
         dest: /home/misskey/misskey/.config/default.yml
       become_user: misskey
 
@@ -77,11 +85,46 @@
     # Ref: https://misskey-hub.net/docs/install/manual.html#%E8%B5%B7%E5%8B%95
     - name: Install misskey service
       copy:
-        src: ./misskey.service
+        src: ./files/misskey.service
         dest: /etc/systemd/system/misskey.service
+
+    - name: Create log dir
+      shell: |
+        mkdir /var/log/misskey && \
+        chown misskey:misskey /var/log/misskey && \
+        chmod 700 /var/log/misskey
+
+    - name: Copy logrotate conf
+      copy:
+        src: ./files/logrotate-misskey.conf
+        dest: /etc/logrotate.d/misskey
 
     - name: Enable misskey service
       service:
         name: misskey
         daemon_reload: true
         enabled: true
+
+    - name: Get CloudWatch Agent
+      get_url:
+        url: https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/arm64/latest/amazon-cloudwatch-agent.deb
+        dest: /tmp
+    
+    - name: Install CloudWatch Agent
+      apt:
+        deb: /tmp/amazon-cloudwatch-agent.deb
+      become: yes
+
+    - name: Copy CloudWatch Agent Config
+      copy:
+        src: ./files/cloudwatch.json
+        dest: /opt/aws/amazon-cloudwatch-agent/bin/config.json
+
+    - name: Setup CloudWatch Agent
+      shell: |
+        /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json
+      become: yes
+
+    - name: Clean
+      shell: |
+        rm -rf /var/lib/apt/lists/*
