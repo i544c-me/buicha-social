@@ -42,7 +42,7 @@
     # Ref: https://misskey-hub.net/docs/admin/nginx.html
     - name: Copy Nginx config
       copy:
-        src: ./nginx.conf
+        src: ./files/nginx.conf
         dest: /etc/nginx/sites-enabled/default
 
     - name: Add user, misskey
@@ -60,7 +60,7 @@
     # Edit https://github.com/misskey-dev/misskey/blob/develop/.config/example.yml
     - name: Copy config
       copy:
-        src: ./default.yml
+        src: ./files/default.yml
         dest: /home/misskey/misskey/.config/default.yml
       become_user: misskey
 
@@ -77,7 +77,7 @@
     # Ref: https://misskey-hub.net/docs/install/manual.html#%E8%B5%B7%E5%8B%95
     - name: Install misskey service
       copy:
-        src: ./misskey.service
+        src: ./files/misskey.service
         dest: /etc/systemd/system/misskey.service
 
     - name: Create log dir
@@ -85,6 +85,11 @@
         mkdir /var/log/misskey && \
         chown misskey:misskey /var/log/misskey && \
         chmod 700 /var/log/misskey
+
+    - name: Copy logrotate conf
+      copy:
+        src: ./files/logrotate-misskey.conf
+        dest: /etc/logrotate.d/misskey
 
     - name: Enable misskey service
       service:
@@ -94,7 +99,7 @@
 
     - name: Get CloudWatch Agent
       get_url:
-        url: https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
+        url: https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/arm64/latest/amazon-cloudwatch-agent.deb
         dest: /tmp
     
     - name: Install CloudWatch Agent
