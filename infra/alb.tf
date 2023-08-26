@@ -58,6 +58,7 @@ resource "aws_lb_target_group" "app" {
   vpc_id   = aws_vpc.main.id
 
   health_check {
+    path                = "/api/notes/local-timeline"
     interval            = 15
     healthy_threshold   = 2
     unhealthy_threshold = 2
