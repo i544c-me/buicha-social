@@ -2,7 +2,7 @@ name: Lint Renovate
 on:
   push:
     paths:
-      - renovate.json
+      - renovate.json5
 
 permissions:
   contents: read
