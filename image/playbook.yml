@@ -26,6 +26,8 @@
           - acl # become を上手く機能するために必要
           - build-essential # ARM でのビルドに必要
           - collectd # CloudWatch Agent で必要
+          - libjemalloc-dev
+          - libjemalloc2
         state: present
       become: yes
 
