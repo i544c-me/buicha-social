@@ -53,13 +53,6 @@ resource "aws_launch_template" "app" {
     name = aws_iam_instance_profile.ec2.id
   }
 
-  block_device_mappings {
-    device_name = "/dev/sda1"
-    ebs {
-      delete_on_termination = false
-    }
-  }
-
   image_id               = data.aws_ami.ubuntu.id
   instance_type          = "t4g.medium"
   vpc_security_group_ids = [aws_security_group.app.id]
