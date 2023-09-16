@@ -31,6 +31,7 @@ resource "aws_db_instance" "main" {
   db_subnet_group_name        = aws_db_subnet_group.main.id
   vpc_security_group_ids      = [aws_security_group.rds.id]
   parameter_group_name        = aws_db_parameter_group.default.id
+  ca_cert_identifier          = "rds-ca-ecc384-g1"
   backup_retention_period     = 1
   backup_window               = "17:23-18:23"
   skip_final_snapshot         = true
