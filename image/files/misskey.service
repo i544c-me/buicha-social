@@ -7,6 +7,7 @@ User=misskey
 ExecStart=/usr/bin/npm start
 WorkingDirectory=/home/misskey/misskey
 Environment="NODE_ENV=production"
+Environment="LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2"
 TimeoutSec=60
 StandardOutput=append:/var/log/misskey/output.log
 StandardError=append:/var/log/misskey/error.log
