@@ -8,7 +8,7 @@ terraform {
 
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = "4.11.0"
+      version = "4.14.0"
     }
 
     tls = {
