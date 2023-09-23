@@ -15,8 +15,3 @@ resource "aws_cloudwatch_log_group" "misskey_error" {
     Name = "${local.project}-log-error"
   }
 }
-
-resource "aws_s3_bucket" "synthetics_canary" {
-  bucket = "${local.project}-synthetics-canary"
-  force_destroy = true
-}
