@@ -72,18 +72,3 @@ resource "aws_route_table_association" "main" {
   subnet_id      = aws_subnet.main[each.key].id
   route_table_id = aws_route_table.main[each.key].id
 }
-
-### VPC Endpoint ###
-
-resource "aws_vpc_endpoint" "s3" {
-  vpc_id            = aws_vpc.main.id
-  service_name      = "com.amazonaws.ap-northeast-1.s3"
-  vpc_endpoint_type = "Gateway"
-}
-
-resource "aws_vpc_endpoint_route_table_association" "s3" {
-  for_each = { for k, v in local.subnets : k => v if v.public }
-
-  route_table_id  = aws_route_table.main[each.key].id
-  vpc_endpoint_id = aws_vpc_endpoint.s3.id
-}
