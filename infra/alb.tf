@@ -18,32 +18,30 @@ resource "aws_security_group" "alb_cloudflare" {
   name   = "${local.project}-alb-cloudflare"
   vpc_id = aws_vpc.main.id
 
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = data.cloudflare_ip_ranges.cloudflare.ipv4_cidr_blocks
-  }
-
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = [for ip in var.admin_ips : "${ip}/32"]
-  }
-
-  # For health check
-  egress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
   tags = {
     Name = "${local.project}-alb-cloudflare"
   }
 }
+
+resource "aws_security_group_rule" "alb_cloudflare_ingress" {
+  security_group_id = aws_security_group.alb_cloudflare.id
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = data.cloudflare_ip_ranges.cloudflare.ipv4_cidr_blocks
+}
+
+# For health check
+resource "aws_security_group_rule" "alb_cloudflare_egress" {
+  security_group_id        = aws_security_group.alb_cloudflare.id
+  type                     = "egress"
+  from_port                = 80
+  to_port                  = 80
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.app.id
+}
+
 resource "aws_lb" "app" {
   name               = "${local.project}-app"
   load_balancer_type = "application"
