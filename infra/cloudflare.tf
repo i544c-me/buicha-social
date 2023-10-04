@@ -13,7 +13,7 @@ resource "cloudflare_record" "main" {
 resource "cloudflare_page_rule" "api" {
   zone_id  = data.cloudflare_zone.main.id
   target   = "buicha.social/api/*"
-  priority = 2
+  priority = 1
 
   actions {
     cache_level = "bypass"
@@ -23,7 +23,7 @@ resource "cloudflare_page_rule" "api" {
 resource "cloudflare_page_rule" "old_media" {
   zone_id  = data.cloudflare_zone.main.id
   target   = "buicha.social/files/*"
-  priority = 1
+  priority = 2
 
   actions {
     forwarding_url {
@@ -38,6 +38,7 @@ resource "cloudflare_record" "ses_txt" {
   name    = "_amazonses.${local.main_domain}"
   type    = "TXT"
   value   = aws_ses_domain_identity.buicha_social.verification_token
+  comment = "${local.main_domain} SES TXT"
 }
 
 resource "cloudflare_record" "ses_dkim" {
@@ -56,6 +57,7 @@ resource "cloudflare_record" "ses_spf" {
   name    = aws_ses_domain_mail_from.buicha_social.mail_from_domain
   type    = "TXT"
   value   = "v=spf1 include:amazonses.com ~all"
+  comment = "${local.main_domain} SES SPF"
 }
 
 resource "cloudflare_record" "ses_mailfrom" {
@@ -72,6 +74,7 @@ resource "cloudflare_record" "ses_dmark" {
   name    = "_dmarc.${local.main_domain}"
   type    = "TXT"
   value   = "v=DMARC1;p=quarantine;adkim=r;aspf=r;rua=mailto:report@i544c.me;"
+  comment = "${local.main_domain} SES DMARK"
 }
 
 // ACM
@@ -89,4 +92,5 @@ resource "cloudflare_record" "domain_cert_alb" {
   name    = each.value.name
   type    = each.value.type
   value   = each.value.value
+  comment = "${local.main_domain} ACM for ALB"
 }
