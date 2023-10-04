@@ -27,27 +27,23 @@ resource "aws_security_group" "app" {
   name   = "app_server"
   vpc_id = aws_vpc.main.id
 
+  ingress {
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb_cloudflare.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   tags = {
     Name = "${local.project}-app"
   }
-}
-
-resource "aws_security_group_rule" "app_ingress" {
-  security_group_id        = aws_security_group.app.id
-  type                     = "ingress"
-  from_port                = 80
-  to_port                  = 80
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.alb_cloudflare.id
-}
-
-resource "aws_security_group_rule" "app_egress" {
-  security_group_id = aws_security_group.app.id
-  type              = "egress"
-  from_port         = 0
-  to_port           = 0
-  protocol          = -1
-  cidr_blocks       = ["0.0.0.0/0"]
 }
 
 resource "aws_launch_template" "app" {
