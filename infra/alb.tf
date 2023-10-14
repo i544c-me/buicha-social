@@ -73,16 +73,16 @@ resource "aws_lb_listener" "app_https" {
   certificate_arn   = aws_acm_certificate.alb.arn
 
   default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.app.arn
+    #type             = "forward"
+    #target_group_arn = aws_lb_target_group.app.arn
 
-    ## Maintenance
-    #type = "fixed-response"
-    #fixed_response {
-    #  content_type = "text/html"
-    #  message_body = file("${path.module}/error_page/error.html")
-    #  status_code  = "503"
-    #}
+    # Maintenance
+    type = "fixed-response"
+    fixed_response {
+      content_type = "text/html"
+      message_body = file("${path.module}/error_page/error.html")
+      status_code  = "503"
+    }
   }
 
   depends_on = [
@@ -90,19 +90,19 @@ resource "aws_lb_listener" "app_https" {
   ]
 }
 
-#resource "aws_lb_listener_rule" "maintenance" {
-#  listener_arn = aws_lb_listener.app_https.arn
-#  priority     = 100
-#
-#  action {
-#    type             = "forward"
-#    target_group_arn = aws_lb_target_group.app.arn
-#  }
-#
-#  condition {
-#    http_header {
-#      http_header_name = "CF-Connecting-IP"
-#      values           = var.admin_ips
-#    }
-#  }
-#}
+resource "aws_lb_listener_rule" "maintenance" {
+  listener_arn = aws_lb_listener.app_https.arn
+  priority     = 100
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.app.arn
+  }
+
+  condition {
+    http_header {
+      http_header_name = "CF-Connecting-IP"
+      values           = var.admin_ips
+    }
+  }
+}
