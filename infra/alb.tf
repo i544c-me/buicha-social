@@ -99,22 +99,22 @@ resource "aws_lb_listener_rule" "admin" {
   }
 }
 
-resource "aws_lb_listener_rule" "maintenance" {
-  listener_arn = aws_lb_listener.app_https.arn
-  priority     = 100
-
-  action {
-    type = "fixed-response"
-    fixed_response {
-      content_type = "text/html"
-      message_body = file("${path.module}/error_page/error.html")
-      status_code  = "503"
-    }
-  }
-
-  condition {
-    path_pattern {
-      values = ["/*"]
-    }
-  }
-}
+#resource "aws_lb_listener_rule" "maintenance" {
+#  listener_arn = aws_lb_listener.app_https.arn
+#  priority     = 100
+#
+#  action {
+#    type = "fixed-response"
+#    fixed_response {
+#      content_type = "text/html"
+#      message_body = file("${path.module}/error_page/error.html")
+#      status_code  = "503"
+#    }
+#  }
+#
+#  condition {
+#    path_pattern {
+#      values = ["/*"]
+#    }
+#  }
+#}
