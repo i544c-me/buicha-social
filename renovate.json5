@@ -16,19 +16,19 @@
     {
       "groupName": "terraform-version",
       "matchManagers": ["asdf"],
-      "matchDepNames": ["terraform", "terraform-linters/tflint"]
+      "matchDepNames": ["terraform", "tflint"]
     },
     {
       "groupName": "terraform-version",
       "matchManagers": ["tflint-plugin"],
-      "matchPackageNames": ["terraform-linters/tflint-ruleset-aws"]
+      "matchDepNames": ["terraform-linters/tflint-ruleset-aws"]
     },
 
     // Terraform のプロバイダを同時にアップデートする
     {
       "groupName": "terraform-providers",
       "matchManagers": ["terraform"],
-      "matchPackageNames": ["hashicorp/aws", "cloudflare/cloudflare", "hashicorp/tls"]
+      "matchDepNames": ["aws", "cloudflare", "tls"]
     },
   ]
 }
