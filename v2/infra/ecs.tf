@@ -57,7 +57,8 @@ resource "aws_ecs_service" "misskey" {
   # ref: https://github.com/hashicorp/terraform-provider-aws/issues/22823
   lifecycle {
     ignore_changes = [
-      capacity_provider_strategy
+      capacity_provider_strategy,
+      # dedired_count, # TODO: 本番では有効にする
     ]
   }
 }
@@ -133,6 +134,32 @@ resource "aws_ecs_task_definition" "misskey" {
     efs_volume_configuration {
       file_system_id     = aws_efs_file_system.squid_config.id
       transit_encryption = "ENABLED"
+    }
+  }
+}
+
+resource "aws_appautoscaling_target" "ecs_target" {
+  resource_id        = "service/${aws_ecs_cluster.main.name}/${aws_ecs_service.misskey.name}"
+  service_namespace  = "ecs"
+  scalable_dimension = "ecs:service:DesiredCount"
+  max_capacity       = 4
+  min_capacity       = 1
+}
+
+resource "aws_appautoscaling_policy" "ecs_policy" {
+  name               = "target-tracking-scaling"
+  policy_type        = "TargetTrackingScaling"
+  resource_id        = aws_appautoscaling_target.ecs_target.resource_id
+  scalable_dimension = aws_appautoscaling_target.ecs_target.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.ecs_target.service_namespace
+
+  target_tracking_scaling_policy_configuration {
+    target_value       = "70"
+    scale_in_cooldown  = 300
+    scale_out_cooldown = 300
+    predefined_metric_specification {
+      predefined_metric_type = "ALBRequestCountPerTarget"
+      resource_label         = "${aws_lb.app.arn_suffix}/${aws_lb_target_group.app.arn_suffix}"
     }
   }
 }
