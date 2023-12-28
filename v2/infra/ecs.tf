@@ -35,7 +35,7 @@ resource "aws_ecs_service" "misskey" {
   task_definition                   = aws_ecs_task_definition.misskey.arn
   desired_count                     = 2
   enable_execute_command            = true
-  health_check_grace_period_seconds = 30
+  health_check_grace_period_seconds = 60
 
   ordered_placement_strategy {
     type  = "binpack"
@@ -53,12 +53,12 @@ resource "aws_ecs_service" "misskey" {
     aws_elasticache_cluster.main,
   ]
 
-  # 無駄に replace が走らないようにするため
-  # ref: https://github.com/hashicorp/terraform-provider-aws/issues/22823
   lifecycle {
     ignore_changes = [
+      # 無駄に replace が走らないようにするため
+      # ref: https://github.com/hashicorp/terraform-provider-aws/issues/22823
       capacity_provider_strategy,
-      # dedired_count, # TODO: 本番では有効にする
+      desired_count,
     ]
   }
 }
@@ -72,7 +72,7 @@ resource "aws_ecs_task_definition" "misskey" {
   container_definitions = jsonencode([
     {
       name      = "app"
-      image     = "ghcr.io/i544c-me/buicha-social-misskey:2023.9.3-buiso.2"
+      image     = "misskey/misskey:2023.12.2"
       cpu       = 256
       memory    = 1024
       essential = false # TODO: あとでtrueにする
@@ -142,8 +142,8 @@ resource "aws_appautoscaling_target" "ecs_target" {
   resource_id        = "service/${aws_ecs_cluster.main.name}/${aws_ecs_service.misskey.name}"
   service_namespace  = "ecs"
   scalable_dimension = "ecs:service:DesiredCount"
+  min_capacity       = 2
   max_capacity       = 4
-  min_capacity       = 1
 }
 
 resource "aws_appautoscaling_policy" "ecs_policy" {
@@ -154,12 +154,11 @@ resource "aws_appautoscaling_policy" "ecs_policy" {
   service_namespace  = aws_appautoscaling_target.ecs_target.service_namespace
 
   target_tracking_scaling_policy_configuration {
-    target_value       = "70"
+    target_value       = "50"
     scale_in_cooldown  = 300
     scale_out_cooldown = 300
     predefined_metric_specification {
-      predefined_metric_type = "ALBRequestCountPerTarget"
-      resource_label         = "${aws_lb.app.arn_suffix}/${aws_lb_target_group.app.arn_suffix}"
+      predefined_metric_type = "ECSServiceAverageCPUUtilization"
     }
   }
 }
@@ -169,7 +168,7 @@ resource "aws_appautoscaling_policy" "ecs_policy" {
 
 resource "aws_cloudwatch_log_group" "misskey_app" {
   name              = "/ecs/misskey/app"
-  retention_in_days = 1
+  retention_in_days = 1 # TODO: 本番ではもっと長くする
 }
 
 
