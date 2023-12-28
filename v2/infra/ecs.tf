@@ -75,7 +75,7 @@ resource "aws_ecs_task_definition" "misskey" {
       image     = "misskey/misskey:2023.12.2"
       cpu       = 256
       memory    = 1024
-      essential = false # TODO: あとでtrueにする
+      essential = true
       linuxParameters = {
         initProcessEnabled = true
       }
