@@ -30,11 +30,12 @@ resource "aws_ecs_cluster_capacity_providers" "main" {
 }
 
 resource "aws_ecs_service" "misskey" {
-  name                   = "${local.project}-misskey"
-  cluster                = aws_ecs_cluster.main.id
-  task_definition        = aws_ecs_task_definition.misskey.arn
-  desired_count          = 1
-  enable_execute_command = true
+  name                              = "${local.project}-misskey"
+  cluster                           = aws_ecs_cluster.main.id
+  task_definition                   = aws_ecs_task_definition.misskey.arn
+  desired_count                     = 2
+  enable_execute_command            = true
+  health_check_grace_period_seconds = 30
 
   ordered_placement_strategy {
     type  = "binpack"
