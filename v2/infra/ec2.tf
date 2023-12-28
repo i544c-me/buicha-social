@@ -57,44 +57,10 @@ resource "aws_autoscaling_group" "runners" {
   max_size            = 4
   min_size            = 1
   desired_capacity    = 1
-  # TODO: ALB と連携
-  #target_group_arns   = []
 
   launch_template {
     id      = aws_launch_template.runner.id
     version = aws_launch_template.runner.latest_version
-  }
-}
-
-
-### EFS ###
-
-resource "aws_efs_file_system" "misskey_config" {
-  creation_token = "${local.project}-misskey-config"
-  encrypted      = true
-
-  lifecycle_policy {
-    transition_to_ia = "AFTER_30_DAYS"
-  }
-
-  tags = {
-    Name = "${local.project}-misskey-config"
-  }
-}
-
-resource "aws_efs_mount_target" "misskey_config" {
-  for_each = { for k, v in local.subnets : k => v if v.public }
-
-  file_system_id  = aws_efs_file_system.misskey_config.id
-  subnet_id       = aws_subnet.main[each.key].id
-  security_groups = [aws_security_group.misskey_config.id]
-}
-
-resource "aws_efs_access_point" "misskey_config" {
-  file_system_id = aws_efs_file_system.misskey_config.id
-  posix_user {
-    gid = 991 # user  misskey
-    uid = 991 # group misskey
   }
 }
 
@@ -126,22 +92,4 @@ resource "aws_security_group_rule" "for_runner_egress" {
   to_port           = 0
   protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
-}
-
-resource "aws_security_group" "misskey_config" {
-  name   = "${local.project}-misskey-config"
-  vpc_id = aws_vpc.main.id
-
-  tags = {
-    Name = "${local.project}-misskey-config"
-  }
-}
-
-resource "aws_security_group_rule" "misskey_config_ingress" {
-  security_group_id        = aws_security_group.misskey_config.id
-  type                     = "ingress"
-  from_port                = 2049
-  to_port                  = 2049
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.runner.id
 }
