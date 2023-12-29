@@ -7,7 +7,7 @@ resource "aws_ecs_capacity_provider" "main" {
 
   auto_scaling_group_provider {
     auto_scaling_group_arn         = aws_autoscaling_group.runners.arn
-    managed_termination_protection = "DISABLED" # TODO: これなんだっけ
+    managed_termination_protection = "DISABLED"
 
     managed_scaling {
       maximum_scaling_step_size = 1000
@@ -30,12 +30,15 @@ resource "aws_ecs_cluster_capacity_providers" "main" {
 }
 
 resource "aws_ecs_service" "misskey" {
-  name                              = "${local.project}-misskey"
-  cluster                           = aws_ecs_cluster.main.id
-  task_definition                   = aws_ecs_task_definition.misskey.arn
-  desired_count                     = 2
-  enable_execute_command            = true
-  health_check_grace_period_seconds = 60
+  name                   = "${local.project}-misskey"
+  cluster                = aws_ecs_cluster.main.id
+  task_definition        = aws_ecs_task_definition.misskey.arn
+  desired_count          = 2
+  enable_execute_command = true
+
+  deployment_minimum_healthy_percent = 50
+  deployment_maximum_percent         = 150
+  health_check_grace_period_seconds  = 60
 
   ordered_placement_strategy {
     type  = "binpack"
