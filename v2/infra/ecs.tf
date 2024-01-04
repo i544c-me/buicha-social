@@ -51,10 +51,10 @@ resource "aws_ecs_service" "misskey" {
     container_port   = 3000
   }
 
-  depends_on = [
-    aws_db_instance.main,
-    aws_elasticache_cluster.main,
-  ]
+  #depends_on = [
+  #  aws_db_instance.main,
+  #  aws_elasticache_cluster.main,
+  #]
 
   lifecycle {
     ignore_changes = [
