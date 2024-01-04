@@ -18,55 +18,6 @@ resource "aws_lb_listener" "app" {
   }
 }
 
-resource "aws_lb_listener_rule" "robots" {
-  listener_arn = aws_lb_listener.app.arn
-  priority     = 110
-
-  action {
-    type = "fixed-response"
-    fixed_response {
-      content_type = "text/plain"
-      message_body = "User-agent: *\nDisallow: /"
-      status_code  = "200"
-    }
-  }
-
-  condition {
-    path_pattern {
-      values = ["/robots.txt"]
-    }
-  }
-
-  tags = {
-    Name = "robots"
-  }
-}
-
-resource "aws_lb_listener_rule" "other_instances" {
-  listener_arn = aws_lb_listener.app.arn
-  priority     = 100
-
-  action {
-    type = "fixed-response"
-    fixed_response {
-      content_type = "text/plain"
-      message_body = "Your instance is not allowed to connect me"
-      status_code  = "403"
-    }
-  }
-
-  condition {
-    http_header {
-      http_header_name = "user-agent"
-      values           = ["*Misskey*", "*Mastodon*"]
-    }
-  }
-
-  tags = {
-    Name = "other-instances"
-  }
-}
-
 resource "aws_lb_target_group" "app" {
   name     = "${local.project}-app"
   vpc_id   = aws_vpc.main.id

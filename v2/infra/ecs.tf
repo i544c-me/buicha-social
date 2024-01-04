@@ -82,7 +82,6 @@ resource "aws_ecs_task_definition" "misskey" {
       linuxParameters = {
         initProcessEnabled = true
       }
-      links = ["squid"]
       portMappings = [
         {
           containerPort = 3000
@@ -104,22 +103,6 @@ resource "aws_ecs_task_definition" "misskey" {
         }
       }
     },
-    {
-      name      = "squid"
-      image     = "ubuntu/squid:5.2-22.04_beta"
-      cpu       = 128
-      memory    = 128
-      essential = true
-      linuxParameters = {
-        initProcessEnabled = true
-      }
-      mountPoints = [
-        {
-          containerPath = "/etc/squid"
-          sourceVolume  = aws_efs_file_system.squid_config.name
-        }
-      ]
-    }
   ])
 
   volume {
@@ -127,15 +110,6 @@ resource "aws_ecs_task_definition" "misskey" {
 
     efs_volume_configuration {
       file_system_id     = aws_efs_file_system.misskey_config.id
-      transit_encryption = "ENABLED"
-    }
-  }
-
-  volume {
-    name = aws_efs_file_system.squid_config.name
-
-    efs_volume_configuration {
-      file_system_id     = aws_efs_file_system.squid_config.id
       transit_encryption = "ENABLED"
     }
   }
@@ -216,12 +190,10 @@ resource "aws_iam_policy" "ecs_tasks" {
         ]
         Resource = [
           aws_efs_file_system.misskey_config.arn,
-          aws_efs_file_system.squid_config.arn,
         ]
         Condition = {
           StringEquals = {
             "elasticfilesystem:AccessPointArn" : aws_efs_access_point.misskey_config.arn,
-            "elasticfilesystem:AccessPointArn" : aws_efs_access_point.squid_config.arn,
           }
         }
       }

@@ -31,39 +31,6 @@ resource "aws_efs_access_point" "misskey_config" {
 }
 
 
-### Squid Config ###
-
-resource "aws_efs_file_system" "squid_config" {
-  creation_token = "${local.project}-squid-config"
-  encrypted      = true
-
-  lifecycle_policy {
-    transition_to_ia = "AFTER_30_DAYS"
-  }
-
-  tags = {
-    Name = "${local.project}-squid-config"
-  }
-}
-
-resource "aws_efs_mount_target" "squid_config" {
-  for_each = { for k, v in local.subnets : k => v if v.public }
-
-  file_system_id  = aws_efs_file_system.squid_config.id
-  subnet_id       = aws_subnet.main[each.key].id
-  security_groups = [aws_security_group.efs.id]
-}
-
-resource "aws_efs_access_point" "squid_config" {
-  file_system_id = aws_efs_file_system.squid_config.id
-
-  posix_user {
-    gid = 1000 # user  hoge
-    uid = 1000 # group hoge
-  }
-}
-
-
 ### Security Group ###
 
 resource "aws_security_group" "efs" {
