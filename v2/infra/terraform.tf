@@ -13,8 +13,8 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "i544c-learn-ecs"
-    key    = "terraform-v2-production.tfstate"
+    bucket = "buichasocial-v2-production-tfstate"
+    key    = "buichasocial-v2-production.tfstate"
     region = "ap-northeast-1"
   }
 }
