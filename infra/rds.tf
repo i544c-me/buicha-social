@@ -14,6 +14,13 @@ resource "aws_security_group" "rds" {
     security_groups = [aws_security_group.app.id]
   }
 
+  ingress {
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = ["412777285241/sg-038a1ad0f6f245c7b"]
+  }
+
   tags = {
     Name = "${local.project}-rds"
   }
