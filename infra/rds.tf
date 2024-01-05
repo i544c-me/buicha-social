@@ -7,16 +7,27 @@ resource "aws_security_group" "rds" {
   name   = "rds"
   vpc_id = aws_vpc.main.id
 
-  ingress {
-    from_port       = 5432
-    to_port         = 5432
-    protocol        = "tcp"
-    security_groups = [aws_security_group.app.id]
-  }
-
   tags = {
     Name = "${local.project}-rds"
   }
+}
+
+resource "aws_security_group_rule" "rds_ingress" {
+  security_group_id        = aws_security_group.rds.id
+  type                     = "ingress"
+  from_port                = 5432
+  to_port                  = 5432
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.app.id
+}
+
+resource "aws_security_group_rule" "rds_v2_ingress" {
+  security_group_id        = aws_security_group.rds.id
+  type                     = "ingress"
+  from_port                = 5432
+  to_port                  = 5432
+  protocol                 = "tcp"
+  source_security_group_id = "412777285241/sg-038a1ad0f6f245c7b"
 }
 
 resource "aws_db_instance" "main" {
