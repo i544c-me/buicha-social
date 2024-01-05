@@ -10,6 +10,10 @@ resource "aws_security_group" "rds" {
   tags = {
     Name = "${local.project}-rds"
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_security_group_rule" "rds_ingress" {

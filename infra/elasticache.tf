@@ -10,6 +10,10 @@ resource "aws_security_group" "elasticache" {
   tags = {
     Name = "${local.project}-elasticache"
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_security_group_rule" "elasticache_ingress" {
