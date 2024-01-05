@@ -14,7 +14,7 @@ terraform {
 
   backend "s3" {
     bucket = "i544c-learn-ecs"
-    key    = "terraform.tfstate"
+    key    = "terraform-v2-production.tfstate"
     region = "ap-northeast-1"
   }
 }
