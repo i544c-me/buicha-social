@@ -4,8 +4,8 @@ resource "aws_db_subnet_group" "main" {
 }
 
 resource "aws_security_group" "rds" {
-  name   = "rds"
-  vpc_id = aws_vpc.main.id
+  name_prefix = "rds"
+  vpc_id      = aws_vpc.main.id
 
   tags = {
     Name = "${local.project}-rds"

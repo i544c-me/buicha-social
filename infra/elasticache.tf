@@ -4,8 +4,8 @@ resource "aws_elasticache_subnet_group" "main" {
 }
 
 resource "aws_security_group" "elasticache" {
-  name   = "elasticache"
-  vpc_id = aws_vpc.main.id
+  name_prefix = "elasticache"
+  vpc_id      = aws_vpc.main.id
 
   tags = {
     Name = "${local.project}-elasticache"
