@@ -23,7 +23,7 @@ resource "aws_security_group_rule" "rds_ingress" {
 
 resource "aws_db_instance" "main" {
   allocated_storage           = 20
-  identifier                  = "buichasocial"
+  identifier                  = "buichasocial-beta"
   db_name                     = "buichasocial"
   engine                      = "postgres"
   engine_version              = "15.5"
