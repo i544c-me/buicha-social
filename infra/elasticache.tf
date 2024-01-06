@@ -31,7 +31,7 @@ resource "aws_security_group_rule" "elasticache_v2_ingress" {
   from_port                = 6379
   to_port                  = 6379
   protocol                 = "tcp"
-  source_security_group_id = "412777285241/sg-038a1ad0f6f245c7b"
+  source_security_group_id = "412777285241/sg-0e24610c9478c5a82"
 }
 
 resource "aws_elasticache_cluster" "main" {

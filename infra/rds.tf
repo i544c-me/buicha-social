@@ -31,7 +31,7 @@ resource "aws_security_group_rule" "rds_v2_ingress" {
   from_port                = 5432
   to_port                  = 5432
   protocol                 = "tcp"
-  source_security_group_id = "412777285241/sg-038a1ad0f6f245c7b"
+  source_security_group_id = "412777285241/sg-0e24610c9478c5a82"
 }
 
 resource "aws_db_instance" "main" {
