@@ -6,7 +6,7 @@ resource "cloudflare_record" "main" {
   zone_id = data.cloudflare_zone.main.id
   name    = "@"
   type    = "CNAME"
-  value   = aws_lb.app.dns_name
+  value   = "buiso-v2-production-runners-1670176063.ap-northeast-1.elb.amazonaws.com"
   proxied = true
 }
 
