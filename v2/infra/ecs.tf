@@ -33,7 +33,7 @@ resource "aws_ecs_service" "misskey" {
   name                   = "${local.project}-misskey"
   cluster                = aws_ecs_cluster.main.id
   task_definition        = aws_ecs_task_definition.misskey.arn
-  desired_count          = 2
+  desired_count          = 3
   enable_execute_command = true
 
   deployment_minimum_healthy_percent = 50
@@ -41,8 +41,8 @@ resource "aws_ecs_service" "misskey" {
   health_check_grace_period_seconds  = 60
 
   ordered_placement_strategy {
-    type  = "binpack"
-    field = "memory"
+    type  = "spread"
+    field = "instanceId"
   }
 
   load_balancer {
@@ -119,8 +119,8 @@ resource "aws_appautoscaling_target" "ecs_target" {
   resource_id        = "service/${aws_ecs_cluster.main.name}/${aws_ecs_service.misskey.name}"
   service_namespace  = "ecs"
   scalable_dimension = "ecs:service:DesiredCount"
-  min_capacity       = 2
-  max_capacity       = 4
+  min_capacity       = 3
+  max_capacity       = 6
 }
 
 resource "aws_appautoscaling_policy" "ecs_policy" {

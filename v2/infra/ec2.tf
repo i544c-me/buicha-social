@@ -58,11 +58,15 @@ resource "aws_autoscaling_group" "runners" {
   min_size            = 1
   desired_capacity    = 1
 
-  termination_policies = ["NewestInstance"]
-
   launch_template {
     id      = aws_launch_template.runner.id
     version = aws_launch_template.runner.latest_version
+  }
+
+  lifecycle {
+    ignore_changes = [
+      desired_capacity,
+    ]
   }
 }
 
