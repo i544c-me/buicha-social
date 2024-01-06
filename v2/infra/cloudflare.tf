@@ -1,7 +1,7 @@
-#data "cloudflare_zone" "main" {
-#  name = local.cloudflare_zone
-#}
-#
+data "cloudflare_zone" "main" {
+  name = local.cloudflare_zone
+}
+
 #resource "cloudflare_record" "main" {
 #  zone_id = data.cloudflare_zone.main.id
 #  name    = local.main_domain
@@ -32,22 +32,22 @@
 #    }
 #  }
 #}
-#
-#
-#### ACM for ALB ###
-#
-#resource "cloudflare_record" "domain_cert_alb" {
-#  for_each = {
-#    for r in aws_acm_certificate.alb.domain_validation_options : r.domain_name => {
-#      name  = r.resource_record_name
-#      type  = r.resource_record_type
-#      value = r.resource_record_value
-#    }
-#  }
-#
-#  zone_id = data.cloudflare_zone.main.id
-#  name    = each.value.name
-#  type    = each.value.type
-#  value   = each.value.value
-#  comment = "${local.main_domain} ACM for ALB"
-#}
+
+
+### ACM for ALB ###
+
+resource "cloudflare_record" "domain_cert_alb" {
+  for_each = {
+    for r in aws_acm_certificate.alb.domain_validation_options : r.domain_name => {
+      name  = r.resource_record_name
+      type  = r.resource_record_type
+      value = r.resource_record_value
+    }
+  }
+
+  zone_id = data.cloudflare_zone.main.id
+  name    = each.value.name
+  type    = each.value.type
+  value   = each.value.value
+  comment = "${local.main_domain} v2 ACM for ALB"
+}

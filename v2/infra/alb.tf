@@ -7,13 +7,10 @@ resource "aws_lb" "app" {
 
 resource "aws_lb_listener" "app" {
   load_balancer_arn = aws_lb.app.arn
-  #port              = 443
-  #protocol          = "HTTPS"
-  #ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
-  #certificate_arn   = aws_acm_certificate.alb.arn
-
-  port     = 80
-  protocol = "HTTP"
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+  certificate_arn   = aws_acm_certificate.alb.arn
 
   default_action {
     type             = "forward"
@@ -80,16 +77,16 @@ resource "aws_security_group_rule" "alb_egress" {
 
 ### ACM ###
 
-#resource "aws_acm_certificate" "alb" {
-#  domain_name       = local.main_domain
-#  validation_method = "DNS"
-#
-#  lifecycle {
-#    create_before_destroy = true
-#  }
-#}
-#
-#resource "aws_acm_certificate_validation" "alb" {
-#  certificate_arn         = aws_acm_certificate.alb.arn
-#  validation_record_fqdns = [for record in cloudflare_record.domain_cert_alb : record.hostname]
-#}
+resource "aws_acm_certificate" "alb" {
+  domain_name       = local.main_domain
+  validation_method = "DNS"
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_acm_certificate_validation" "alb" {
+  certificate_arn         = aws_acm_certificate.alb.arn
+  validation_record_fqdns = [for record in cloudflare_record.domain_cert_alb : record.hostname]
+}
