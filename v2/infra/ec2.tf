@@ -76,6 +76,10 @@ resource "aws_security_group" "runner" {
   tags = {
     Name = "${local.project}-for-runner"
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_security_group_rule" "for_runner_ingress" {

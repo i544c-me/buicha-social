@@ -51,6 +51,10 @@ resource "aws_security_group" "alb" {
   tags = {
     Name = "${local.project}-alb"
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 data "cloudflare_ip_ranges" "cloudflare" {}
