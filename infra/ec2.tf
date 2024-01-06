@@ -54,7 +54,7 @@ resource "aws_launch_template" "app" {
   }
 
   image_id               = data.aws_ami.ubuntu.id
-  instance_type          = "t4g.medium"
+  instance_type          = "t4g.small"
   vpc_security_group_ids = [aws_security_group.app.id]
 
   tag_specifications {
