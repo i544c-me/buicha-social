@@ -45,11 +45,11 @@ resource "aws_ecs_service" "misskey" {
     field = "memory"
   }
 
-  #load_balancer {
-  #  target_group_arn = aws_lb_target_group.app.arn
-  #  container_name   = "app"
-  #  container_port   = 3000
-  #}
+  load_balancer {
+    target_group_arn = aws_lb_target_group.app.arn
+    container_name   = "app"
+    container_port   = 3000
+  }
 
   #depends_on = [
   #  aws_db_instance.main,
@@ -93,7 +93,7 @@ resource "aws_ecs_task_definition" "misskey" {
           sourceVolume  = aws_efs_file_system.misskey_config.name
         }
       ]
-      command = ["sleep", "3600"] # for debug
+      #command = ["sleep", "3600"] # for debug
       logConfiguration = {
         logDriver = "awslogs"
         options = {
