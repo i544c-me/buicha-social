@@ -76,7 +76,7 @@ resource "aws_ecs_task_definition" "misskey" {
     {
       name      = "app"
       image     = "misskey/misskey:2023.12.2"
-      cpu       = 256
+      cpu       = 512
       memory    = 1024
       essential = true
       linuxParameters = {
