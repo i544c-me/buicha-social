@@ -75,6 +75,12 @@ resource "aws_route_table" "main" {
     gateway_id = aws_internet_gateway.main.id
   }
 
+  # 旧インフラに接続するため
+  route {
+    cidr_block                = "10.1.0.0/16"
+    vpc_peering_connection_id = "pcx-03918bff9f49059d7"
+  }
+
   tags = {
     Name = "${local.project}-${each.key}"
   }
