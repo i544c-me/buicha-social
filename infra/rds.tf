@@ -16,15 +16,6 @@ resource "aws_security_group" "rds" {
   }
 }
 
-resource "aws_security_group_rule" "rds_ingress" {
-  security_group_id        = aws_security_group.rds.id
-  type                     = "ingress"
-  from_port                = 5432
-  to_port                  = 5432
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.app.id
-}
-
 resource "aws_security_group_rule" "rds_v2_ingress" {
   security_group_id        = aws_security_group.rds.id
   type                     = "ingress"
