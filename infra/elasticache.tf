@@ -16,15 +16,6 @@ resource "aws_security_group" "elasticache" {
   }
 }
 
-resource "aws_security_group_rule" "elasticache_ingress" {
-  security_group_id        = aws_security_group.elasticache.id
-  type                     = "ingress"
-  from_port                = 6379
-  to_port                  = 6379
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.app.id
-}
-
 resource "aws_security_group_rule" "elasticache_v2_ingress" {
   security_group_id        = aws_security_group.elasticache.id
   type                     = "ingress"
