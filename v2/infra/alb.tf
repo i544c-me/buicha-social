@@ -3,6 +3,8 @@ resource "aws_lb" "app" {
   load_balancer_type = "application"
   subnets            = [for k, v in local.subnets : aws_subnet.main[k].id if v.public]
   security_groups    = [aws_security_group.alb.id]
+
+  idle_timeout = 4000 # Websocket の接続が切れる頻度を減らすため
 }
 
 resource "aws_lb_listener" "app" {
