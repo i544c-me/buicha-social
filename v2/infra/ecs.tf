@@ -1,7 +1,15 @@
 resource "aws_ecs_cluster" "main" {
   name = "${local.project}-main"
+
+  setting {
+    name  = "containerInsights"
+    value = "enabled"
+  }
 }
 
+
+# TODO: 手動で managed_draining を有効化しようとしたらステータスが編集中のままになってしまった
+# API経由で削除もできないので、一旦このまま放置する
 resource "aws_ecs_capacity_provider" "main" {
   name = "${local.project}-main"
 
@@ -18,9 +26,28 @@ resource "aws_ecs_capacity_provider" "main" {
   }
 }
 
+resource "aws_ecs_capacity_provider" "tmp" {
+  name = "${local.project}-tmp"
+
+  auto_scaling_group_provider {
+    auto_scaling_group_arn         = aws_autoscaling_group.tmp.arn
+    managed_termination_protection = "DISABLED"
+
+    // TODO: おそらく managed_draining がここで管理できるようになるはずなので、AWS Provider が対応したらここに追記する
+    // https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/APIReference/API_AutoScalingGroupProvider.html#ECS-Type-AutoScalingGroupProvider-managedDraining
+
+    managed_scaling {
+      maximum_scaling_step_size = 1000
+      minimum_scaling_step_size = 1
+      status                    = "ENABLED"
+      target_capacity           = 100
+    }
+  }
+}
+
 resource "aws_ecs_cluster_capacity_providers" "main" {
   cluster_name       = aws_ecs_cluster.main.name
-  capacity_providers = [aws_ecs_capacity_provider.main.name]
+  capacity_providers = [aws_ecs_capacity_provider.main.name, aws_ecs_capacity_provider.tmp.name]
 
   default_capacity_provider_strategy {
     base              = 1
@@ -41,8 +68,8 @@ resource "aws_ecs_service" "misskey" {
   health_check_grace_period_seconds  = 60
 
   ordered_placement_strategy {
-    type  = "spread"
-    field = "instanceId"
+    type  = "binpack"
+    field = "memory"
   }
 
   load_balancer {
@@ -76,8 +103,8 @@ resource "aws_ecs_task_definition" "misskey" {
     {
       name      = "app"
       image     = "misskey/misskey:2023.12.2"
-      cpu       = 768
-      memory    = 1536
+      cpu       = 512
+      memory    = 1280
       essential = true
       linuxParameters = {
         initProcessEnabled = true

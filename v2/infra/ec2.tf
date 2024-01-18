@@ -70,6 +70,26 @@ resource "aws_autoscaling_group" "runners" {
   }
 }
 
+# ECS のキャパシティプロバイダが変更できない状態になったための臨時のリソース
+resource "aws_autoscaling_group" "tmp" {
+  name                = "${local.project}-tmp"
+  vpc_zone_identifier = [for k, v in local.subnets : aws_subnet.main[k].id if v.public]
+  max_size            = 0
+  min_size            = 0
+  desired_capacity    = 0
+
+  launch_template {
+    id      = aws_launch_template.runner.id
+    version = aws_launch_template.runner.latest_version
+  }
+
+  lifecycle {
+    ignore_changes = [
+      desired_capacity,
+    ]
+  }
+}
+
 
 ### Security Group ###
 
