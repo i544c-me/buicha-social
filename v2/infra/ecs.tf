@@ -17,6 +17,9 @@ resource "aws_ecs_capacity_provider" "main" {
     auto_scaling_group_arn         = aws_autoscaling_group.runners.arn
     managed_termination_protection = "DISABLED"
 
+    // TODO: おそらく managed_draining がここで管理できるようになるはずなので、AWS Provider が対応したらここに追記する
+    // https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/APIReference/API_AutoScalingGroupProvider.html#ECS-Type-AutoScalingGroupProvider-managedDraining
+
     managed_scaling {
       maximum_scaling_step_size = 1000
       minimum_scaling_step_size = 1
@@ -33,8 +36,6 @@ resource "aws_ecs_capacity_provider" "tmp" {
     auto_scaling_group_arn         = aws_autoscaling_group.tmp.arn
     managed_termination_protection = "DISABLED"
 
-    // TODO: おそらく managed_draining がここで管理できるようになるはずなので、AWS Provider が対応したらここに追記する
-    // https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/APIReference/API_AutoScalingGroupProvider.html#ECS-Type-AutoScalingGroupProvider-managedDraining
 
     managed_scaling {
       maximum_scaling_step_size = 1000
@@ -47,7 +48,7 @@ resource "aws_ecs_capacity_provider" "tmp" {
 
 resource "aws_ecs_cluster_capacity_providers" "main" {
   cluster_name       = aws_ecs_cluster.main.name
-  capacity_providers = [aws_ecs_capacity_provider.main.name, aws_ecs_capacity_provider.tmp.name]
+  capacity_providers = [aws_ecs_capacity_provider.main.name]
 
   default_capacity_provider_strategy {
     base              = 1
