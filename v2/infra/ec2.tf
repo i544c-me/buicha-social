@@ -73,9 +73,9 @@ resource "aws_launch_template" "runner_v2" {
 resource "aws_autoscaling_group" "runners" {
   name                = "${local.project}-runners"
   vpc_zone_identifier = [for k, v in local.subnets : aws_subnet.main[k].id if v.public]
-  max_size            = 4
-  min_size            = 1
-  desired_capacity    = 1
+  max_size            = 0
+  min_size            = 0
+  desired_capacity    = 0
 
   launch_template {
     id      = aws_launch_template.runner.id
