@@ -3,7 +3,8 @@
   "extends": [
     "config:base",
     ":label(renovate)",
-    "schedule:weekly"
+    "schedule:weekly",
+    "github>aquaproj/aqua-renovate-config#1.13.0",
   ],
   "dependencyDashboard": true,
   "packageRules": [
