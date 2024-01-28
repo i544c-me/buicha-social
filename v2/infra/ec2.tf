@@ -87,6 +87,12 @@ resource "aws_autoscaling_group" "runners" {
       desired_capacity,
     ]
   }
+
+  tag {
+    key                 = "AmazonECSManaged"
+    value               = ""
+    propagate_at_launch = true
+  }
 }
 
 # ECS のキャパシティプロバイダが消せたらこれも消す
@@ -106,6 +112,12 @@ resource "aws_autoscaling_group" "tmp" {
     ignore_changes = [
       desired_capacity,
     ]
+  }
+
+  tag {
+    key                 = "AmazonECSManaged"
+    value               = ""
+    propagate_at_launch = true
   }
 }
 
