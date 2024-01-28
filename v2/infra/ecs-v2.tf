@@ -5,6 +5,10 @@ resource "aws_ecs_cluster" "main_v2" {
     name  = "containerInsights"
     value = "enabled"
   }
+
+  tags = {
+    "AWS.SSM.AppManager.ECS.Cluster.ARN" = "arn:aws:ecs:ap-northeast-1:${local.account_id}:cluster/${local.project}-main-v2"
+  }
 }
 
 
@@ -81,7 +85,7 @@ resource "aws_appautoscaling_target" "ecs_target_v2" {
   service_namespace  = "ecs"
   scalable_dimension = "ecs:service:DesiredCount"
   min_capacity       = 3
-  max_capacity       = 6
+  max_capacity       = 12
 }
 
 resource "aws_appautoscaling_policy" "ecs_policy_v2" {
