@@ -27,7 +27,7 @@
     // aqua のパッケージ群も同時にアップデート
     {
       "groupName": "terraform-version",
-      "matchDepNames": ["aquaproj/aqua-renovate-config", "aws/aws-cli", "hashicorp/terraform"],
+      "matchDepNames": ["aquaproj/aqua-registry", "aquaproj/aqua-renovate-config", "aws/aws-cli", "hashicorp/terraform"],
     },
 
 
