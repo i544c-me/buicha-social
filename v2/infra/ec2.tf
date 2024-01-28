@@ -32,25 +32,6 @@ resource "aws_iam_instance_profile" "main" {
   role = aws_iam_role.ecs_instance.id
 }
 
-resource "aws_launch_template" "runner" {
-  name                   = "${local.project}-runner"
-  image_id               = data.aws_ssm_parameter.amazon_linux_ami_id.value
-  instance_type          = "t4g.medium"
-  vpc_security_group_ids = [aws_security_group.runner.id]
-  user_data              = base64encode(replace(file("${path.module}/bin/init-ec2.sh"), "CLUSTER_NAME", aws_ecs_cluster.main.name))
-
-  iam_instance_profile {
-    name = aws_iam_instance_profile.main.id
-  }
-
-  tag_specifications {
-    resource_type = "instance"
-    tags = {
-      Name = "${local.project}-runner"
-    }
-  }
-}
-
 resource "aws_launch_template" "runner_v2" {
   name                   = "${local.project}-runner-v2"
   image_id               = data.aws_ssm_parameter.amazon_linux_ami_id.value
@@ -67,57 +48,6 @@ resource "aws_launch_template" "runner_v2" {
     tags = {
       Name = "${local.project}-runner-v2"
     }
-  }
-}
-
-resource "aws_autoscaling_group" "runners" {
-  name                = "${local.project}-runners"
-  vpc_zone_identifier = [for k, v in local.subnets : aws_subnet.main[k].id if v.public]
-  max_size            = 0
-  min_size            = 0
-  desired_capacity    = 0
-
-  launch_template {
-    id      = aws_launch_template.runner.id
-    version = aws_launch_template.runner.latest_version
-  }
-
-  lifecycle {
-    ignore_changes = [
-      desired_capacity,
-    ]
-  }
-
-  tag {
-    key                 = "AmazonECSManaged"
-    value               = ""
-    propagate_at_launch = true
-  }
-}
-
-# ECS のキャパシティプロバイダが消せたらこれも消す
-resource "aws_autoscaling_group" "tmp" {
-  name                = "${local.project}-tmp"
-  vpc_zone_identifier = [for k, v in local.subnets : aws_subnet.main[k].id if v.public]
-  max_size            = 0
-  min_size            = 0
-  desired_capacity    = 0
-
-  launch_template {
-    id      = aws_launch_template.runner.id
-    version = aws_launch_template.runner.latest_version
-  }
-
-  lifecycle {
-    ignore_changes = [
-      desired_capacity,
-    ]
-  }
-
-  tag {
-    key                 = "AmazonECSManaged"
-    value               = ""
-    propagate_at_launch = true
   }
 }
 
