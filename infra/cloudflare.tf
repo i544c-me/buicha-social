@@ -75,6 +75,6 @@ resource "cloudflare_record" "ses_dmark" {
   zone_id = data.cloudflare_zone.main.id
   name    = "_dmarc.${local.main_domain}"
   type    = "TXT"
-  value   = "v=DMARC1;p=quarantine;adkim=r;aspf=r;rua=mailto:report@i544c.me;"
+  value   = "v=DMARC1;p=quarantine;adkim=r;aspf=r;rua=mailto:42feccfa6c8b4b90a3beaea05b8bb132@dmarc-reports.cloudflare.net;"
   comment = "buicha.social SES DMARK"
 }
