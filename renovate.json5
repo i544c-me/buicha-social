@@ -24,6 +24,12 @@
       "matchManagers": ["tflint-plugin"],
       "matchDepNames": ["terraform-linters/tflint-ruleset-aws"]
     },
+    // aqua のパッケージ群も同時にアップデート
+    {
+      "groupName": "terraform-version",
+      "matchDepNames": ["aquaproj/aqua-renovate-config", "aws/aws-cli", "hashicorp/terraform"],
+    },
+
 
     // Terraform のプロバイダを同時にアップデートする
     {
