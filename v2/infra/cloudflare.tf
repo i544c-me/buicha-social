@@ -2,36 +2,37 @@ data "cloudflare_zone" "main" {
   name = local.cloudflare_zone
 }
 
-#resource "cloudflare_record" "main" {
-#  zone_id = data.cloudflare_zone.main.id
-#  name    = local.main_domain
-#  type    = "CNAME"
-#  value   = aws_lb.app.dns_name
-#  proxied = true
-#}
-#
-#resource "cloudflare_page_rule" "api" {
-#  zone_id  = data.cloudflare_zone.main.id
-#  target   = "${local.main_domain}/api/*"
-#  priority = 3
-#
-#  actions {
-#    cache_level = "bypass"
-#  }
-#}
-#
-#resource "cloudflare_page_rule" "old_media" {
-#  zone_id  = data.cloudflare_zone.main.id
-#  target   = "${local.main_domain}/files/*"
-#  priority = 4
-#
-#  actions {
-#    forwarding_url {
-#      url         = "https://media.${local.main_domain}/files/$1"
-#      status_code = "301"
-#    }
-#  }
-#}
+resource "cloudflare_record" "main" {
+  zone_id = data.cloudflare_zone.main.id
+  name    = local.main_domain
+  type    = "CNAME"
+  value   = aws_lb.app.dns_name
+  proxied = true
+}
+
+resource "cloudflare_page_rule" "api" {
+  zone_id  = data.cloudflare_zone.main.id
+  target   = "${local.main_domain}/api/*"
+  priority = 2
+
+  actions {
+    cache_level = "bypass"
+  }
+}
+
+resource "cloudflare_page_rule" "old_media" {
+  zone_id  = data.cloudflare_zone.main.id
+  target   = "${local.main_domain}/files/*"
+  priority = 1
+
+  actions {
+    forwarding_url {
+      url         = "https://media.${local.main_domain}/files/$1"
+      status_code = "301"
+    }
+  }
+}
+
 
 ### SES ###
 
