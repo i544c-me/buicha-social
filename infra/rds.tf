@@ -30,7 +30,7 @@ resource "aws_db_instance" "main" {
   identifier                  = local.project
   db_name                     = local.project
   engine                      = "postgres"
-  engine_version              = "15.3"
+  engine_version              = "15.5"
   instance_class              = "db.t4g.large"
   username                    = var.rds_username
   password                    = var.rds_password
@@ -39,7 +39,7 @@ resource "aws_db_instance" "main" {
   parameter_group_name        = aws_db_parameter_group.default.id
   ca_cert_identifier          = "rds-ca-ecc384-g1"
   backup_retention_period     = 1
-  backup_window               = "17:23-18:23"
+  backup_window               = "17:23-18:23" # 04:23 ~ 05:23 JST
   skip_final_snapshot         = true
   apply_immediately           = true
   allow_major_version_upgrade = true
