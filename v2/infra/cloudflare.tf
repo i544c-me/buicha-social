@@ -47,31 +47,30 @@ resource "cloudflare_record" "ses_dkim" {
   depends_on = [aws_ses_domain_dkim.buicha_social]
 }
 
-#resource "cloudflare_record" "ses_spf" {
-#  zone_id = data.cloudflare_zone.main.id
-#  name    = aws_ses_domain_mail_from.buicha_social.mail_from_domain
-#  type    = "TXT"
-#  value   = "v=spf1 include:amazonses.com ~all"
-#  comment = "v2 buicha.social SES SPF"
-#}
-#
-#resource "cloudflare_record" "ses_mailfrom" {
-#  zone_id  = data.cloudflare_zone.main.id
-#  name     = aws_ses_domain_mail_from.buicha_social.mail_from_domain
-#  type     = "MX"
-#  priority = 10
-#  value    = "feedback-smtp.ap-northeast-1.amazonses.com"
-#  comment  = "v2 buicha.social SES Feedback"
-#}
-#
-#
-#resource "cloudflare_record" "ses_dmark" {
-#  zone_id = data.cloudflare_zone.main.id
-#  name    = "_dmarc.${local.main_domain}"
-#  type    = "TXT"
-#  value   = "v=DMARC1;p=quarantine;adkim=r;aspf=r;rua=mailto:42feccfa6c8b4b90a3beaea05b8bb132@dmarc-reports.cloudflare.net;"
-#  comment = "buicha.social SES DMARK"
-#}
+resource "cloudflare_record" "ses_spf" {
+  zone_id = data.cloudflare_zone.main.id
+  name    = "mail"
+  type    = "TXT"
+  value   = "v=spf1 include:amazonses.com ~all"
+  comment = "v2 buicha.social SES SPF"
+}
+
+resource "cloudflare_record" "ses_mailfrom" {
+  zone_id  = data.cloudflare_zone.main.id
+  name     = "mail"
+  type     = "MX"
+  priority = 10
+  value    = "feedback-smtp.ap-northeast-1.amazonses.com"
+  comment  = "v2 buicha.social SES Feedback"
+}
+
+resource "cloudflare_record" "ses_dmark" {
+  zone_id = data.cloudflare_zone.main.id
+  name    = "_dmarc"
+  type    = "TXT"
+  value   = "v=DMARC1;p=quarantine;adkim=r;aspf=r;rua=mailto:42feccfa6c8b4b90a3beaea05b8bb132@dmarc-reports.cloudflare.net;"
+  comment = "v2 buicha.social SES DMARK"
+}
 
 
 ### ACM for ALB ###
