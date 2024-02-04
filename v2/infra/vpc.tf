@@ -100,3 +100,13 @@ resource "aws_route_table_association" "main" {
     create_before_destroy = true
   }
 }
+
+resource "aws_vpc_peering_connection" "old_infra" {
+  vpc_id        = aws_vpc.main.id
+  peer_owner_id = "234031622584"
+  peer_vpc_id   = "vpc-04a18a5882cdb596e"
+
+  tags = {
+    Name = "${local.project}-old-infra"
+  }
+}
