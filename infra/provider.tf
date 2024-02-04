@@ -3,12 +3,6 @@ terraform {
     aws = {
       source                = "hashicorp/aws"
       version               = "5.34"
-      configuration_aliases = [aws.us_east_1]
-    }
-
-    cloudflare = {
-      source  = "cloudflare/cloudflare"
-      version = "4.23.0"
     }
 
     tls = {
@@ -29,15 +23,6 @@ terraform {
 
 provider "aws" {
   region = "ap-northeast-1"
-}
-
-provider "aws" {
-  alias  = "us_east_1"
-  region = "us-east-1"
-}
-
-provider "cloudflare" {
-  api_token = var.cloudflare_api_token
 }
 
 data "tls_certificate" "tfc_certificate" {
