@@ -23,6 +23,15 @@ resource "aws_iam_role_policy_attachment" "ecs_ec2_role" {
   policy_arn = data.aws_iam_policy.ecs_ec2_role.arn
 }
 
+data "aws_iam_policy" "ssm_managed_instance_core" {
+  name = "AmazonSSMManagedInstanceCore"
+}
+
+resource "aws_iam_role_policy_attachment" "ssm_managed_instance_core" {
+  role       = aws_iam_role.ecs_instance.name
+  policy_arn = data.aws_iam_policy.ssm_managed_instance_core.arn
+}
+
 resource "aws_iam_instance_profile" "main" {
   name = "${local.project}-main"
   role = aws_iam_role.ecs_instance.id
