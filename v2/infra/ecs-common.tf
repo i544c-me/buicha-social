@@ -7,7 +7,7 @@ resource "aws_ecs_task_definition" "misskey" {
   container_definitions = jsonencode([
     {
       name      = "app"
-      image     = "misskey/misskey:2023.12.2"
+      image     = "ghcr.io/i544c-me/buicha-social-misskey:2024.2.0-buiso.1"
       cpu       = 512
       memory    = 1280
       essential = true
@@ -26,6 +26,9 @@ resource "aws_ecs_task_definition" "misskey" {
         }
       ]
       #command = ["sleep", "3600"] # for debug
+      environment : [
+        { name = "MISSKEY_BLOCK_MENTIONS_FROM_UNFAMILIAR_REMOTE_USERS", value = "true" }, // スパム軽減
+      ]
       logConfiguration = {
         logDriver = "awslogs"
         options = {
