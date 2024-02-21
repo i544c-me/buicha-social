@@ -1,3 +1,8 @@
+locals {
+  min_tasks = 3
+  max_tasks = 12
+}
+
 resource "aws_ecs_cluster" "main_v2" {
   name = "${local.project}-main-v2"
 
@@ -18,10 +23,7 @@ resource "aws_ecs_capacity_provider" "main_v2" {
   auto_scaling_group_provider {
     auto_scaling_group_arn         = aws_autoscaling_group.runners_v2.arn
     managed_termination_protection = "DISABLED"
-
-    // TODO: おそらく managed_draining がここで管理できるようになるはずなので、AWS Provider が対応したらここに追記する
-    // 今は手動で作成している
-    // https://docs.aws.amazon.com/ja_jp/AmazonECS/latest/APIReference/API_AutoScalingGroupProvider.html#ECS-Type-AutoScalingGroupProvider-managedDraining
+    managed_draining               = "ENABLED"
 
     managed_scaling {
       maximum_scaling_step_size = 1000
@@ -43,11 +45,11 @@ resource "aws_ecs_cluster_capacity_providers" "main_v2" {
   }
 }
 
-resource "aws_ecs_service" "misskey_v2" {
-  name                   = "${local.project}-misskey-v2"
+resource "aws_ecs_service" "misskey_v3" {
+  name                   = "${local.project}-misskey-v3"
   cluster                = aws_ecs_cluster.main_v2.id
   task_definition        = aws_ecs_task_definition.misskey.arn
-  desired_count          = 3
+  desired_count          = local.min_tasks
   enable_execute_command = true
 
   deployment_minimum_healthy_percent = 50
@@ -80,20 +82,20 @@ resource "aws_ecs_service" "misskey_v2" {
   }
 }
 
-resource "aws_appautoscaling_target" "ecs_target_v2" {
-  resource_id        = "service/${aws_ecs_cluster.main_v2.name}/${aws_ecs_service.misskey_v2.name}"
+resource "aws_appautoscaling_target" "ecs_target_v3" {
+  resource_id        = "service/${aws_ecs_cluster.main_v2.name}/${aws_ecs_service.misskey_v3.name}"
   service_namespace  = "ecs"
   scalable_dimension = "ecs:service:DesiredCount"
-  min_capacity       = 3
-  max_capacity       = 12
+  min_capacity       = local.min_tasks
+  max_capacity       = local.max_tasks
 }
 
-resource "aws_appautoscaling_policy" "ecs_policy_v2" {
+resource "aws_appautoscaling_policy" "ecs_policy_v3" {
   name               = "target-tracking-scaling"
   policy_type        = "TargetTrackingScaling"
-  resource_id        = aws_appautoscaling_target.ecs_target_v2.resource_id
-  scalable_dimension = aws_appautoscaling_target.ecs_target_v2.scalable_dimension
-  service_namespace  = aws_appautoscaling_target.ecs_target_v2.service_namespace
+  resource_id        = aws_appautoscaling_target.ecs_target_v3.resource_id
+  scalable_dimension = aws_appautoscaling_target.ecs_target_v3.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.ecs_target_v3.service_namespace
 
   target_tracking_scaling_policy_configuration {
     target_value       = "50"
