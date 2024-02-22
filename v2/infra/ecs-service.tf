@@ -61,6 +61,12 @@ resource "aws_ecs_service" "misskey_v3" {
     field = "memory"
   }
 
+  capacity_provider_strategy {
+    capacity_provider = aws_ecs_capacity_provider.main_v2.name
+    base              = 1
+    weight            = 100
+  }
+
   load_balancer {
     target_group_arn = aws_lb_target_group.app.arn
     container_name   = "app"
@@ -74,9 +80,9 @@ resource "aws_ecs_service" "misskey_v3" {
 
   lifecycle {
     ignore_changes = [
-      # 無駄に replace が走らないようにするため
-      # ref: https://github.com/hashicorp/terraform-provider-aws/issues/22823
-      capacity_provider_strategy,
+      ## 無駄に replace が走らないようにするため
+      ## ref: https://github.com/hashicorp/terraform-provider-aws/issues/22823
+      #capacity_provider_strategy, # もしかしたら必要無いかも、ということでコメントにしてみる
       desired_count,
     ]
   }
