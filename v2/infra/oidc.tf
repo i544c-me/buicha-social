@@ -18,7 +18,7 @@ resource "aws_iam_role" "github_actions_oidc" {
         "Action" : "sts:AssumeRoleWithWebIdentity",
         "Condition" : {
           "StringEquals" : {
-            "token.actions.githubusercontent.com:sub" : "repo:i544c-me/buicha.social:ref:refs/heads/main"
+            "token.actions.githubusercontent.com:sub" : "repo:i544c-me/buicha-social:ref:refs/heads/main"
           },
         }
       }
