@@ -26,7 +26,7 @@ resource "aws_ecs_task_definition" "misskey" {
         }
       ]
       #command = ["sleep", "3600"] # for debug
-      environment : [
+      environment = [
         { name = "MISSKEY_BLOCK_MENTIONS_FROM_UNFAMILIAR_REMOTE_USERS", value = "true" }, // スパム軽減
       ]
       logConfiguration = {
