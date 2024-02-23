@@ -1,7 +1,3 @@
-data "aws_ssm_parameter" "amazon_linux_ami_id" {
-  name = "/aws/service/ecs/optimized-ami/amazon-linux-2023/arm64/recommended/image_id"
-}
-
 resource "aws_iam_role" "ecs_instance" {
   name = "${local.project}-ecs-instance"
   assume_role_policy = jsonencode({
@@ -34,10 +30,14 @@ resource "aws_iam_instance_profile" "main" {
 
 resource "aws_launch_template" "runner_v2" {
   name                   = "${local.project}-runner-v2"
-  image_id               = data.aws_ssm_parameter.amazon_linux_ami_id.value
   instance_type          = "t4g.medium"
   vpc_security_group_ids = [aws_security_group.runner.id]
   user_data              = base64encode(replace(file("${path.module}/bin/init-ec2.sh"), "CLUSTER_NAME", aws_ecs_cluster.main_v2.name))
+
+  # With AMI name mentioned in the comments
+  # amiFilter=[{"Name":"owner-alias","Values":["amazon"]},{"Name":"name","Values":["al2023-ami-ecs-hvm-*-arm64"]}]
+  # currentImageName=unknown
+  image_id = "ami-061a3dd695a81b8ef"
 
   iam_instance_profile {
     name = aws_iam_instance_profile.main.id
