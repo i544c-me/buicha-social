@@ -25,6 +25,7 @@ jobs:
         with:
           aws-region: ap-northeast-1
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE }}
+          output-credentials: true
 
       - uses: renovatebot/github-action@v40.1.1
         with:
