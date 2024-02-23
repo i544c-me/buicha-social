@@ -8,7 +8,7 @@ on:
     - cron: "0 1 * * 6,0" # 週末に実行
 
 permissions:
-  contents: read
+  contents: write
   id-token: write # AWS OIDC
   issues: write
   pull-requests: write
