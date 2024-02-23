@@ -1,0 +1,30 @@
+name: Renovate
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: "0 1 * * 6,0" # 週末に実行
+
+permissions:
+  contents: read
+  id-token: write # AWS OIDC
+  issues: write
+  pull-requests: write
+
+jobs:
+  renovate:
+    name: Renovate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ap-northeast-1
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE }}
+
+      - uses: renovatebot/github-action@v40.1.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
