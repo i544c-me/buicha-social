@@ -30,6 +30,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           configurationFile: renovate.json5
+          env-regex: "^(?:RENOVATE_\\w+|LOG_LEVEL|GITHUB_COM_TOKEN|NODE_OPTIONS|AWS_\\w+)$"
         env:
           LOG_LEVEL: "debug"
           RENOVATE_REPOSITORIES: "['i544c-me/buicha-social']"
