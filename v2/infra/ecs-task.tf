@@ -7,7 +7,7 @@ resource "aws_ecs_task_definition" "misskey" {
   container_definitions = jsonencode([
     {
       name      = "app"
-      image     = "ghcr.io/i544c-me/buicha-social-misskey:2024.2.0-buiso.1"
+      image     = "ghcr.io/i544c-me/buicha-social-misskey:2024.3.1-buiso.1"
       cpu       = 512
       memory    = 1280
       essential = true
