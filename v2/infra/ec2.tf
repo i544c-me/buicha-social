@@ -58,6 +58,30 @@ resource "aws_autoscaling_group" "runners_v2" {
   min_size            = 2
   desired_capacity    = 2
 
+  enabled_metrics = [
+    "GroupAndWarmPoolDesiredCapacity",
+    "GroupAndWarmPoolTotalCapacity",
+    "GroupDesiredCapacity",
+    "GroupInServiceCapacity",
+    "GroupInServiceInstances",
+    "GroupMaxSize",
+    "GroupMinSize",
+    "GroupPendingCapacity",
+    "GroupPendingInstances",
+    "GroupStandbyCapacity",
+    "GroupStandbyInstances",
+    "GroupTerminatingCapacity",
+    "GroupTerminatingInstances",
+    "GroupTotalCapacity",
+    "GroupTotalInstances",
+    "WarmPoolDesiredCapacity",
+    "WarmPoolMinSize",
+    "WarmPoolPendingCapacity",
+    "WarmPoolTerminatingCapacity",
+    "WarmPoolTotalCapacity",
+    "WarmPoolWarmedCapacity",
+  ]
+
   launch_template {
     id      = aws_launch_template.runner_v2.id
     version = aws_launch_template.runner_v2.latest_version
