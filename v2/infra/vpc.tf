@@ -10,6 +10,11 @@ locals {
       cidr_block        = "10.10.2.0/24"
       public            = true
     }
+    public-3 = {
+      availability_zone = "ap-northeast-1d"
+      cidr_block        = "10.10.3.0/24"
+      public            = true
+    }
     private-1 = {
       availability_zone = "ap-northeast-1a"
       cidr_block        = "10.10.101.0/24"
@@ -20,7 +25,11 @@ locals {
       cidr_block        = "10.10.102.0/24"
       public            = false
     }
-
+    private-3 = {
+      availability_zone = "ap-northeast-1d"
+      cidr_block        = "10.10.103.0/24"
+      public            = false
+    }
   }
 }
 
