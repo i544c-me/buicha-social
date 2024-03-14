@@ -24,11 +24,18 @@ resource "aws_ecs_service" "summaly" {
     namespace = aws_service_discovery_http_namespace.main.arn
     service {
       client_alias {
-        dns_name = "summaly"
-        port     = 3000
+        port = 3000
       }
-      discovery_name = "summaly"
-      port_name      = "summaly"
+      port_name = "summaly"
+    }
+    # TODO: デバッグ用、正常にアクセスできるようになったら設定を消すこと！
+    log_configuration {
+      log_driver = "awslogs"
+      options = {
+        awslogs-group         = aws_cloudwatch_log_group.service_connect_summaly.name
+        awslogs-region        = "ap-northeast-1"
+        awslogs-stream-prefix = "service-connect-summaly"
+      }
     }
   }
 
@@ -68,7 +75,6 @@ resource "aws_ecs_task_definition" "summaly" {
       logConfiguration = {
         logDriver = "awslogs"
         options = {
-          #awslogs-group         = "/ecs/misskey/summaly"
           awslogs-group         = aws_cloudwatch_log_group.misskey_summaly.name
           awslogs-region        = "ap-northeast-1"
           awslogs-stream-prefix = "misskey-summaly"
@@ -80,6 +86,11 @@ resource "aws_ecs_task_definition" "summaly" {
 
 
 ### CloudWatch ###
+
+resource "aws_cloudwatch_log_group" "service_connect_summaly" {
+  name              = "/ecs/service-connect-summaly"
+  retention_in_days = 1 # TODO: 本番ではもっと長くする
+}
 
 resource "aws_cloudwatch_log_group" "misskey_summaly" {
   name              = "/ecs/misskey/summaly"
