@@ -52,6 +52,8 @@ resource "aws_ecs_task_definition" "misskey" {
   network_mode             = "bridge"
   task_role_arn            = aws_iam_role.ecs_tasks.arn
   execution_role_arn       = aws_iam_role.ecs_tasks_execution.arn
+  cpu                      = 768  // + 256 for service connect proxy
+  memory                   = 1536 // + 256
   container_definitions = jsonencode([
     {
       name      = "app"
