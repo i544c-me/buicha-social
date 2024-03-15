@@ -1,9 +1,59 @@
+resource "aws_ecs_service" "misskey_v3" {
+  name                   = "${local.project}-misskey-v3"
+  cluster                = aws_ecs_cluster.main_v2.id
+  task_definition        = aws_ecs_task_definition.misskey.arn
+  desired_count          = local.min_tasks
+  enable_execute_command = true
+
+  deployment_minimum_healthy_percent = 50
+  deployment_maximum_percent         = 150
+  health_check_grace_period_seconds  = 60
+
+  ordered_placement_strategy {
+    type  = "binpack"
+    field = "memory"
+  }
+
+  capacity_provider_strategy {
+    capacity_provider = aws_ecs_capacity_provider.main_v2.name
+    base              = 1
+    weight            = 100
+  }
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.app.arn
+    container_name   = "app"
+    container_port   = 3000
+  }
+
+  service_connect_configuration {
+    enabled   = true
+    namespace = aws_service_discovery_http_namespace.main.arn
+  }
+
+  #depends_on = [
+  #  aws_db_instance.main,
+  #  aws_elasticache_cluster.main,
+  #]
+
+  lifecycle {
+    ignore_changes = [
+      ## 無駄に replace が走らないようにするため
+      ## ref: https://github.com/hashicorp/terraform-provider-aws/issues/22823
+      #capacity_provider_strategy, # もしかしたら必要無いかも、ということでコメントにしてみる
+      desired_count,
+    ]
+  }
+}
+
 resource "aws_ecs_task_definition" "misskey" {
   family                   = "misskey"
   requires_compatibilities = ["EC2"]
   network_mode             = "bridge"
   task_role_arn            = aws_iam_role.ecs_tasks.arn
   execution_role_arn       = aws_iam_role.ecs_tasks_execution.arn
+  cpu                      = 768  // + 256 for service connect proxy
+  memory                   = 1536 // + 256
   container_definitions = jsonencode([
     {
       name      = "app"
