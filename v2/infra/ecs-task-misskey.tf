@@ -26,11 +26,6 @@ resource "aws_ecs_service" "misskey_v3" {
     container_port   = 3000
   }
 
-  service_connect_configuration {
-    enabled   = true
-    namespace = aws_service_discovery_http_namespace.main.arn
-  }
-
   #depends_on = [
   #  aws_db_instance.main,
   #  aws_elasticache_cluster.main,
