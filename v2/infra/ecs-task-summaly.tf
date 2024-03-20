@@ -7,6 +7,7 @@ resource "aws_ecs_service" "summaly" {
 
   deployment_minimum_healthy_percent = 50
   deployment_maximum_percent         = 150
+  health_check_grace_period_seconds  = 60
 
   ordered_placement_strategy {
     type  = "binpack"
@@ -17,6 +18,12 @@ resource "aws_ecs_service" "summaly" {
     capacity_provider = aws_ecs_capacity_provider.main_v2.name
     base              = 1
     weight            = 100
+  }
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.summaly.arn
+    container_name   = "app"
+    container_port   = 3000
   }
 
   lifecycle {
@@ -35,12 +42,12 @@ resource "aws_ecs_task_definition" "summaly" {
   network_mode             = "bridge"
   task_role_arn            = aws_iam_role.ecs_tasks.arn
   execution_role_arn       = aws_iam_role.ecs_tasks_execution.arn
-  cpu                      = 512 // + 256 for service connect proxy
-  memory                   = 512 // + 256
+  cpu                      = 256
+  memory                   = 256
   container_definitions = jsonencode([
     {
       name      = "app"
-      image     = "ghcr.io/i544c-me/summaly:5.0.4-buiso.1"
+      image     = "ghcr.io/i544c-me/summaly:v5.1.0-buiso.1"
       cpu       = 256
       memory    = 256
       essential = true
@@ -49,8 +56,6 @@ resource "aws_ecs_task_definition" "summaly" {
       }
       portMappings = [
         {
-          name          = "summaly"
-          appProtocol   = "http"
           containerPort = 3000
         }
       ]

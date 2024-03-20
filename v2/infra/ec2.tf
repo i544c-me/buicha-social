@@ -116,13 +116,22 @@ resource "aws_security_group" "runner" {
   }
 }
 
-resource "aws_security_group_rule" "for_runner_ingress" {
+resource "aws_security_group_rule" "for_runner_ingress_alb_misskey" {
   security_group_id        = aws_security_group.runner.id
   type                     = "ingress"
   from_port                = 0
   to_port                  = 0
   protocol                 = "-1"
   source_security_group_id = aws_security_group.alb.id
+}
+
+resource "aws_security_group_rule" "for_runner_ingress_alb_summaly" {
+  security_group_id        = aws_security_group.runner.id
+  type                     = "ingress"
+  from_port                = 0
+  to_port                  = 0
+  protocol                 = "-1"
+  source_security_group_id = aws_security_group.alb_for_summaly.id
 }
 
 resource "aws_security_group_rule" "for_runner_egress" {
