@@ -5,3 +5,7 @@ variable "rds_username" {
 variable "rds_password" {
   type = string
 }
+
+variable "admin_ips" {
+  type = list(string)
+}
