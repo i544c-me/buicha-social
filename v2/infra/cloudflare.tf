@@ -52,7 +52,7 @@ resource "cloudflare_record" "ses_spf" {
   zone_id = data.cloudflare_zone.main.id
   name    = "mail"
   type    = "TXT"
-  value   = "v=spf1 include:amazonses.com ~all"
+  value   = "v=spf1 include:amazonses.com -all"
   comment = "v2 buicha.social SES SPF"
 }
 
@@ -69,7 +69,7 @@ resource "cloudflare_record" "ses_dmark" {
   zone_id = data.cloudflare_zone.main.id
   name    = "_dmarc"
   type    = "TXT"
-  value   = "v=DMARC1;p=quarantine;adkim=r;aspf=r;rua=mailto:42feccfa6c8b4b90a3beaea05b8bb132@dmarc-reports.cloudflare.net;"
+  value   = "v=DMARC1;p=reject;adkim=r;aspf=r;rua=mailto:42feccfa6c8b4b90a3beaea05b8bb132@dmarc-reports.cloudflare.net;"
   comment = "v2 buicha.social SES DMARK"
 }
 
