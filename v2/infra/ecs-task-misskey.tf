@@ -26,11 +26,6 @@ resource "aws_ecs_service" "misskey_v3" {
     container_port   = 3000
   }
 
-  service_connect_configuration {
-    enabled   = true
-    namespace = aws_service_discovery_http_namespace.main.arn
-  }
-
   #depends_on = [
   #  aws_db_instance.main,
   #  aws_elasticache_cluster.main,
@@ -52,8 +47,8 @@ resource "aws_ecs_task_definition" "misskey" {
   network_mode             = "bridge"
   task_role_arn            = aws_iam_role.ecs_tasks.arn
   execution_role_arn       = aws_iam_role.ecs_tasks_execution.arn
-  cpu                      = 768  // + 256 for service connect proxy
-  memory                   = 1536 // + 256
+  cpu                      = 512
+  memory                   = 1280
   container_definitions = jsonencode([
     {
       name      = "app"

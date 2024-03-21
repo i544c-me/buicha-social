@@ -45,10 +45,6 @@ resource "aws_ecs_cluster_capacity_providers" "main_v2" {
   }
 }
 
-resource "aws_service_discovery_http_namespace" "main" {
-  name = "${local.project}-main"
-}
-
 resource "aws_appautoscaling_target" "ecs_target_v3" {
   resource_id        = "service/${aws_ecs_cluster.main_v2.name}/${aws_ecs_service.misskey_v3.name}"
   service_namespace  = "ecs"

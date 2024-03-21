@@ -40,6 +40,41 @@ resource "aws_lb_target_group" "app" {
   }
 }
 
+resource "aws_lb_listener_rule" "admin" {
+  listener_arn = aws_lb_listener.app.arn
+  priority     = 10
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.app.arn
+  }
+  condition {
+    http_header {
+      http_header_name = "CF-Connecting-IP"
+      values           = var.admin_ips
+    }
+  }
+}
+
+#resource "aws_lb_listener_rule" "maintenance" {
+#  listener_arn = aws_lb_listener.app.arn
+#  priority     = 100
+#
+#  action {
+#    type = "fixed-response"
+#    fixed_response {
+#      content_type = "text/html"
+#      message_body = file("${path.module}/bin/error.html")
+#      status_code  = "503"
+#    }
+#  }
+#
+#  condition {
+#    path_pattern {
+#      values = ["/*"]
+#    }
+#  }
+#}
+
 
 ### Security group ###
 
