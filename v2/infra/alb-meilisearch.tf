@@ -3,6 +3,7 @@ resource "aws_lb" "meilisearch" {
   load_balancer_type = "application"
   subnets            = [for k, v in local.subnets : aws_subnet.main[k].id if v.public] # TODO: 本番稼働時はプライベートにする
   security_groups    = [aws_security_group.alb_for_meilisearch.id]
+  internal           = true
 
   idle_timeout = 300
 }
@@ -53,10 +54,7 @@ resource "aws_security_group_rule" "alb_meilisearch_ingress" {
   from_port         = 80
   to_port           = 80
   protocol          = "tcp"
-
-  # TODO: いずれ制限する
-  #cidr_blocks       = [for k, v in local.subnets : aws_subnet.main[k].cidr_block if v.public]
-  cidr_blocks = ["0.0.0.0/0"]
+  cidr_blocks       = [for k, v in local.subnets : aws_subnet.main[k].cidr_block if v.public]
 }
 
 resource "aws_security_group_rule" "alb_meilisearch_egress" {

@@ -33,18 +33,28 @@ resource "aws_ecs_task_definition" "meilisearch" {
   network_mode             = "bridge"
   task_role_arn            = aws_iam_role.ecs_tasks.arn
   execution_role_arn       = aws_iam_role.ecs_tasks_execution.arn
-  cpu                      = 256
-  memory                   = 256
+  cpu                      = 512
+  memory                   = 2048
   container_definitions = jsonencode([
     {
       name      = "app"
       image     = "getmeili/meilisearch:prototype-japanese-10"
-      cpu       = 256
-      memory    = 256
+      cpu       = 512
+      memory    = 2048
       essential = true
       linuxParameters = {
         initProcessEnabled = true
       }
+      mountPoints = [
+        {
+          containerPath = "/meili_data"
+          sourceVolume  = aws_efs_file_system.meilisearch.name
+        }
+      ]
+      environment = [
+        { name : "MEILI_ENV", value : "production" },
+        { name : "MEILI_MASTER_KEY", value : var.meilisearch_master_key },
+      ]
       portMappings = [
         {
           containerPort = 7700
@@ -60,6 +70,15 @@ resource "aws_ecs_task_definition" "meilisearch" {
       }
     },
   ])
+
+  volume {
+    name = aws_efs_file_system.meilisearch.name
+
+    efs_volume_configuration {
+      file_system_id     = aws_efs_file_system.meilisearch.id
+      transit_encryption = "ENABLED"
+    }
+  }
 }
 
 
