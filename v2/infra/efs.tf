@@ -34,8 +34,9 @@ resource "aws_efs_access_point" "misskey_config" {
 ### Meilisearch ###
 
 resource "aws_efs_file_system" "meilisearch" {
-  creation_token = "${local.project}-meilisearch"
-  encrypted      = true
+  creation_token  = "${local.project}-meilisearch"
+  throughput_mode = "bursting"
+  encrypted       = true
 
   lifecycle_policy {
     transition_to_ia = "AFTER_30_DAYS"
