@@ -2,10 +2,10 @@ resource "aws_ecs_service" "summaly" {
   name                   = "${local.project}-summaly"
   cluster                = aws_ecs_cluster.main_v2.id
   task_definition        = aws_ecs_task_definition.summaly.arn
-  desired_count          = 0
+  desired_count          = 2
   enable_execute_command = true
 
-  deployment_minimum_healthy_percent = 50
+  deployment_minimum_healthy_percent = 0
   deployment_maximum_percent         = 150
   health_check_grace_period_seconds  = 60
 
@@ -24,15 +24,6 @@ resource "aws_ecs_service" "summaly" {
     target_group_arn = aws_lb_target_group.summaly.arn
     container_name   = "app"
     container_port   = 3000
-  }
-
-  lifecycle {
-    ignore_changes = [
-      ## 無駄に replace が走らないようにするため
-      ## ref: https://github.com/hashicorp/terraform-provider-aws/issues/22823
-      #capacity_provider_strategy, # もしかしたら必要無いかも、ということでコメントにしてみる
-      desired_count,
-    ]
   }
 }
 
