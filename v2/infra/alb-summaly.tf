@@ -1,7 +1,7 @@
 resource "aws_lb" "summaly" {
   name               = "${local.project}-summaly"
   load_balancer_type = "application"
-  subnets            = [for k, v in local.subnets : aws_subnet.main[k].id if v.public]
+  subnets            = [for k, v in local.subnets : aws_subnet.main[k].id if !v.public]
   security_groups    = [aws_security_group.alb_for_summaly.id]
   internal           = true
 
