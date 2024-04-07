@@ -120,7 +120,6 @@ resource "aws_security_group_rule" "for_runner_ingress_alb" {
   for_each = toset([
     aws_security_group.alb.id,
     aws_security_group.alb_for_summaly.id,
-    aws_security_group.alb_for_meilisearch.id,
   ])
 
   security_group_id        = aws_security_group.runner.id

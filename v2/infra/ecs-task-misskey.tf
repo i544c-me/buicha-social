@@ -152,22 +152,6 @@ resource "aws_iam_policy" "ecs_tasks" {
             "elasticfilesystem:AccessPointArn" : aws_efs_access_point.misskey_config.arn,
           }
         }
-      },
-      // Meilisearch
-      {
-        Effect = "Allow"
-        Action = [
-          "elasticfilesystem:ClientMount",
-          "elasticfilesystem:ClientWrite",
-        ]
-        Resource = [
-          aws_efs_file_system.meilisearch.arn,
-        ]
-        Condition = {
-          StringEquals = {
-            "elasticfilesystem:AccessPointArn" : aws_efs_access_point.meilisearch.arn,
-          }
-        }
       }
     ]
   })
