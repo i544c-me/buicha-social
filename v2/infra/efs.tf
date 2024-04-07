@@ -31,34 +31,6 @@ resource "aws_efs_access_point" "misskey_config" {
 }
 
 
-### Meilisearch ###
-
-resource "aws_efs_file_system" "meilisearch" {
-  creation_token  = "${local.project}-meilisearch"
-  throughput_mode = "bursting"
-  encrypted       = true
-
-  lifecycle_policy {
-    transition_to_ia = "AFTER_30_DAYS"
-  }
-
-  tags = {
-    Name = "${local.project}-meilisearch"
-  }
-}
-
-resource "aws_efs_mount_target" "meilisearch" {
-  for_each = { for k, v in local.subnets : k => v if v.public }
-
-  file_system_id  = aws_efs_file_system.meilisearch.id
-  subnet_id       = aws_subnet.main[each.key].id
-  security_groups = [aws_security_group.efs.id]
-}
-
-resource "aws_efs_access_point" "meilisearch" {
-  file_system_id = aws_efs_file_system.meilisearch.id
-}
-
 ### Security Group ###
 
 resource "aws_security_group" "efs" {

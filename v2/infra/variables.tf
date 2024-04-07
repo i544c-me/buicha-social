@@ -12,8 +12,3 @@ variable "admin_ips" {
   type      = list(string)
   sensitive = true
 }
-
-variable "meilisearch_master_key" {
-  type      = string
-  sensitive = true
-}
