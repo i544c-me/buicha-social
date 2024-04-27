@@ -55,7 +55,7 @@ resource "aws_autoscaling_group" "runners_v2" {
   name                = "${local.project}-runners-v2"
   vpc_zone_identifier = [for k, v in local.subnets : aws_subnet.main[k].id if v.public]
   max_size            = 6
-  min_size            = 2
+  min_size            = 1
   desired_capacity    = 2
 
   enabled_metrics = [
