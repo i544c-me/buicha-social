@@ -43,6 +43,10 @@ resource "aws_launch_template" "runner_v2" {
     name = aws_iam_instance_profile.main.id
   }
 
+  credit_specification {
+    cpu_credits = "standard"
+  }
+
   tag_specifications {
     resource_type = "instance"
     tags = {
@@ -57,6 +61,14 @@ resource "aws_autoscaling_group" "runners_v2" {
   max_size            = 6
   min_size            = 1
   desired_capacity    = 2
+
+  health_check_grace_period = 60
+
+  # インスタンス置き換え時は可用性を優先する
+  instance_maintenance_policy {
+    min_healthy_percentage = 100
+    max_healthy_percentage = 200
+  }
 
   enabled_metrics = [
     "GroupAndWarmPoolDesiredCapacity",
@@ -82,9 +94,27 @@ resource "aws_autoscaling_group" "runners_v2" {
     "WarmPoolWarmedCapacity",
   ]
 
-  launch_template {
-    id      = aws_launch_template.runner_v2.id
-    version = aws_launch_template.runner_v2.latest_version
+  mixed_instances_policy {
+    launch_template {
+      launch_template_specification {
+        launch_template_id = aws_launch_template.runner_v2.id
+        version            = aws_launch_template.runner_v2.latest_version
+      }
+
+      override {
+        instance_type = "t4g.medium"
+      }
+    }
+
+    instances_distribution {
+      on_demand_percentage_above_base_capacity = "0"
+    }
+  }
+
+  # インスタンス更新を走らせる
+  instance_refresh {
+    strategy = "Rolling"
+    triggers = ["tag"]
   }
 
   lifecycle {
