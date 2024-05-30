@@ -56,7 +56,10 @@ resource "aws_subnet" "main" {
   cidr_block              = each.value.cidr_block
   ipv6_cidr_block         = cidrsubnet(aws_vpc.main.ipv6_cidr_block, 8, index(local.subnets_index, each.key))
   availability_zone       = each.value.availability_zone
-  map_public_ip_on_launch = each.value.public
+  map_public_ip_on_launch = each.value.public # TODO: 一律に IPv4 を付与するのはやめる
+
+  enable_dns64                    = true
+  assign_ipv6_address_on_creation = false # セキュリティ上の懸念から、一律には IPv6 は付与しない
 
   tags = {
     Name = "${local.project}-${each.key}"

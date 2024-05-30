@@ -2,8 +2,9 @@ resource "aws_lb" "app" {
   name               = "${local.project}-runners"
   load_balancer_type = "application"
   ip_address_type    = "dualstack"
-  subnets            = [for k, v in local.subnets : aws_subnet.main[k].id if v.public]
-  security_groups    = [aws_security_group.alb.id]
+  #ip_address_type    = "dualstack-without-public-ipv4" # IPv6 only
+  subnets         = [for k, v in local.subnets : aws_subnet.main[k].id if v.public]
+  security_groups = [aws_security_group.alb.id]
 
   idle_timeout = 4000 # Websocket の接続が切れる頻度を減らすため
 }
@@ -95,15 +96,25 @@ resource "aws_security_group" "alb" {
 
 data "cloudflare_ip_ranges" "cloudflare" {}
 
-resource "aws_security_group_rule" "alb_ingress" {
+resource "aws_security_group_rule" "alb_v4_ingress" {
   security_group_id = aws_security_group.alb.id
   type              = "ingress"
   from_port         = 443
   to_port           = 443
   protocol          = "tcp"
   cidr_blocks       = data.cloudflare_ip_ranges.cloudflare.ipv4_cidr_blocks
-  ipv6_cidr_blocks  = data.cloudflare_ip_ranges.cloudflare.ipv6_cidr_blocks
 }
+
+# TODO: Allow IPv6 ingress
+#resource "aws_security_group_rule" "alb_v6_ingress" {
+#  security_group_id = aws_security_group.alb.id
+#  type              = "ingress"
+#  from_port         = -1
+#  to_port           = -1
+#  protocol          = "-1"
+#  #ipv6_cidr_blocks  = data.cloudflare_ip_ranges.cloudflare.ipv6_cidr_blocks
+#  ipv6_cidr_blocks = ["::/0"]
+#}
 
 resource "aws_security_group_rule" "alb_egress" {
   security_group_id = aws_security_group.alb.id
