@@ -102,6 +102,7 @@ resource "aws_security_group_rule" "alb_ingress" {
   to_port           = 443
   protocol          = "tcp"
   cidr_blocks       = data.cloudflare_ip_ranges.cloudflare.ipv4_cidr_blocks
+  ipv6_cidr_blocks  = data.cloudflare_ip_ranges.cloudflare.ipv6_cidr_blocks
 }
 
 resource "aws_security_group_rule" "alb_egress" {
