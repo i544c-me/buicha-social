@@ -1,10 +1,15 @@
 resource "aws_lb" "app" {
   name               = "${local.project}-runners"
   load_balancer_type = "application"
-  ip_address_type    = "dualstack"
-  #ip_address_type    = "dualstack-without-public-ipv4" # IPv6 only
-  subnets         = [for k, v in local.subnets : aws_subnet.main[k].id if v.public]
-  security_groups = [aws_security_group.alb_v4.id]
+
+  ip_address_type = "dualstack"
+  #ip_address_type = "dualstack-without-public-ipv4" # IPv6 only
+
+  subnets = [for k, v in local.subnets : aws_subnet.main[k].id if v.public]
+  security_groups = [
+    aws_security_group.alb_v4.id,
+    aws_security_group.alb_v6.id,
+  ]
 
   idle_timeout = 4000 # Websocket の接続が切れる頻度を減らすため
 }
@@ -115,16 +120,37 @@ resource "aws_security_group_rule" "alb_v4_egress" {
   cidr_blocks       = ["0.0.0.0/0"]
 }
 
-# TODO: 別のセキュリティグループとして作ること！
-#resource "aws_security_group_rule" "alb_v6_ingress" {
-#  security_group_id = aws_security_group.alb.id
-#  type              = "ingress"
-#  from_port         = -1
-#  to_port           = -1
-#  protocol          = "-1"
-#  #ipv6_cidr_blocks  = data.cloudflare_ip_ranges.cloudflare.ipv6_cidr_blocks
-#  ipv6_cidr_blocks = ["::/0"]
-#}
+resource "aws_security_group" "alb_v6" {
+  name   = "${local.project}-alb-v6"
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "${local.project}-alb-v6"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_security_group_rule" "alb_v6_ingress" {
+  security_group_id = aws_security_group.alb_v6.id
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  ipv6_cidr_blocks  = data.cloudflare_ip_ranges.cloudflare.ipv6_cidr_blocks
+}
+
+
+resource "aws_security_group_rule" "alb_v6_egress" {
+  security_group_id = aws_security_group.alb_v6.id
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1" # なぜか UDP で通信しているため
+  ipv6_cidr_blocks  = ["::/0"]
+}
 
 
 ### ACM ###
