@@ -1,6 +1,7 @@
 resource "aws_lb" "app" {
   name               = "${local.project}-runners"
   load_balancer_type = "application"
+  ip_address_type    = "dualstack"
   subnets            = [for k, v in local.subnets : aws_subnet.main[k].id if v.public]
   security_groups    = [aws_security_group.alb.id]
 
