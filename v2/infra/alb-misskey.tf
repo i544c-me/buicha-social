@@ -27,7 +27,8 @@ resource "aws_lb_target_group" "app" {
   protocol = "HTTP"
   port     = 3000
 
-  deregistration_delay = 5 # 接続断のタイムアウトがデフォルト300秒だと長いので
+  deregistration_delay = 10 # 接続断のタイムアウトがデフォルト300秒だと長いので
+  slow_start           = 30
 
   health_check {
     healthy_threshold   = 3
