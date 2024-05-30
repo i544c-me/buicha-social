@@ -11,6 +11,7 @@ resource "cloudflare_record" "main" {
 }
 
 resource "cloudflare_page_rule" "api" {
+  status   = "disabled"
   zone_id  = data.cloudflare_zone.main.id
   target   = "${local.main_domain}/api/*"
   priority = 2
@@ -21,6 +22,7 @@ resource "cloudflare_page_rule" "api" {
 }
 
 resource "cloudflare_page_rule" "old_media" {
+  status   = "disabled"
   zone_id  = data.cloudflare_zone.main.id
   target   = "${local.main_domain}/files/*"
   priority = 1
