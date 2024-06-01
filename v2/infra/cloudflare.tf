@@ -93,3 +93,27 @@ resource "cloudflare_record" "domain_cert_alb" {
   value   = each.value.value
   comment = "${local.main_domain} v2 ACM for ALB"
 }
+
+
+### Origin CA Cert ###
+
+data "cloudflare_origin_ca_root_certificate" "root" {
+  algorithm = "rsa"
+}
+
+resource "cloudflare_origin_ca_certificate" "main" {
+  csr                = data.cloudflare_origin_ca_root_certificate.root.cert_pem
+  hostnames          = ["buicha.social"]
+  request_type       = "origin-rsa"
+  requested_validity = 5475
+}
+
+resource "aws_s3_bucket" "cert" {
+  bucket = "${local.project}-cert"
+}
+
+resource "aws_s3_object" "cert" {
+  bucket  = aws_s3_bucket.cert.id
+  key     = "cert.pem"
+  content = cloudflare_origin_ca_certificate.main.certificate
+}

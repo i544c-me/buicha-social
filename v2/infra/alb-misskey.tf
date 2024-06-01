@@ -158,3 +158,13 @@ resource "aws_acm_certificate_validation" "alb" {
   certificate_arn         = aws_acm_certificate.alb.arn
   validation_record_fqdns = [for record in cloudflare_record.domain_cert_alb : record.hostname]
 }
+
+
+### Trust Store ###
+
+resource "aws_lb_trust_store" "main" {
+  name = "${local.project}-main"
+
+  ca_certificates_bundle_s3_bucket = aws_s3_bucket.cert.id
+  ca_certificates_bundle_s3_key    = aws_s3_object.cert.key
+}
