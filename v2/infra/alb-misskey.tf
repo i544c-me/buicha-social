@@ -101,16 +101,6 @@ resource "aws_security_group" "alb_v4" {
   }
 }
 
-resource "aws_security_group_rule" "alb_v4_ingress" {
-  security_group_id = aws_security_group.alb_v4.id
-  type              = "ingress"
-  from_port         = 443
-  to_port           = 443
-  protocol          = "tcp"
-  cidr_blocks       = data.cloudflare_ip_ranges.cloudflare.ipv4_cidr_blocks
-}
-
-
 resource "aws_security_group_rule" "alb_v4_egress" {
   security_group_id = aws_security_group.alb_v4.id
   type              = "egress"
