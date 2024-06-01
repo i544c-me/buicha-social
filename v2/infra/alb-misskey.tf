@@ -1,5 +1,5 @@
 resource "aws_lb" "app" {
-  name               = "${local.project}-runners"
+  name               = "${local.project}-runners-v2"
   load_balancer_type = "application"
 
   #ip_address_type = "dualstack"
@@ -28,7 +28,7 @@ resource "aws_lb_listener" "app" {
 }
 
 resource "aws_lb_target_group" "app" {
-  name     = "${local.project}-app"
+  name     = "${local.project}-app-v2"
   vpc_id   = aws_vpc.main.id
   protocol = "HTTP"
   port     = 3000
