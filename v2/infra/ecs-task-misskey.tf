@@ -21,7 +21,7 @@ resource "aws_ecs_service" "misskey_v3" {
   }
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.app.arn
+    target_group_arn = aws_lb_target_group.app_v2.arn
     container_name   = "app"
     container_port   = 3000
   }

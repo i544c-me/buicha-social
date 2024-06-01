@@ -58,8 +58,7 @@ resource "aws_subnet" "main" {
   availability_zone       = each.value.availability_zone
   map_public_ip_on_launch = each.value.public # TODO: 一律に IPv4 を付与するのはやめる
 
-  enable_dns64                    = true
-  assign_ipv6_address_on_creation = false # セキュリティ上の懸念から、一律には IPv6 は付与しない
+  enable_dns64 = true
 
   tags = {
     Name = "${local.project}-${each.key}"
@@ -89,6 +88,11 @@ resource "aws_route_table" "main" {
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.main.id
+  }
+
+  route {
+    ipv6_cidr_block = "::/0"
+    gateway_id      = aws_internet_gateway.main.id
   }
 
   # 旧インフラに接続するため

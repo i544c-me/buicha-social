@@ -2,8 +2,8 @@ resource "aws_lb" "app" {
   name               = "${local.project}-runners"
   load_balancer_type = "application"
 
-  ip_address_type = "dualstack"
-  #ip_address_type = "dualstack-without-public-ipv4" # IPv6 only
+  #ip_address_type = "dualstack"
+  ip_address_type = "dualstack-without-public-ipv4" # IPv6 only
 
   subnets = [for k, v in local.subnets : aws_subnet.main[k].id if v.public]
   security_groups = [
