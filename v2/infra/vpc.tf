@@ -31,11 +31,14 @@ locals {
       public            = false
     }
   }
+  subnets_index = [for k, v in local.subnets : k]
 }
 
 resource "aws_vpc" "main" {
   cidr_block           = "10.10.0.0/16"
   enable_dns_hostnames = true
+
+  assign_generated_ipv6_cidr_block = true
 
   tags = {
     Name = "${local.project}-main"
@@ -51,8 +54,11 @@ resource "aws_subnet" "main" {
 
   vpc_id                  = aws_vpc.main.id
   cidr_block              = each.value.cidr_block
+  ipv6_cidr_block         = cidrsubnet(aws_vpc.main.ipv6_cidr_block, 8, index(local.subnets_index, each.key))
   availability_zone       = each.value.availability_zone
-  map_public_ip_on_launch = each.value.public
+  map_public_ip_on_launch = each.value.public # TODO: 一律に IPv4 を付与するのはやめる
+
+  enable_dns64 = true
 
   tags = {
     Name = "${local.project}-${each.key}"
@@ -82,6 +88,11 @@ resource "aws_route_table" "main" {
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.main.id
+  }
+
+  route {
+    ipv6_cidr_block = "::/0"
+    gateway_id      = aws_internet_gateway.main.id
   }
 
   # 旧インフラに接続するため
