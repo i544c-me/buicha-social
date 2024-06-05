@@ -97,15 +97,15 @@ resource "cloudflare_record" "domain_cert_alb" {
 
 ### Origin CA Cert ###
 
-data "cloudflare_origin_ca_root_certificate" "root" {
-  algorithm = "rsa"
+resource "cloudflare_authenticated_origin_pulls" "root" {
+  zone_id = data.cloudflare_zone.main.id
+  enabled = true
 }
 
-resource "cloudflare_origin_ca_certificate" "main" {
-  csr                = data.cloudflare_origin_ca_root_certificate.root.cert_pem
-  hostnames          = ["buicha.social"]
-  request_type       = "origin-rsa"
-  requested_validity = 5475
+# TODO: たぶんこの証明書だけじゃ足りないし、共通の鍵は使わず自分で作った方が良い
+# https://developers.cloudflare.com/ssl/origin-configuration/authenticated-origin-pull/set-up/zone-level/
+data "http" "cloudflare_authenticated_origin_pull_ca" {
+  url = "https://developers.cloudflare.com/ssl/static/authenticated_origin_pull_ca.pem"
 }
 
 resource "aws_s3_bucket" "cert" {
@@ -115,5 +115,5 @@ resource "aws_s3_bucket" "cert" {
 resource "aws_s3_object" "cert" {
   bucket  = aws_s3_bucket.cert.id
   key     = "cert.pem"
-  content = cloudflare_origin_ca_certificate.main.certificate
+  content = data.http.cloudflare_authenticated_origin_pull_ca.response_body
 }
