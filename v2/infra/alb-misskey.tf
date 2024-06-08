@@ -37,10 +37,10 @@ resource "aws_lb_target_group" "app" {
   slow_start           = 30
 
   health_check {
-    healthy_threshold   = 3
-    unhealthy_threshold = 2
-    interval            = 5
-    timeout             = 3
+    healthy_threshold   = 2
+    unhealthy_threshold = 10
+    interval            = 20
+    timeout             = 10
   }
 
   lifecycle {
