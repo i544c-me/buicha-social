@@ -36,8 +36,8 @@ resource "aws_launch_template" "runner_v2" {
 
   # With AMI name mentioned in the comments
   # amiFilter=[{"Name":"owner-alias","Values":["amazon"]},{"Name":"name","Values":["al2023-ami-ecs-hvm-*-arm64"]}]
-  # currentImageName=al2023-ami-ecs-hvm-2023.0.20240424-kernel-6.1-arm64
-  image_id = "ami-0127c05c46ec414c1"
+  # currentImageName=al2023-ami-ecs-hvm-2023.0.20240604-kernel-6.1-arm64
+  image_id = "ami-0b08610a6fdbdf2f5"
 
   iam_instance_profile {
     name = aws_iam_instance_profile.main.id
