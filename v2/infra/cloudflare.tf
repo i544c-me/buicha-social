@@ -6,7 +6,7 @@ resource "cloudflare_record" "main" {
   zone_id = data.cloudflare_zone.main.id
   name    = local.main_domain
   type    = "CNAME"
-  value   = aws_lb.app.dns_name
+  value   = aws_lb.app_v3.dns_name
   proxied = true
 }
 
