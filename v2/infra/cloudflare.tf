@@ -54,7 +54,7 @@ resource "cloudflare_record" "ses_spf" {
   zone_id = data.cloudflare_zone.main.id
   name    = "mail"
   type    = "TXT"
-  value   = "v=spf1 include:amazonses.com -all"
+  value   = "v=spf1 include:amazonses.com include:_spf.google.com -all"
   comment = "v2 buicha.social SES SPF"
 }
 
