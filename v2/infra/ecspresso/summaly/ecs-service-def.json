@@ -1,0 +1,40 @@
+{
+  "capacityProviderStrategy": [
+    {
+      "base": 1,
+      "capacityProvider": "{{ tfstate `aws_ecs_capacity_provider.main_v2.name` }}",
+      "weight": 100
+    }
+  ],
+  "deploymentConfiguration": {
+    "deploymentCircuitBreaker": {
+      "enable": false,
+      "rollback": false
+    },
+    "maximumPercent": 150,
+    "minimumHealthyPercent": 50
+  },
+  "deploymentController": {
+    "type": "ECS"
+  },
+  "desiredCount": 2,
+  "enableECSManagedTags": false,
+  "enableExecuteCommand": true,
+  "healthCheckGracePeriodSeconds": 60,
+  "launchType": "",
+  "loadBalancers": [
+    {
+      "containerName": "app",
+      "containerPort": 3000,
+      "targetGroupArn": "{{ tfstate `aws_lb_target_group.summaly.arn` }}"
+    }
+  ],
+  "placementStrategy": [
+    {
+      "field": "MEMORY",
+      "type": "binpack"
+    }
+  ],
+  "propagateTags": "NONE",
+  "schedulingStrategy": "REPLICA"
+}

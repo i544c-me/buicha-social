@@ -45,8 +45,10 @@ resource "aws_ecs_cluster_capacity_providers" "main_v2" {
   }
 }
 
+# ecspresso で作ったサービスに依存している
+
 resource "aws_appautoscaling_target" "ecs_target_v3" {
-  resource_id        = "service/${aws_ecs_cluster.main_v2.name}/${aws_ecs_service.misskey_v3.name}"
+  resource_id        = "service/${aws_ecs_cluster.main_v2.name}/buiso-v2-production-misskey-v3"
   service_namespace  = "ecs"
   scalable_dimension = "ecs:service:DesiredCount"
   min_capacity       = local.min_tasks
