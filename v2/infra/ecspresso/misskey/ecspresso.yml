@@ -1,0 +1,10 @@
+region: ap-northeast-1
+cluster: buiso-v2-production-main-v2
+service: buiso-v2-production-misskey-v3
+service_definition: ecs-service-def.json
+task_definition: ecs-task-def.json
+timeout: "10m0s"
+plugins:
+  - name: tfstate
+    config:
+      url: s3://buichasocial-v2-production-tfstate/buichasocial-v2-production.tfstate

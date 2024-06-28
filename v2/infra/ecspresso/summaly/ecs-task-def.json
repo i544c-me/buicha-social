@@ -1,0 +1,41 @@
+{
+  "containerDefinitions": [
+    {
+      "cpu": 256,
+      "essential": true,
+      "image": "ghcr.io/i544c-me/summaly:v5.1.0-buiso.1",
+      "linuxParameters": {
+        "initProcessEnabled": true
+      },
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "{{ tfstate `aws_cloudwatch_log_group.misskey_summaly.name` }}",
+          "awslogs-region": "ap-northeast-1",
+          "awslogs-stream-prefix": "misskey-summaly"
+        }
+      },
+      "memory": 256,
+      "name": "app",
+      "portMappings": [
+        {
+          "appProtocol": "",
+          "containerPort": 3000,
+          "hostPort": 0,
+          "protocol": "tcp"
+        }
+      ]
+    }
+  ],
+  "cpu": "256",
+  "executionRoleArn": "{{ tfstate `aws_iam_role.ecs_tasks_execution.arn` }}",
+  "family": "summaly",
+  "ipcMode": "",
+  "memory": "256",
+  "networkMode": "bridge",
+  "pidMode": "",
+  "requiresCompatibilities": [
+    "EC2"
+  ],
+  "taskRoleArn": "{{ tfstate `aws_iam_role.ecs_tasks.arn` }}"
+}

@@ -22,8 +22,13 @@ resource "aws_lb_listener" "app" {
   certificate_arn   = aws_acm_certificate.alb.arn
 
   default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.app.arn
+    type = "forward"
+
+    forward {
+      target_group {
+        arn = aws_lb_target_group.app.arn
+      }
+    }
   }
 }
 

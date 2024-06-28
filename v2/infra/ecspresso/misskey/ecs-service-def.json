@@ -1,0 +1,40 @@
+{
+  "capacityProviderStrategy": [
+    {
+      "base": 1,
+      "capacityProvider": "buiso-v2-production-main-v2",
+      "weight": 100
+    }
+  ],
+  "deploymentConfiguration": {
+    "deploymentCircuitBreaker": {
+      "enable": false,
+      "rollback": false
+    },
+    "maximumPercent": 150,
+    "minimumHealthyPercent": 50
+  },
+  "deploymentController": {
+    "type": "CODE_DEPLOY"
+  },
+  "desiredCount": 4,
+  "enableECSManagedTags": false,
+  "enableExecuteCommand": true,
+  "healthCheckGracePeriodSeconds": 60,
+  "launchType": "",
+  "loadBalancers": [
+    {
+      "containerName": "app",
+      "containerPort": 3000,
+      "targetGroupArn": "{{ tfstate `aws_lb_target_group.app.arn` }}"
+    }
+  ],
+  "placementStrategy": [
+    {
+      "field": "MEMORY",
+      "type": "binpack"
+    }
+  ],
+  "propagateTags": "NONE",
+  "schedulingStrategy": "REPLICA"
+}
