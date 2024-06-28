@@ -1,8 +1,7 @@
-resource "aws_lb" "app" {
-  name               = "${local.project}-runners-v2"
+resource "aws_lb" "app_v3" {
+  name               = "${local.project}-runners-v3"
   load_balancer_type = "application"
 
-  #ip_address_type = "dualstack"
   ip_address_type = "dualstack-without-public-ipv4" # IPv6 only
 
   subnets = [for k, v in local.subnets : aws_subnet.main[k].id if v.public]
@@ -14,21 +13,33 @@ resource "aws_lb" "app" {
   idle_timeout = 4000 # Websocket の接続が切れる頻度を減らすため
 }
 
-resource "aws_lb_listener" "app" {
-  load_balancer_arn = aws_lb.app.arn
+resource "aws_lb_listener" "app_v3" {
+  load_balancer_arn = aws_lb.app_v3.arn
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
   certificate_arn   = aws_acm_certificate.alb.arn
 
   default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.app.arn
+    type = "forward"
+
+    forward {
+      target_group {
+        arn = aws_lb_target_group.app_v3["blue"].arn
+      }
+    }
+  }
+
+  lifecycle {
+    # CodeDeploy による Blue/Green Deployment をしているため
+    ignore_changes = [default_action[0].forward[0].target_group]
   }
 }
 
-resource "aws_lb_target_group" "app" {
-  name     = "${local.project}-app-v2"
+resource "aws_lb_target_group" "app_v3" {
+  for_each = toset(["blue", "green"])
+
+  name     = "${local.project}-app-v3-${each.value}"
   vpc_id   = aws_vpc.main.id
   protocol = "HTTP"
   port     = 3000
@@ -48,20 +59,20 @@ resource "aws_lb_target_group" "app" {
   }
 }
 
-resource "aws_lb_listener_rule" "admin" {
-  listener_arn = aws_lb_listener.app.arn
-  priority     = 10
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.app.arn
-  }
-  condition {
-    http_header {
-      http_header_name = "CF-Connecting-IP"
-      values           = var.admin_ips
-    }
-  }
-}
+#resource "aws_lb_listener_rule" "admin" {
+#  listener_arn = aws_lb_listener.app.arn
+#  priority     = 10
+#  action {
+#    type             = "forward"
+#    target_group_arn = aws_lb_target_group.app.arn
+#  }
+#  condition {
+#    http_header {
+#      http_header_name = "CF-Connecting-IP"
+#      values           = var.admin_ips
+#    }
+#  }
+#}
 
 #resource "aws_lb_listener_rule" "maintenance" {
 #  listener_arn = aws_lb_listener.app.arn
