@@ -28,21 +28,21 @@ resource "aws_codedeploy_deployment_group" "main" {
 
   ecs_service {
     cluster_name = aws_ecs_cluster.main_v2.name
-    service_name = "buiso-v2-production-misskey-v3"
+    service_name = "buiso-v2-production-misskey-v4"
   }
 
   load_balancer_info {
     target_group_pair_info {
       prod_traffic_route {
-        listener_arns = [aws_lb_listener.app.arn]
+        listener_arns = [aws_lb_listener.app_v3.arn]
       }
 
       target_group {
-        name = aws_lb_target_group.app_bluegreen["blue"].name
+        name = aws_lb_target_group.app_v3["blue"].name
       }
 
       target_group {
-        name = aws_lb_target_group.app_bluegreen["green"].name
+        name = aws_lb_target_group.app_v3["green"].name
       }
     }
   }
