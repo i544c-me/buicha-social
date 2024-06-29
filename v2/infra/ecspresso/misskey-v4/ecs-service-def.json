@@ -27,11 +27,6 @@
       "containerName": "app",
       "containerPort": 3000,
       "targetGroupArn": "{{ tfstate `aws_lb_target_group.app_v3['blue'].arn` }}"
-    },
-    {
-      "containerName": "app",
-      "containerPort": 3000,
-      "targetGroupArn": "{{ tfstate `aws_lb_target_group.app_v3['green'].arn` }}"
     }
   ],
   "placementStrategy": [
