@@ -8,7 +8,7 @@
 #   - all
 registries:
 - type: standard
-  ref: v4.191.0 # renovate: depName=aquaproj/aqua-registry
+  ref: v4.203.0 # renovate: depName=aquaproj/aqua-registry
 packages:
-- name: aws/aws-cli@2.16.4
-- name: hashicorp/terraform@v1.8.5
+- name: aws/aws-cli@2.17.13
+- name: hashicorp/terraform@v1.9.2
