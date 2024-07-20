@@ -12,3 +12,4 @@ registries:
 packages:
 - name: aws/aws-cli@2.17.14
 - name: hashicorp/terraform@v1.9.2
+- name: kayac/ecspresso@v2.3.5

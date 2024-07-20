@@ -45,20 +45,22 @@ resource "aws_ecs_cluster_capacity_providers" "main_v2" {
   }
 }
 
-resource "aws_appautoscaling_target" "ecs_target_v3" {
-  resource_id        = "service/${aws_ecs_cluster.main_v2.name}/${aws_ecs_service.misskey_v3.name}"
+# ecspresso で作ったサービスに依存している
+
+resource "aws_appautoscaling_target" "ecs_target_v4" {
+  resource_id        = "service/${aws_ecs_cluster.main_v2.name}/buiso-v2-production-misskey-v4"
   service_namespace  = "ecs"
   scalable_dimension = "ecs:service:DesiredCount"
   min_capacity       = local.min_tasks
   max_capacity       = local.max_tasks
 }
 
-resource "aws_appautoscaling_policy" "ecs_policy_v3" {
+resource "aws_appautoscaling_policy" "ecs_policy_v4" {
   name               = "target-tracking-scaling"
   policy_type        = "TargetTrackingScaling"
-  resource_id        = aws_appautoscaling_target.ecs_target_v3.resource_id
-  scalable_dimension = aws_appautoscaling_target.ecs_target_v3.scalable_dimension
-  service_namespace  = aws_appautoscaling_target.ecs_target_v3.service_namespace
+  resource_id        = aws_appautoscaling_target.ecs_target_v4.resource_id
+  scalable_dimension = aws_appautoscaling_target.ecs_target_v4.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.ecs_target_v4.service_namespace
 
   target_tracking_scaling_policy_configuration {
     target_value       = "50"
