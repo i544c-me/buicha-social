@@ -1,0 +1,63 @@
+{
+  "containerDefinitions": [
+    {
+      "cpu": 512,
+      "environment": [
+        {
+          "name": "MISSKEY_BLOCK_MENTIONS_FROM_UNFAMILIAR_REMOTE_USERS",
+          "value": "true"
+        }
+      ],
+      "essential": true,
+      "image": "ghcr.io/i544c-me/buicha-social-misskey:2024.5.0-buiso.4",
+      "linuxParameters": {
+        "initProcessEnabled": true
+      },
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "{{ tfstate `aws_cloudwatch_log_group.misskey_app.name` }}",
+          "awslogs-region": "ap-northeast-1",
+          "awslogs-stream-prefix": "misskey-app"
+        }
+      },
+      "memory": 1280,
+      "mountPoints": [
+        {
+          "containerPath": "/misskey/.config",
+          "sourceVolume": "buiso-v2-production-misskey-config"
+        }
+      ],
+      "name": "app",
+      "portMappings": [
+        {
+          "appProtocol": "",
+          "containerPort": 3000,
+          "hostPort": 0,
+          "protocol": "tcp"
+        }
+      ]
+    }
+  ],
+  "cpu": "512",
+  "executionRoleArn": "{{ tfstate `aws_iam_role.ecs_tasks_execution.arn` }}",
+  "family": "misskey",
+  "ipcMode": "",
+  "memory": "1280",
+  "networkMode": "bridge",
+  "pidMode": "",
+  "requiresCompatibilities": [
+    "EC2"
+  ],
+  "taskRoleArn": "{{ tfstate `aws_iam_role.ecs_tasks.arn` }}",
+  "volumes": [
+    {
+      "efsVolumeConfiguration": {
+        "fileSystemId": "{{ tfstate `aws_efs_file_system.misskey_config.id` }}",
+        "rootDirectory": "/",
+        "transitEncryption": "ENABLED"
+      },
+      "name": "buiso-v2-production-misskey-config"
+    }
+  ]
+}
