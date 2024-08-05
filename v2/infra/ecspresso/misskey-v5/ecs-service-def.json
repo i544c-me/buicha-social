@@ -31,8 +31,12 @@
   ],
   "placementStrategy": [
     {
-      "field": "MEMORY",
-      "type": "binpack"
+      "type": "spread",
+      "field": "attribute:ecs.availability-zone"
+    },
+    {
+      "type": "spread",
+      "field": "instanceId"
     }
   ],
   "propagateTags": "NONE",

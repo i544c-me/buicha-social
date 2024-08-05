@@ -71,7 +71,7 @@ resource "aws_autoscaling_group" "runners_v2" {
   min_size            = 1
   desired_capacity    = 2
 
-  health_check_grace_period = 60
+  health_check_grace_period = 90
 
   # インスタンス置き換え時は可用性を優先する
   instance_maintenance_policy {
