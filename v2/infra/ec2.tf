@@ -65,13 +65,15 @@ resource "aws_launch_template" "runner_v2" {
 }
 
 resource "aws_autoscaling_group" "runners_v2" {
-  name                = "${local.project}-runners-v2"
-  vpc_zone_identifier = [for k, v in local.subnets : aws_subnet.main[k].id if v.public]
-  max_size            = 6
-  min_size            = 1
-  desired_capacity    = 2
+  name                  = "${local.project}-runners-v2"
+  vpc_zone_identifier   = [for k, v in local.subnets : aws_subnet.main[k].id if v.public]
+  max_size              = 6
+  min_size              = 1
+  desired_capacity      = 2
+  desired_capacity_type = "units"
+  capacity_rebalance    = true
 
-  health_check_grace_period = 90
+  health_check_grace_period = 60
 
   # インスタンス置き換え時は可用性を優先する
   instance_maintenance_policy {
@@ -111,12 +113,21 @@ resource "aws_autoscaling_group" "runners_v2" {
       }
 
       override {
-        instance_type = "t4g.medium"
+        instance_type     = "t4g.medium"
+        weighted_capacity = "3"
+      }
+
+      override {
+        instance_type     = "m7g.medium"
+        weighted_capacity = "2"
       }
     }
 
     instances_distribution {
       on_demand_percentage_above_base_capacity = "0"
+      on_demand_base_capacity                  = 1
+      spot_allocation_strategy                 = "price-capacity-optimized"
+      spot_instance_pools                      = 0
     }
   }
 
