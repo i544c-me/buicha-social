@@ -1,5 +1,5 @@
-resource "aws_lb" "app_v3" {
-  name               = "${local.project}-runners-v3"
+resource "aws_lb" "app_v4" {
+  name               = "${local.project}-runners-v4"
   load_balancer_type = "application"
 
   ip_address_type = "dualstack-without-public-ipv4" # IPv6 only
@@ -13,8 +13,8 @@ resource "aws_lb" "app_v3" {
   idle_timeout = 4000 # Websocket の接続が切れる頻度を減らすため
 }
 
-resource "aws_lb_listener" "app_v3" {
-  load_balancer_arn = aws_lb.app_v3.arn
+resource "aws_lb_listener" "app_v4" {
+  load_balancer_arn = aws_lb.app_v4.arn
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
@@ -25,7 +25,7 @@ resource "aws_lb_listener" "app_v3" {
 
     forward {
       target_group {
-        arn = aws_lb_target_group.app_v3["blue"].arn
+        arn = aws_lb_target_group.app_v4["blue"].arn
       }
     }
   }
@@ -36,10 +36,10 @@ resource "aws_lb_listener" "app_v3" {
   }
 }
 
-resource "aws_lb_target_group" "app_v3" {
+resource "aws_lb_target_group" "app_v4" {
   for_each = toset(["blue", "green"])
 
-  name     = "${local.project}-app-v3-${each.value}"
+  name     = "${local.project}-app-v4-${each.value}"
   vpc_id   = aws_vpc.main.id
   protocol = "HTTP"
   port     = 3000

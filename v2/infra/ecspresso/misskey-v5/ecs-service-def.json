@@ -11,8 +11,8 @@
       "enable": false,
       "rollback": false
     },
-    "maximumPercent": 150,
-    "minimumHealthyPercent": 50
+    "maximumPercent": 200,
+    "minimumHealthyPercent": 100
   },
   "deploymentController": {
     "type": "CODE_DEPLOY"
@@ -26,13 +26,17 @@
     {
       "containerName": "app",
       "containerPort": 3000,
-      "targetGroupArn": "{{ tfstate `aws_lb_target_group.app_v3['blue'].arn` }}"
+      "targetGroupArn": "{{ tfstate `aws_lb_target_group.app_v4['blue'].arn` }}"
     }
   ],
   "placementStrategy": [
     {
-      "field": "MEMORY",
-      "type": "binpack"
+      "type": "spread",
+      "field": "attribute:ecs.availability-zone"
+    },
+    {
+      "type": "spread",
+      "field": "instanceId"
     }
   ],
   "propagateTags": "NONE",
