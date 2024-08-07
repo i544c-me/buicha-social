@@ -3,7 +3,7 @@
     {
       "cpu": 256,
       "essential": true,
-      "image": "ghcr.io/i544c-me/summaly:v5.1.0-buiso.1",
+      "image": "ghcr.io/i544c-me/summaly:5.1.0-buiso.2",
       "linuxParameters": {
         "initProcessEnabled": true
       },
