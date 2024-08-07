@@ -53,7 +53,7 @@ resource "aws_launch_template" "runner_v2" {
   }
 
   credit_specification {
-    cpu_credits = "standard"
+    cpu_credits = "unlimited"
   }
 
   tag_specifications {
