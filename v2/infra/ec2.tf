@@ -37,7 +37,7 @@ resource "aws_iam_instance_profile" "main" {
   role = aws_iam_role.ecs_instance.id
 }
 
-resource "aws_launch_template" "runner_v2" {
+resource "aws_launch_template" "runner_v2_arm64" {
   name                   = "${local.project}-runner-v2"
   instance_type          = "t4g.medium"
   vpc_security_group_ids = [aws_security_group.runner.id]
@@ -59,7 +59,34 @@ resource "aws_launch_template" "runner_v2" {
   tag_specifications {
     resource_type = "instance"
     tags = {
-      Name = "${local.project}-runner-v2"
+      Name = "${local.project}-runner-v2-arm64"
+    }
+  }
+}
+
+resource "aws_launch_template" "runner_v2_x86_64" {
+  name                   = "${local.project}-runner-v2-intel"
+  instance_type          = "t2.medium"
+  vpc_security_group_ids = [aws_security_group.runner.id]
+  user_data              = base64encode(replace(file("${path.module}/bin/init-ec2.sh"), "CLUSTER_NAME", aws_ecs_cluster.main_v2.name))
+
+  # With AMI name mentioned in the comments
+  # amiFilter=[{"Name":"owner-alias","Values":["amazon"]},{"Name":"name","Values":["al2023-ami-ecs-hvm-*-x86_64"]}]
+  # currentImageName=al2023-ami-ecs-hvm-2023.0.20240802-kernel-6.1-x86_64
+  image_id = "ami-072f0ffb9f5abdd87"
+
+  iam_instance_profile {
+    name = aws_iam_instance_profile.main.id
+  }
+
+  credit_specification {
+    cpu_credits = "unlimited"
+  }
+
+  tag_specifications {
+    resource_type = "instance"
+    tags = {
+      Name = "${local.project}-runner-v2-x86_64"
     }
   }
 }
@@ -111,19 +138,23 @@ resource "aws_autoscaling_group" "runners_v2" {
   mixed_instances_policy {
     launch_template {
       launch_template_specification {
-        launch_template_id = aws_launch_template.runner_v2.id
-        version            = aws_launch_template.runner_v2.latest_version
+        launch_template_id = aws_launch_template.runner_v2_arm64.id
+        version            = aws_launch_template.runner_v2_arm64.latest_version
       }
 
       override {
-        instance_type = "t4g.medium"
-        #weighted_capacity = "3"
+        instance_type     = "t4g.medium"
+        weighted_capacity = "3"
       }
 
-      #override {
-      #  instance_type     = "m7g.medium"
-      #  weighted_capacity = "2"
-      #}
+      override {
+        instance_type     = "t2.medium"
+        weighted_capacity = "2"
+        launch_template_specification {
+          launch_template_id = aws_launch_template.runner_v2_x86_64.id
+          version            = aws_launch_template.runner_v2_x86_64.latest_version
+        }
+      }
     }
 
     instances_distribution {
