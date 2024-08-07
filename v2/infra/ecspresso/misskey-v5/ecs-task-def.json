@@ -9,7 +9,7 @@
         }
       ],
       "essential": true,
-      "image": "ghcr.io/i544c-me/buicha-social-misskey:2024.5.0-buiso.4",
+      "image": "ghcr.io/i544c-me/buicha-social-misskey:2024.7.0-buiso.2",
       "linuxParameters": {
         "initProcessEnabled": true
       },
