@@ -71,7 +71,10 @@ resource "aws_autoscaling_group" "runners_v2" {
   min_size              = 1
   desired_capacity      = 2
   desired_capacity_type = "units"
-  capacity_rebalance    = true
+
+  # TODO: これを有効にするとキャパシティ低下を事前に予測できる
+  # しかし m7g.medium が T2 Unlimited に対応していないとかでエラーになるので、それが解決できるまでは無効にしておく
+  capacity_rebalance = false
 
   health_check_grace_period = 60
 
@@ -113,14 +116,14 @@ resource "aws_autoscaling_group" "runners_v2" {
       }
 
       override {
-        instance_type     = "t4g.medium"
-        weighted_capacity = "3"
+        instance_type = "t4g.medium"
+        #weighted_capacity = "3"
       }
 
-      override {
-        instance_type     = "m7g.medium"
-        weighted_capacity = "2"
-      }
+      #override {
+      #  instance_type     = "m7g.medium"
+      #  weighted_capacity = "2"
+      #}
     }
 
     instances_distribution {
