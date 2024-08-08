@@ -99,8 +99,7 @@ resource "aws_autoscaling_group" "runners_v2" {
   desired_capacity      = 2
   desired_capacity_type = "units"
 
-  # TODO: これを有効にするとキャパシティ低下を事前に予測できる
-  # しかし m7g.medium が T2 Unlimited に対応していないとかでエラーになるので、それが解決できるまでは無効にしておく
+  # これを有効にするとキャパシティ低下を事前に予測できる
   capacity_rebalance = true
 
   health_check_grace_period = 60
@@ -149,7 +148,7 @@ resource "aws_autoscaling_group" "runners_v2" {
 
       override {
         instance_type     = "t2.medium"
-        weighted_capacity = "1"
+        weighted_capacity = "2"
         launch_template_specification {
           launch_template_id = aws_launch_template.runner_v2_x86_64.id
           version            = aws_launch_template.runner_v2_x86_64.latest_version
@@ -159,7 +158,6 @@ resource "aws_autoscaling_group" "runners_v2" {
 
     instances_distribution {
       on_demand_percentage_above_base_capacity = "0"
-      on_demand_base_capacity                  = 1
       spot_allocation_strategy                 = "price-capacity-optimized"
       spot_instance_pools                      = 0
     }
