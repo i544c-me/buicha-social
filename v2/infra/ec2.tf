@@ -99,9 +99,8 @@ resource "aws_autoscaling_group" "runners_v2" {
   desired_capacity      = 2
   desired_capacity_type = "units"
 
-  # TODO: これを有効にするとキャパシティ低下を事前に予測できる
-  # しかし m7g.medium が T2 Unlimited に対応していないとかでエラーになるので、それが解決できるまでは無効にしておく
-  capacity_rebalance = false
+  # これを有効にするとキャパシティ低下を事前に予測できる
+  capacity_rebalance = true
 
   health_check_grace_period = 60
 
@@ -159,7 +158,6 @@ resource "aws_autoscaling_group" "runners_v2" {
 
     instances_distribution {
       on_demand_percentage_above_base_capacity = "0"
-      on_demand_base_capacity                  = 1
       spot_allocation_strategy                 = "price-capacity-optimized"
       spot_instance_pools                      = 0
     }
