@@ -101,7 +101,7 @@ resource "aws_autoscaling_group" "runners_v2" {
 
   # TODO: これを有効にするとキャパシティ低下を事前に予測できる
   # しかし m7g.medium が T2 Unlimited に対応していないとかでエラーになるので、それが解決できるまでは無効にしておく
-  capacity_rebalance = false
+  capacity_rebalance = true
 
   health_check_grace_period = 60
 
@@ -149,7 +149,7 @@ resource "aws_autoscaling_group" "runners_v2" {
 
       override {
         instance_type     = "t2.medium"
-        weighted_capacity = "2"
+        weighted_capacity = "1"
         launch_template_specification {
           launch_template_id = aws_launch_template.runner_v2_x86_64.id
           version            = aws_launch_template.runner_v2_x86_64.latest_version
