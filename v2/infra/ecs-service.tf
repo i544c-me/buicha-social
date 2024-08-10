@@ -1,5 +1,5 @@
 locals {
-  min_tasks = 6
+  min_tasks = 4
   max_tasks = 12
 }
 
