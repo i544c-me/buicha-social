@@ -45,8 +45,8 @@ resource "aws_launch_template" "runner_v2_arm64" {
 
   # With AMI name mentioned in the comments
   # amiFilter=[{"Name":"owner-alias","Values":["amazon"]},{"Name":"name","Values":["al2023-ami-ecs-hvm-*-arm64"]}]
-  # currentImageName=al2023-ami-ecs-hvm-2023.0.20240730-kernel-6.1-arm64
-  image_id = "ami-0e82876f0279700c6"
+  # currentImageName=al2023-ami-ecs-hvm-2023.0.20240807-kernel-6.1-arm64
+  image_id = "ami-043df6ccca357ecdf"
 
   iam_instance_profile {
     name = aws_iam_instance_profile.main.id
@@ -72,8 +72,8 @@ resource "aws_launch_template" "runner_v2_x86_64" {
 
   # With AMI name mentioned in the comments
   # amiFilter=[{"Name":"owner-alias","Values":["amazon"]},{"Name":"name","Values":["al2023-ami-ecs-hvm-*-x86_64"]}]
-  # currentImageName=al2023-ami-ecs-hvm-2023.0.20240802-kernel-6.1-x86_64
-  image_id = "ami-072f0ffb9f5abdd87"
+  # currentImageName=al2023-ami-ecs-hvm-2023.0.20240807-kernel-6.1-x86_64
+  image_id = "ami-0502f5e2c7ed3ca69"
 
   iam_instance_profile {
     name = aws_iam_instance_profile.main.id
