@@ -142,13 +142,11 @@ resource "aws_autoscaling_group" "runners_v2" {
       }
 
       override {
-        instance_type     = "t4g.medium"
-        weighted_capacity = "3"
+        instance_type = "t4g.medium"
       }
 
       override {
-        instance_type     = "t2.medium"
-        weighted_capacity = "2"
+        instance_type = "t3.medium"
         launch_template_specification {
           launch_template_id = aws_launch_template.runner_v2_x86_64.id
           version            = aws_launch_template.runner_v2_x86_64.latest_version
