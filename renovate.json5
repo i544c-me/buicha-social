@@ -30,10 +30,18 @@
       "groupName": "terraform-providers",
       "matchDepNames": ["hashicorp/terraform"],
     },
+
+    // AMI ID の更新
     {
-      // AMI ID の更新
       "matchDepNames": ["image_id"],
       "automerge": false,
+    },
+
+    // aqua の更新だけ rebase を無効化する
+    // aqua の checksum 更新で上手く automerge しなくなるため
+    {
+      "matchFileNames": ["aqua.yaml"],
+      "rebaseWhen": "never",
     },
   ],
 
