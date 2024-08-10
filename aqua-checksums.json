@@ -1,6 +1,21 @@
 {
   "checksums": [
     {
+      "id": "github_release/github.com/int128/ghcp/v1.13.3/ghcp_darwin_amd64.zip",
+      "checksum": "65F82572A1F280E2D83EEA4505436646642153F2F709B0839729CF3272A85F8B",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/int128/ghcp/v1.13.3/ghcp_linux_amd64.zip",
+      "checksum": "8B3A1F25A9A5E69CB6306EE88F92D4BB931D343AD1E907FC5DC67491D3985EA4",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/int128/ghcp/v1.13.3/ghcp_windows_amd64.zip",
+      "checksum": "EFDA555E2E44033492F861B2F6AFFFFF5BD423E1E4FB93402DD790C167439710",
+      "algorithm": "sha256"
+    },
+    {
       "id": "github_release/github.com/kayac/ecspresso/v2.3.6/ecspresso_2.3.6_darwin_amd64.tar.gz",
       "checksum": "75BC616C22CC178FA3757B097D46EEAD8F469E50893F7AD2D02F8B2377588C98",
       "algorithm": "sha256"
@@ -28,6 +43,31 @@
     {
       "id": "github_release/github.com/kayac/ecspresso/v2.3.6/ecspresso_2.3.6_windows_arm64.tar.gz",
       "checksum": "D192A139F9464E056D47A3FE649DA7B51C23DED10A151478C4532936807DC343",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/terraform-linters/tflint/v0.52.0/tflint_darwin_amd64.zip",
+      "checksum": "84461B03E780EC68A7D294D0D0522E6215901AF620067637DAADDE3B99C7D649",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/terraform-linters/tflint/v0.52.0/tflint_darwin_arm64.zip",
+      "checksum": "40F7EE2DBEB8E7CBD5AB7B10912F60EB14AA4FBFF62603EEB67FDB5F7CBB794A",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/terraform-linters/tflint/v0.52.0/tflint_linux_amd64.zip",
+      "checksum": "BF758FF29B607B3FBC4A3630EA3B39DF4AFAFE3CDB80C6D71FE528FEEAC2C58E",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/terraform-linters/tflint/v0.52.0/tflint_linux_arm64.zip",
+      "checksum": "592F29C71D7F18CCB0BDB72C577BCD54B8A267EF31467D8B37AE6B630334E448",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/terraform-linters/tflint/v0.52.0/tflint_windows_amd64.zip",
+      "checksum": "FED6FF15EE10DB34A23044AC0D4DA8FDC1F2F3663B32EC85D388374DD95670AA",
       "algorithm": "sha256"
     },
     {
