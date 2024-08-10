@@ -1,8 +1,5 @@
 name: Renovate
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
   schedule:
     - cron: "0 1 * * 6,0" # 週末に実行
