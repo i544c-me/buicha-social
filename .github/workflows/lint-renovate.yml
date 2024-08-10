@@ -3,16 +3,33 @@ on:
   push:
     paths:
       - renovate.json5
+      - .github/workflows/lint-renovate.yml
+  workflow_dispatch:
 
 permissions:
   contents: read
   pull-requests: read
+  id-token: write # AWS OIDC
 
 jobs:
   lint-renovate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        id: aws-credentials
+        with:
+          aws-region: ap-northeast-1
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE }}
+          output-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
       - uses: cybozu/renovate-dry-run-action@v2
         with:
           config-file: renovate.json5
+        env:
+          # AMI ID 更新のため必要
+          AWS_REGION: ap-northeast-1
+          AWS_ACCESS_KEY_ID: ${{ steps.aws-credentials.outputs.aws-access-key-id }}
+          AWS_SECRET_ACCESS_KEY: ${{ steps.aws-credentials.outputs.aws-secret-access-key }}

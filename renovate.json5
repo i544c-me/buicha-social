@@ -7,35 +7,33 @@
     "github>aquaproj/aqua-renovate-config#2.3.1",
   ],
   "dependencyDashboard": true,
+  "automerge": true,
   "packageRules": [
-    // required_version と .tool-versions を同時にアップデートする
+    // Terraform やそのプロバイダーのバージョンアップをまとめ、これは AutoMerge しない
     {
-      "groupName": "terraform-version",
-      "matchManagers": ["terraform"],
-      "matchDepTypes": ["required_version"]
-    },
-    {
-      "groupName": "terraform-version",
+      "groupName": "terraform-providers",
       "matchManagers": ["asdf"],
-      "matchDepNames": ["terraform", "tflint"]
+      "matchDepNames": ["terraform", "tflint"],
+      "automerge": false,
     },
     {
-      "groupName": "terraform-version",
+      "groupName": "terraform-providers",
       "matchManagers": ["tflint-plugin"],
-      "matchDepNames": ["terraform-linters/tflint-ruleset-aws"]
+      "matchDepNames": ["terraform-linters/tflint-ruleset-aws"],
     },
-    // aqua のパッケージ群も同時にアップデート
-    {
-      "groupName": "terraform-version",
-      "matchDepNames": ["aquaproj/aqua-registry", "aquaproj/aqua-renovate-config", "aws/aws-cli", "hashicorp/terraform"],
-    },
-
-
-    // Terraform のプロバイダを同時にアップデートする
     {
       "groupName": "terraform-providers",
       "matchManagers": ["terraform"],
-      "matchDepNames": ["aws", "cloudflare", "tls"]
+    },
+    {
+      // aqua での terraform のバージョン管理
+      "groupName": "terraform-providers",
+      "matchDepNames": ["hashicorp/terraform"],
+    },
+    {
+      // AMI ID の更新
+      "matchDepNames": ["image_id"],
+      "automerge": false,
     },
   ],
 
