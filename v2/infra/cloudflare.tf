@@ -6,7 +6,7 @@ resource "cloudflare_record" "main" {
   zone_id = data.cloudflare_zone.main.id
   name    = local.main_domain
   type    = "CNAME"
-  value   = aws_lb.app_v4.dns_name
+  content = aws_lb.app_v4.dns_name
   proxied = true
 }
 
@@ -44,7 +44,7 @@ resource "cloudflare_record" "ses_dkim" {
   zone_id = data.cloudflare_zone.main.id
   name    = "${each.value}._domainkey.${local.main_domain}"
   type    = "CNAME"
-  value   = "${each.value}.dkim.amazonses.com"
+  content = "${each.value}.dkim.amazonses.com"
   comment = "v2 buicha.social SES DKIM"
 
   depends_on = [aws_ses_domain_dkim.buicha_social]
@@ -54,7 +54,7 @@ resource "cloudflare_record" "ses_spf" {
   zone_id = data.cloudflare_zone.main.id
   name    = "mail"
   type    = "TXT"
-  value   = "v=spf1 include:amazonses.com include:_spf.google.com -all"
+  content = "v=spf1 include:amazonses.com include:_spf.google.com -all"
   comment = "v2 buicha.social SES SPF"
 }
 
@@ -63,7 +63,7 @@ resource "cloudflare_record" "ses_mailfrom" {
   name     = "mail"
   type     = "MX"
   priority = 10
-  value    = "feedback-smtp.ap-northeast-1.amazonses.com"
+  content  = "feedback-smtp.ap-northeast-1.amazonses.com"
   comment  = "v2 buicha.social SES Feedback"
 }
 
@@ -71,7 +71,7 @@ resource "cloudflare_record" "ses_dmark" {
   zone_id = data.cloudflare_zone.main.id
   name    = "_dmarc"
   type    = "TXT"
-  value   = "v=DMARC1;p=reject;rua=mailto:42feccfa6c8b4b90a3beaea05b8bb132@dmarc-reports.cloudflare.net;"
+  content = "v=DMARC1;p=reject;rua=mailto:42feccfa6c8b4b90a3beaea05b8bb132@dmarc-reports.cloudflare.net;"
   comment = "v2 buicha.social SES DMARK"
 }
 
@@ -90,6 +90,6 @@ resource "cloudflare_record" "domain_cert_alb" {
   zone_id = data.cloudflare_zone.main.id
   name    = each.value.name
   type    = each.value.type
-  value   = each.value.value
+  content = each.value.value
   comment = "${local.main_domain} v2 ACM for ALB"
 }
