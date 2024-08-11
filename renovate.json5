@@ -41,6 +41,7 @@
     // aqua の checksum 更新で上手く automerge しなくなるため
     {
       "matchFileNames": ["aqua.yaml"],
+      "ignoreDeps": ["hashicorp/terraform"],
       "rebaseWhen": "never",
     },
   ],
