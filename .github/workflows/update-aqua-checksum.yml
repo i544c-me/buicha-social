@@ -25,5 +25,6 @@ jobs:
       pull-requests: write
     env:
       PR_URL: ${{ github.event.pull_request.html_url }}
+      GH_TOKEN: ${{ github.token }}
     steps:
       - run: gh pr merge --merge --auto "$PR_URL"
