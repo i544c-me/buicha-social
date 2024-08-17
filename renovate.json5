@@ -20,15 +20,18 @@
       "groupName": "terraform-providers",
       "matchManagers": ["tflint-plugin"],
       "matchDepNames": ["terraform-linters/tflint-ruleset-aws"],
+      "automerge": false,
     },
     {
       "groupName": "terraform-providers",
       "matchManagers": ["terraform"],
+      "automerge": false,
     },
     {
       // aqua での terraform のバージョン管理
       "groupName": "terraform-providers",
       "matchDepNames": ["hashicorp/terraform"],
+      "automerge": false,
     },
 
     // AMI ID の更新
