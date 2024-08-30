@@ -19,6 +19,14 @@ resource "aws_iam_role" "ecs_tasks" {
         Principal = {
           Service = "ecs-tasks.amazonaws.com"
         }
+        Condition = {
+          ArnLike = {
+            "aws:SourceArn" = "arn:aws:ecs:ap-northeast-1:${local.account_id}:*"
+          }
+          StringEquals = {
+            "aws:SourceAccount" = local.account_id
+          }
+        }
       }
     ]
   })
