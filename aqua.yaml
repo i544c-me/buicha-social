@@ -12,4 +12,4 @@ packages:
 - name: hashicorp/terraform@v1.9.6
 - name: terraform-linters/tflint@v0.53.0
 - name: kayac/ecspresso@v2.4.1
-- name: int128/ghcp@v1.13.3 # for update-aqua-checksum
+- name: int128/ghcp@v1.13.4 # for update-aqua-checksum
