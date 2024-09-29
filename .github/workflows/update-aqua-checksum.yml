@@ -17,14 +17,14 @@ jobs:
       gh_app_id: ${{ vars.RENOVATE_APP_ID }}
       gh_app_private_key: ${{ secrets.RENOVATE_APP_PRIVATE_KEY }}
 
-  merge:
-    needs: update-aqua-checksums
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-    env:
-      PR_URL: ${{ github.event.pull_request.html_url }}
-      GH_TOKEN: ${{ github.token }}
-    steps:
-      - run: gh pr merge --merge --auto "$PR_URL"
+  #merge:
+  #  needs: update-aqua-checksums
+  #  runs-on: ubuntu-latest
+  #  permissions:
+  #    contents: write
+  #    pull-requests: write
+  #  env:
+  #    PR_URL: ${{ github.event.pull_request.html_url }}
+  #    GH_TOKEN: ${{ github.token }}
+  #  steps:
+  #    - run: gh pr merge --merge --auto "$PR_URL"
