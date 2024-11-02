@@ -8,7 +8,7 @@ registries:
 - type: standard
   ref: v4.227.0 # renovate: depName=aquaproj/aqua-registry
 packages:
-- name: aws/aws-cli@2.18.10
+- name: aws/aws-cli@2.19.1
 - name: hashicorp/terraform@v1.9.6
 - name: terraform-linters/tflint@v0.53.0
 - name: kayac/ecspresso@v2.4.2
