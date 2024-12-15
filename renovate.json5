@@ -4,7 +4,7 @@
     "config:base",
     ":label(renovate)",
     "schedule:weekends",
-    "github>aquaproj/aqua-renovate-config#2.5.0",
+    "github>aquaproj/aqua-renovate-config#2.6.0",
   ],
   "dependencyDashboard": true,
   "automerge": true,
