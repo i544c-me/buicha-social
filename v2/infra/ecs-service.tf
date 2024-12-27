@@ -53,6 +53,11 @@ resource "aws_appautoscaling_target" "ecs_target_v5" {
   scalable_dimension = "ecs:service:DesiredCount"
   min_capacity       = local.min_tasks
   max_capacity       = local.max_tasks
+
+  lifecycle {
+    # NOTE: スケジュールで変更する場合もあるため
+    ignore_changes = [min_capacity, max_capacity]
+  }
 }
 
 resource "aws_appautoscaling_policy" "ecs_policy_v5" {
@@ -69,5 +74,35 @@ resource "aws_appautoscaling_policy" "ecs_policy_v5" {
     predefined_metric_specification {
       predefined_metric_type = "ECSServiceAverageCPUUtilization"
     }
+  }
+}
+
+resource "aws_appautoscaling_scheduled_action" "akeome_2025_scale_out" {
+  name               = "akeome-2025-scale-out"
+  service_namespace  = aws_appautoscaling_target.ecs_target_v5.service_namespace
+  resource_id        = aws_appautoscaling_target.ecs_target_v5.resource_id
+  scalable_dimension = aws_appautoscaling_target.ecs_target_v5.scalable_dimension
+
+  timezone = "Asia/Tokyo"
+  schedule = "at(2024-12-31T22:00:00)"
+
+  scalable_target_action {
+    min_capacity = 8
+    max_capacity = 12
+  }
+}
+
+resource "aws_appautoscaling_scheduled_action" "akeome_2025_scale_in" {
+  name               = "akeome-2025-scale-in"
+  service_namespace  = aws_appautoscaling_target.ecs_target_v5.service_namespace
+  resource_id        = aws_appautoscaling_target.ecs_target_v5.resource_id
+  scalable_dimension = aws_appautoscaling_target.ecs_target_v5.scalable_dimension
+
+  timezone = "Asia/Tokyo"
+  schedule = "at(2025-01-01T03:00:00)"
+
+  scalable_target_action {
+    min_capacity = local.min_tasks
+    max_capacity = local.max_tasks
   }
 }
