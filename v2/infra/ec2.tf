@@ -155,7 +155,7 @@ resource "aws_autoscaling_group" "runners_v2" {
     }
 
     instances_distribution {
-      on_demand_percentage_above_base_capacity = "0"
+      on_demand_percentage_above_base_capacity = "1"
       spot_allocation_strategy                 = "price-capacity-optimized"
       spot_instance_pools                      = 0
     }
