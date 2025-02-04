@@ -60,11 +60,11 @@ resource "aws_lb_target_group" "app_v4" {
 }
 
 #resource "aws_lb_listener_rule" "admin" {
-#  listener_arn = aws_lb_listener.app.arn
+#  listener_arn = aws_lb_listener.app_v4.arn
 #  priority     = 10
 #  action {
 #    type             = "forward"
-#    target_group_arn = aws_lb_target_group.app.arn
+#    target_group_arn = aws_lb_target_group.app_v4["green"].arn
 #  }
 #  condition {
 #    http_header {
@@ -73,9 +73,9 @@ resource "aws_lb_target_group" "app_v4" {
 #    }
 #  }
 #}
-
+#
 #resource "aws_lb_listener_rule" "maintenance" {
-#  listener_arn = aws_lb_listener.app.arn
+#  listener_arn = aws_lb_listener.app_v4.arn
 #  priority     = 100
 #
 #  action {
