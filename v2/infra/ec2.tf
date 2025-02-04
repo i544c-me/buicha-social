@@ -44,9 +44,9 @@ resource "aws_launch_template" "runner_v2_arm64" {
   user_data              = base64encode(replace(file("${path.module}/bin/init-ec2.sh"), "CLUSTER_NAME", aws_ecs_cluster.main_v2.name))
 
   # With AMI name mentioned in the comments
-  # amiFilter=[{"Name":"owner-alias","Values":["amazon"]},{"Name":"name","Values":["al2023-ami-ecs-hvm-*-arm64"]}]
-  # currentImageName=al2023-ami-ecs-hvm-2023.0.20241217-kernel-6.1-arm64
-  image_id = "ami-0f07b31ae158be656"
+  # amiFilter=[{"Name":"owner-alias","Values":["amazon"]},{"Name":"name","Values":["bottlerocket-aws-ecs-2-aarch64-*"]}]
+  # currentImageName=bottlerocket-aws-ecs-2-aarch64-v1.32.0-cacc4ce9
+  image_id = "ami-0ec4ca9b013b9ad1a"
 
   iam_instance_profile {
     name = aws_iam_instance_profile.main.id
@@ -71,9 +71,9 @@ resource "aws_launch_template" "runner_v2_x86_64" {
   user_data              = base64encode(replace(file("${path.module}/bin/init-ec2.sh"), "CLUSTER_NAME", aws_ecs_cluster.main_v2.name))
 
   # With AMI name mentioned in the comments
-  # amiFilter=[{"Name":"owner-alias","Values":["amazon"]},{"Name":"name","Values":["al2023-ami-ecs-hvm-*-x86_64"]}]
-  # currentImageName=al2023-ami-ecs-hvm-2023.0.20241217-kernel-6.1-x86_64
-  image_id = "ami-0ee091be3145fd1e2"
+  # amiFilter=[{"Name":"owner-alias","Values":["amazon"]},{"Name":"name","Values":["bottlerocket-aws-ecs-2-x86_64-*"]}]
+  # currentImageName=bottlerocket-aws-ecs-2-x86_64-v1.32.0-cacc4ce9
+  image_id = "ami-0ba7717acf62c044b"
 
   iam_instance_profile {
     name = aws_iam_instance_profile.main.id
