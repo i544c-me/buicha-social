@@ -6,6 +6,10 @@
         {
           "name": "MISSKEY_BLOCK_MENTIONS_FROM_UNFAMILIAR_REMOTE_USERS",
           "value": "true"
+        },
+        {
+          "name": "COREPACK_DEFAULT_TO_LATEST",
+          "value": "0"
         }
       ],
       "essential": true,
