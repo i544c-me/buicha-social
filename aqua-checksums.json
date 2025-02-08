@@ -56,28 +56,28 @@
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/terraform-linters/tflint/v0.54.0/tflint_darwin_amd64.zip",
-      "checksum": "2049AB0085B8480628C0CFD61582E6922E6BF089568473A38D425D25567FB5D7",
+      "id": "github_release/github.com/terraform-linters/tflint/v0.55.1/tflint_darwin_amd64.zip",
+      "checksum": "98B1C04030F24B98398413A3A82A9646CD607A958D07576F0151773A6DED30FC",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/terraform-linters/tflint/v0.54.0/tflint_darwin_arm64.zip",
-      "checksum": "D96AD0781423DBF74BCC2D24B4026AFF03D914B22F73AA488D3DC3436FA9EBE7",
+      "id": "github_release/github.com/terraform-linters/tflint/v0.55.1/tflint_darwin_arm64.zip",
+      "checksum": "E1F9F843A7BC4CF9631B30E7D65BEDA6FD5E8013DAA91D3A35E23C606A360E50",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/terraform-linters/tflint/v0.54.0/tflint_linux_amd64.zip",
-      "checksum": "16D062EBB3D2D199463FB93E17644C27FEB57CB6175BABECBCE3E8D34F4956C6",
+      "id": "github_release/github.com/terraform-linters/tflint/v0.55.1/tflint_linux_amd64.zip",
+      "checksum": "53379F38BC1E86C18885BFC85DC5FE2CD1F59729AE9A2AFA16905189C1D67AA9",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/terraform-linters/tflint/v0.54.0/tflint_linux_arm64.zip",
-      "checksum": "D458B92310307A792984E062B464913E3C2EFB3E304FC8448DAF1E06E9E44FDA",
+      "id": "github_release/github.com/terraform-linters/tflint/v0.55.1/tflint_linux_arm64.zip",
+      "checksum": "3D5D6E1E749AE1D46C153DD6FAC358CDFA76DF475DE8F2660A91FF531021F93B",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/terraform-linters/tflint/v0.54.0/tflint_windows_amd64.zip",
-      "checksum": "E11133209B031CCC055936BF8A1472B3B71993F9658A27E6B5863D793C6873A3",
+      "id": "github_release/github.com/terraform-linters/tflint/v0.55.1/tflint_windows_amd64.zip",
+      "checksum": "667E8333EED843298BA1FD1120776784C0DACC17DE25E253BC8A67B03ADBE87D",
       "algorithm": "sha256"
     },
     {
