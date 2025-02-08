@@ -26,7 +26,7 @@ resource "aws_security_group_rule" "rds_v2_ingress" {
 }
 
 resource "aws_db_instance" "main" {
-  allocated_storage           = 20
+  allocated_storage           = 30
   identifier                  = local.project
   db_name                     = local.project
   engine                      = "postgres"
