@@ -9,7 +9,7 @@ registries:
   ref: v4.314.0 # renovate: depName=aquaproj/aqua-registry
 packages:
 - name: aws/aws-cli@2.24.5
-- name: hashicorp/terraform@v1.10.3
+- name: hashicorp/terraform@v1.10.5
 - name: terraform-linters/tflint@v0.55.1
 - name: kayac/ecspresso@v2.4.5
 - name: int128/ghcp@v1.13.5 # for update-aqua-checksum
