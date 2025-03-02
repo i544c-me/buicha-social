@@ -11,5 +11,5 @@ packages:
 - name: aws/aws-cli@2.24.15
 - name: hashicorp/terraform@v1.10.3
 - name: terraform-linters/tflint@v0.55.1
-- name: kayac/ecspresso@v2.4.5
+- name: kayac/ecspresso@v2.4.6
 - name: int128/ghcp@v1.13.5 # for update-aqua-checksum
