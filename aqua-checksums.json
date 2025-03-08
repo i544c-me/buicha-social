@@ -96,28 +96,28 @@
       "algorithm": "sha256"
     },
     {
-      "id": "http/releases.hashicorp.com/terraform/1.10.3/terraform_1.10.3_darwin_amd64.zip",
-      "checksum": "A7FF68A57EAD3CA7AC0A4D055B5F08A2CE0474E371D935E75398FE7F864BA65E",
+      "id": "http/releases.hashicorp.com/terraform/1.11.1/terraform_1.11.1_darwin_amd64.zip",
+      "checksum": "5A07AE8D246D3CCA5FB32EC988CC78824DDC03A166BA175E5C7D002F42F8FFA7",
       "algorithm": "sha256"
     },
     {
-      "id": "http/releases.hashicorp.com/terraform/1.10.3/terraform_1.10.3_darwin_arm64.zip",
-      "checksum": "EA4DFB077425A179EE45E90DAA255D21EF976867D347EDCC4526F71370ABBAF3",
+      "id": "http/releases.hashicorp.com/terraform/1.11.1/terraform_1.11.1_darwin_arm64.zip",
+      "checksum": "94EDBA167CB2F6428FE849688AF67B2A91696BE4DC1152B6AC94487D826EC8E6",
       "algorithm": "sha256"
     },
     {
-      "id": "http/releases.hashicorp.com/terraform/1.10.3/terraform_1.10.3_linux_amd64.zip",
-      "checksum": "EA3020DB6B53C25A4A84E40CDC36C1A86DF26967D718219AB4C71B44435DA81E",
+      "id": "http/releases.hashicorp.com/terraform/1.11.1/terraform_1.11.1_linux_amd64.zip",
+      "checksum": "1AF58F77958186227BCE9AE4D9B08E004FB0902C7A6BDC813CDBAB88739F9316",
       "algorithm": "sha256"
     },
     {
-      "id": "http/releases.hashicorp.com/terraform/1.10.3/terraform_1.10.3_linux_arm64.zip",
-      "checksum": "B92D8245C67D4F7193245BC9D534048A63520302B6EDB3C7764277B00C96ED31",
+      "id": "http/releases.hashicorp.com/terraform/1.11.1/terraform_1.11.1_linux_arm64.zip",
+      "checksum": "35EBB4F6A34CEC8A5F7983D6D7E25E115F4B8958AC13BD306FE76DCEC80967EC",
       "algorithm": "sha256"
     },
     {
-      "id": "http/releases.hashicorp.com/terraform/1.10.3/terraform_1.10.3_windows_amd64.zip",
-      "checksum": "9D465D32A833843962FC6A93F74D170C93716E34C0B6480E21650CE84426AE86",
+      "id": "http/releases.hashicorp.com/terraform/1.11.1/terraform_1.11.1_windows_amd64.zip",
+      "checksum": "CE6545EA2A69B90332ADE80CAC5C43D891B8AA647C394B5D576EAE8A7DB22CC1",
       "algorithm": "sha256"
     },
     {
