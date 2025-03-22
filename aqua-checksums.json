@@ -81,18 +81,18 @@
       "algorithm": "sha256"
     },
     {
-      "id": "http/awscli.amazonaws.com/AWSCLIV2-2.24.24.pkg",
-      "checksum": "B9370174DA6EB248F77E1FB21DCC135C7E4BB638247895F2D82207B8421A79F4",
+      "id": "http/awscli.amazonaws.com/AWSCLIV2-2.25.1.pkg",
+      "checksum": "130CFDD0A995B602926882C4D56B702189BBD88CD636105421036BEBD65108D3",
       "algorithm": "sha256"
     },
     {
-      "id": "http/awscli.amazonaws.com/awscli-exe-linux-aarch64-2.24.24.zip",
-      "checksum": "7CB7118C628DE15570DE2AD4492A8D01F31E78AF120E98604B271331AAC28705",
+      "id": "http/awscli.amazonaws.com/awscli-exe-linux-aarch64-2.25.1.zip",
+      "checksum": "CB58A06B2363BF74AEA9CDBD2FE8B17DBBC5BE5FE05D67C7472BF29691A90F35",
       "algorithm": "sha256"
     },
     {
-      "id": "http/awscli.amazonaws.com/awscli-exe-linux-x86_64-2.24.24.zip",
-      "checksum": "FA7B1C30B919E7A4171256E373736F168E96751B6DE046D256C81A9611737FAD",
+      "id": "http/awscli.amazonaws.com/awscli-exe-linux-x86_64-2.25.1.zip",
+      "checksum": "169959A88C5EF65B1A4335593FC428BED6B351D622C722EB7C2F498BDCBA023F",
       "algorithm": "sha256"
     },
     {
