@@ -10,6 +10,6 @@ registries:
 packages:
 - name: aws/aws-cli@2.25.6
 - name: hashicorp/terraform@v1.10.3
-- name: terraform-linters/tflint@v0.55.1
+- name: terraform-linters/tflint@v0.56.0
 - name: kayac/ecspresso@v2.4.6
 - name: int128/ghcp@v1.13.5 # for update-aqua-checksum
