@@ -96,28 +96,28 @@
       "algorithm": "sha256"
     },
     {
-      "id": "http/releases.hashicorp.com/terraform/1.10.3/terraform_1.10.3_darwin_amd64.zip",
-      "checksum": "A7FF68A57EAD3CA7AC0A4D055B5F08A2CE0474E371D935E75398FE7F864BA65E",
+      "id": "http/releases.hashicorp.com/terraform/1.11.4/terraform_1.11.4_darwin_amd64.zip",
+      "checksum": "A56D5002B9F7647291FACCC3DD1A70350E60FB61E4C45037629508B8FDC2575B",
       "algorithm": "sha256"
     },
     {
-      "id": "http/releases.hashicorp.com/terraform/1.10.3/terraform_1.10.3_darwin_arm64.zip",
-      "checksum": "EA4DFB077425A179EE45E90DAA255D21EF976867D347EDCC4526F71370ABBAF3",
+      "id": "http/releases.hashicorp.com/terraform/1.11.4/terraform_1.11.4_darwin_arm64.zip",
+      "checksum": "867E0808FA971217043E25B7A792B10720C79B1546F8A68479B74F138BE73E18",
       "algorithm": "sha256"
     },
     {
-      "id": "http/releases.hashicorp.com/terraform/1.10.3/terraform_1.10.3_linux_amd64.zip",
-      "checksum": "EA3020DB6B53C25A4A84E40CDC36C1A86DF26967D718219AB4C71B44435DA81E",
+      "id": "http/releases.hashicorp.com/terraform/1.11.4/terraform_1.11.4_linux_amd64.zip",
+      "checksum": "1CE994251C00281D6845F0F268637BA50C0005657EB3CF096B92F753B42EF4DC",
       "algorithm": "sha256"
     },
     {
-      "id": "http/releases.hashicorp.com/terraform/1.10.3/terraform_1.10.3_linux_arm64.zip",
-      "checksum": "B92D8245C67D4F7193245BC9D534048A63520302B6EDB3C7764277B00C96ED31",
+      "id": "http/releases.hashicorp.com/terraform/1.11.4/terraform_1.11.4_linux_arm64.zip",
+      "checksum": "A43D1D0DA9B9BAB214A8305A39DB0E40869572594CCF50C416A7756499143633",
       "algorithm": "sha256"
     },
     {
-      "id": "http/releases.hashicorp.com/terraform/1.10.3/terraform_1.10.3_windows_amd64.zip",
-      "checksum": "9D465D32A833843962FC6A93F74D170C93716E34C0B6480E21650CE84426AE86",
+      "id": "http/releases.hashicorp.com/terraform/1.11.4/terraform_1.11.4_windows_amd64.zip",
+      "checksum": "4E1DC85419DDA723F2BB3AFDF63A0D282A2DE858588D56DD57D2E4E4C4C83F2B",
       "algorithm": "sha256"
     },
     {
