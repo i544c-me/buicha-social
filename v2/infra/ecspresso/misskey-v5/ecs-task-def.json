@@ -6,6 +6,10 @@
         {
           "name": "MISSKEY_BLOCK_MENTIONS_FROM_UNFAMILIAR_REMOTE_USERS",
           "value": "true"
+        },
+        {
+          "name": "MISSKEY_MIGRATION_CREATE_INDEX_CONCURRENTLY",
+          "value": "1"
         }
       ],
       "essential": true,
