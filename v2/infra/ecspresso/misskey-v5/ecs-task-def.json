@@ -6,10 +6,14 @@
         {
           "name": "MISSKEY_BLOCK_MENTIONS_FROM_UNFAMILIAR_REMOTE_USERS",
           "value": "true"
+        },
+        {
+          "name": "MISSKEY_MIGRATION_CREATE_INDEX_CONCURRENTLY",
+          "value": "1"
         }
       ],
       "essential": true,
-      "image": "ghcr.io/i544c-me/buicha-social-misskey:2025.3.1-buiso.1",
+      "image": "ghcr.io/i544c-me/buicha-social-misskey:2025.4.1-buiso.2",
       "linuxParameters": {
         "initProcessEnabled": true
       },

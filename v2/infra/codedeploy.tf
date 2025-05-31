@@ -17,7 +17,8 @@ resource "aws_codedeploy_deployment_group" "main_v2" {
 
   blue_green_deployment_config {
     deployment_ready_option {
-      action_on_timeout = "CONTINUE_DEPLOYMENT"
+      action_on_timeout    = "STOP_DEPLOYMENT"
+      wait_time_in_minutes = 30
     }
 
     terminate_blue_instances_on_deployment_success {
