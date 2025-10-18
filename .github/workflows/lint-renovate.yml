@@ -22,7 +22,7 @@ jobs:
           aws-region: ap-northeast-1
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE }}
           output-credentials: true
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v6
         with:
           node-version: 22.x
       - uses: cybozu/renovate-dry-run-action@v2
