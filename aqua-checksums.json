@@ -26,33 +26,33 @@
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/kayac/ecspresso/v2.7.0/ecspresso_2.7.0_darwin_amd64.tar.gz",
-      "checksum": "788C64DAB0FAFAAAE4A8F647FDC08488B831E99A0EA12C013B21D88288384760",
+      "id": "github_release/github.com/kayac/ecspresso/v2.7.1/ecspresso_2.7.1_darwin_amd64.tar.gz",
+      "checksum": "61F0533C1898DDAB47EF412294F7E864992F79F35940E25B95412B06C28CB383",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/kayac/ecspresso/v2.7.0/ecspresso_2.7.0_darwin_arm64.tar.gz",
-      "checksum": "914ABDC2CDD81FAB6BB441AD9209A86F705A0B01415A15BD6290B033A111914B",
+      "id": "github_release/github.com/kayac/ecspresso/v2.7.1/ecspresso_2.7.1_darwin_arm64.tar.gz",
+      "checksum": "74DB567C0030FF93A66C69F4471AE0A1907174275AE663C80D57E42480C6B089",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/kayac/ecspresso/v2.7.0/ecspresso_2.7.0_linux_amd64.tar.gz",
-      "checksum": "BD285EF0FD0D46DD8C63A077FAA92DB82D7792755FC211A359DB97C9260B6847",
+      "id": "github_release/github.com/kayac/ecspresso/v2.7.1/ecspresso_2.7.1_linux_amd64.tar.gz",
+      "checksum": "903F7D451358080F80E426D56A9265F072E6A395A733945EBC0EAC3D2C16A0C4",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/kayac/ecspresso/v2.7.0/ecspresso_2.7.0_linux_arm64.tar.gz",
-      "checksum": "19855FF78D7327DB58C41C7F707E2966C3D964DD0A33F82FCB11CEF3F37E7ADC",
+      "id": "github_release/github.com/kayac/ecspresso/v2.7.1/ecspresso_2.7.1_linux_arm64.tar.gz",
+      "checksum": "E31C64937840E5DC122BD5D3AAB458B3842A4E57F6D162553351DA602BA2A199",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/kayac/ecspresso/v2.7.0/ecspresso_2.7.0_windows_amd64.tar.gz",
-      "checksum": "68FC0E4B69481CF6595F241639174CED9834B0D56769EF785E7D6A80F186FC54",
+      "id": "github_release/github.com/kayac/ecspresso/v2.7.1/ecspresso_2.7.1_windows_amd64.tar.gz",
+      "checksum": "9B8F4443AFB2F4EF0C6ECDDC926E8844D8171FF73A71284507152D0064BB210B",
       "algorithm": "sha256"
     },
     {
-      "id": "github_release/github.com/kayac/ecspresso/v2.7.0/ecspresso_2.7.0_windows_arm64.tar.gz",
-      "checksum": "A120655C6F43B3785A24C1502544FD5FE120BA695CDA5D1B55BEE36AE9F5E87E",
+      "id": "github_release/github.com/kayac/ecspresso/v2.7.1/ecspresso_2.7.1_windows_arm64.tar.gz",
+      "checksum": "633A47D548366E6BD85E5835E900FA048F29FC8A3F1505E7EE4ECA8B1C76C756",
       "algorithm": "sha256"
     },
     {
