@@ -3,10 +3,14 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "*/30 * * * 6,0" # 週末に実行
+  issue_comment:
+    types:
+      - edited
 
 permissions:
   contents: read
   id-token: write # AWS OIDC
+  pull-requests: read
 
 jobs:
   renovate:
