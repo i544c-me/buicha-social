@@ -26,11 +26,11 @@ resource "aws_security_group_rule" "rds_v2_ingress" {
 }
 
 resource "aws_db_instance" "main" {
-  allocated_storage           = 30
+  allocated_storage           = 60
   identifier                  = local.project
   db_name                     = local.project
   engine                      = "postgres"
-  engine_version              = "15.7"
+  engine_version              = "15.12"
   instance_class              = "db.t4g.large"
   username                    = var.rds_username
   password                    = var.rds_password
