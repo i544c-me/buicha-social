@@ -6,7 +6,7 @@ checksum:
   - all
 registries:
 - type: standard
-  ref: v4.484.0 # renovate: depName=aquaproj/aqua-registry
+  ref: v4.485.0 # renovate: depName=aquaproj/aqua-registry
 packages:
 - name: aws/aws-cli@2.34.9
 - name: hashicorp/terraform@v1.14.7
