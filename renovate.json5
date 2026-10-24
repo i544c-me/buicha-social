@@ -10,6 +10,7 @@
   automerge: false,
   minimumReleaseAge: '14 days',
   packageRules: [
+    // Terraform やそのプロバイダーのバージョンアップをまとめ、これは AutoMerge しない
     {
       groupName: 'terraform-providers',
       matchManagers: [
@@ -39,12 +40,15 @@
       automerge: false,
     },
     {
+      // aqua での terraform のバージョン管理
       groupName: 'terraform-providers',
       matchDepNames: [
         'hashicorp/terraform',
       ],
       automerge: false,
     },
+
+    // AMI ID の更新
     {
       matchDepNames: [
         'image_id',
@@ -52,7 +56,9 @@
       automerge: false,
     },
   ],
+
   customManagers: [
+    // AMI ID の更新
     {
       customType: 'regex',
       managerFilePatterns: [
