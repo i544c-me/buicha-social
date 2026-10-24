@@ -134,13 +134,14 @@ resource "aws_security_group" "alb_v6" {
   }
 }
 
+# Cloudflare provider v5 では ipv6_cidrs の順序が変わり、リストの順序差で置き換えになるため sort で固定する
 resource "aws_security_group_rule" "alb_v6_ingress" {
   security_group_id = aws_security_group.alb_v6.id
   type              = "ingress"
   from_port         = 443
   to_port           = 443
   protocol          = "tcp"
-  ipv6_cidr_blocks  = data.cloudflare_ip_ranges.cloudflare.ipv6_cidrs
+  ipv6_cidr_blocks  = sort(data.cloudflare_ip_ranges.cloudflare.ipv6_cidrs)
 }
 
 
