@@ -1,58 +1,74 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:base",
-    ":label(renovate)",
-    "schedule:weekends",
-    "github>aquaproj/aqua-renovate-config#2.13.0",
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'config:recommended',
+    ':label(renovate)',
+    'schedule:weekends',
+    'github>aquaproj/aqua-renovate-config#2.13.0',
   ],
-  "dependencyDashboard": true,
-  "automerge": false,
-  "minimumReleaseAge": "14 days",
-  "packageRules": [
+  dependencyDashboard: true,
+  automerge: false,
+  minimumReleaseAge: '14 days',
+  packageRules: [
     // Terraform やそのプロバイダーのバージョンアップをまとめ、これは AutoMerge しない
     {
-      "groupName": "terraform-providers",
-      "matchManagers": ["asdf"],
-      "matchDepNames": ["terraform", "tflint"],
-      "automerge": false,
+      groupName: 'terraform-providers',
+      matchManagers: [
+        'asdf',
+      ],
+      matchDepNames: [
+        'terraform',
+        'tflint',
+      ],
+      automerge: false,
     },
     {
-      "groupName": "terraform-providers",
-      "matchManagers": ["tflint-plugin"],
-      "matchDepNames": ["terraform-linters/tflint-ruleset-aws"],
-      "automerge": false,
+      groupName: 'terraform-providers',
+      matchManagers: [
+        'tflint-plugin',
+      ],
+      matchDepNames: [
+        'terraform-linters/tflint-ruleset-aws',
+      ],
+      automerge: false,
     },
     {
-      "groupName": "terraform-providers",
-      "matchManagers": ["terraform"],
-      "automerge": false,
+      groupName: 'terraform-providers',
+      matchManagers: [
+        'terraform',
+      ],
+      automerge: false,
     },
     {
       // aqua での terraform のバージョン管理
-      "groupName": "terraform-providers",
-      "matchDepNames": ["hashicorp/terraform"],
-      "automerge": false,
+      groupName: 'terraform-providers',
+      matchDepNames: [
+        'hashicorp/terraform',
+      ],
+      automerge: false,
     },
 
     // AMI ID の更新
     {
-      "matchDepNames": ["image_id"],
-      "automerge": false,
+      matchDepNames: [
+        'image_id',
+      ],
+      automerge: false,
     },
   ],
 
-  "customManagers": [
+  customManagers: [
     // AMI ID の更新
     {
-      "customType": "regex",
-      "fileMatch": ["\\.tf$"],
-      "matchStrings":
-        [
-          ".*amiFilter=(?<packageName>.*?)\n(.*currentImageName=(?<currentDigest>.*?)\n)?(.*\n)?.*?(?<depName>[a-zA-Z0-9-_:]*)[ ]*?[:|=][ ]*?[\"|']?(?<currentValue>ami-[a-z0-9]{17})[\"|']?.*",
-        ],
-      "datasourceTemplate": "aws-machine-image",
-      "versioningTemplate": "aws-machine-image",
+      customType: 'regex',
+      managerFilePatterns: [
+        '/\\.tf$/',
+      ],
+      matchStrings: [
+        '.*amiFilter=(?<packageName>.*?)\n(.*currentImageName=(?<currentDigest>.*?)\n)?(.*\n)?.*?(?<depName>[a-zA-Z0-9-_:]*)[ ]*?[:|=][ ]*?["|\']?(?<currentValue>ami-[a-z0-9]{17})["|\']?.*',
+      ],
+      datasourceTemplate: 'aws-machine-image',
+      versioningTemplate: 'aws-machine-image',
     },
   ],
 }
