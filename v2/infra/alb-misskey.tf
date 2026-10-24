@@ -134,13 +134,14 @@ resource "aws_security_group" "alb_v6" {
   }
 }
 
+# Cloudflare provider v5 では ipv6_cidrs の順序が変わり、リストの順序差で置き換えになるため sort で固定する
 resource "aws_security_group_rule" "alb_v6_ingress" {
   security_group_id = aws_security_group.alb_v6.id
   type              = "ingress"
   from_port         = 443
   to_port           = 443
   protocol          = "tcp"
-  ipv6_cidr_blocks  = data.cloudflare_ip_ranges.cloudflare.ipv6_cidr_blocks
+  ipv6_cidr_blocks  = sort(data.cloudflare_ip_ranges.cloudflare.ipv6_cidrs)
 }
 
 
@@ -167,5 +168,5 @@ resource "aws_acm_certificate" "alb" {
 
 resource "aws_acm_certificate_validation" "alb" {
   certificate_arn         = aws_acm_certificate.alb.arn
-  validation_record_fqdns = [for record in cloudflare_record.domain_cert_alb : record.hostname]
+  validation_record_fqdns = [for record in cloudflare_dns_record.domain_cert_alb : record.name]
 }
