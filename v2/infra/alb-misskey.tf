@@ -140,7 +140,7 @@ resource "aws_security_group_rule" "alb_v6_ingress" {
   from_port         = 443
   to_port           = 443
   protocol          = "tcp"
-  ipv6_cidr_blocks  = data.cloudflare_ip_ranges.cloudflare.ipv6_cidr_blocks
+  ipv6_cidr_blocks  = data.cloudflare_ip_ranges.cloudflare.ipv6_cidrs
 }
 
 
@@ -167,5 +167,5 @@ resource "aws_acm_certificate" "alb" {
 
 resource "aws_acm_certificate_validation" "alb" {
   certificate_arn         = aws_acm_certificate.alb.arn
-  validation_record_fqdns = [for record in cloudflare_record.domain_cert_alb : record.hostname]
+  validation_record_fqdns = [for record in cloudflare_dns_record.domain_cert_alb : record.name]
 }
