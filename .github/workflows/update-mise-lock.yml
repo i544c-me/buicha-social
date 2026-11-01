@@ -1,0 +1,56 @@
+name: Update mise lock
+on:
+  workflow_dispatch:
+
+# 同じブランチで複数走らせない（コミットの競合防止）
+concurrency:
+  group: update-mise-lock-${{ github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  update-mise-lock:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/create-github-app-token@v3
+        id: app-token
+        with:
+          app-id: ${{ vars.RENOVATE_APP_ID }}
+          private-key: ${{ secrets.RENOVATE_APP_PRIVATE_KEY }}
+
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.ref_name }}
+          # App トークンで push すると、後続の workflow も起動する
+          token: ${{ steps.app-token.outputs.token }}
+
+      # mise lock にツールのインストールは不要
+      - uses: jdx/mise-action@v5
+        with:
+          install: false
+          cache: false
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+
+      - name: Generate mise.lock
+        run: |
+          mise trust --all
+          for dir in . image; do
+            (cd "$dir" && mise lock --platform linux-x64)
+          done
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+
+      - name: Commit mise.lock
+        run: |
+          git add mise.lock image/mise.lock
+          if git diff --cached --quiet; then
+            echo "mise.lock に変更なし"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: update mise.lock"
+          git push

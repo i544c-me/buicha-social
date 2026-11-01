@@ -1,0 +1,8 @@
+[settings]
+lockfile = true
+
+[tools]
+aws = { version = "2.37.12", symlink_bins = "true" }
+ecspresso = "2.8.7"
+terraform = "1.16.5"
+tflint = "0.64.0"

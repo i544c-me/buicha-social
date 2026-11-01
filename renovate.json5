@@ -4,7 +4,6 @@
     'config:recommended',
     ':label(renovate)',
     'schedule:weekends',
-    'github>aquaproj/aqua-renovate-config#2.13.0',
   ],
   dependencyDashboard: true,
   automerge: false,
@@ -14,7 +13,7 @@
     {
       groupName: 'terraform-providers',
       matchManagers: [
-        'asdf',
+        'mise',
       ],
       matchDepNames: [
         'terraform',
@@ -36,14 +35,6 @@
       groupName: 'terraform-providers',
       matchManagers: [
         'terraform',
-      ],
-      automerge: false,
-    },
-    {
-      // aqua での terraform のバージョン管理
-      groupName: 'terraform-providers',
-      matchDepNames: [
-        'hashicorp/terraform',
       ],
       automerge: false,
     },
