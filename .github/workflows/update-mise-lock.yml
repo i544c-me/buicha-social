@@ -1,15 +1,10 @@
 name: Update mise lock
 on:
-  pull_request:
-    paths:
-      - mise.toml
-      - image/mise.toml
-      - .github/workflows/update-mise-lock.yml
   workflow_dispatch:
 
 # 同じブランチで複数走らせない（コミットの競合防止）
 concurrency:
-  group: update-mise-lock-${{ github.head_ref || github.ref_name }}
+  group: update-mise-lock-${{ github.ref_name }}
   cancel-in-progress: true
 
 permissions:
@@ -18,8 +13,6 @@ permissions:
 jobs:
   update-mise-lock:
     runs-on: ubuntu-latest
-    # フォークからの PR では secrets が使えないので実行しない
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     steps:
       - uses: actions/create-github-app-token@v3
         id: app-token
@@ -29,7 +22,7 @@ jobs:
 
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.head_ref || github.ref_name }}
+          ref: ${{ github.ref_name }}
           # App トークンで push すると、後続の workflow も起動する
           token: ${{ steps.app-token.outputs.token }}
 
