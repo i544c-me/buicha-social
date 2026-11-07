@@ -3,13 +3,13 @@
 lockfile_version = 3
 
 [[tools.aws]]
-version = "2.38.1"
+version = "2.38.5"
 backend = "aqua:aws/aws-cli"
-specifiers = ["2.38.1"]
+specifiers = ["2.38.5"]
 
 [tools.aws."platforms.linux-x64"]
-checksum = "sha256:b11ed416d91f4251da363a17706938eeaf0e520745754c104c0c1890dd8363c7"
-url = "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.38.1.zip"
+checksum = "sha256:5def7d1b7e55d892f9a381bb2cb2081a685712464be0d36d5d706af0ac48d0d3"
+url = "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.38.5.zip"
 
 [[tools.ecspresso]]
 version = "2.8.7"
