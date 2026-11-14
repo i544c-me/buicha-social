@@ -4,5 +4,5 @@ lockfile = true
 [tools]
 aws = { version = "2.38.1", symlink_bins = "true" }
 ecspresso = "2.8.7"
-terraform = "1.16.6"
-tflint = "0.64.0"
+terraform = "1.17.1"
+tflint = "0.65.0"
