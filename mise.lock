@@ -12,15 +12,15 @@ checksum = "sha256:b11ed416d91f4251da363a17706938eeaf0e520745754c104c0c1890dd836
 url = "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.38.1.zip"
 
 [[tools.ecspresso]]
-version = "2.8.7"
+version = "2.8.9"
 backend = "aqua:kayac/ecspresso"
-specifiers = ["2.8.7"]
+specifiers = ["2.8.9"]
 
 [tools.ecspresso."platforms.linux-x64"]
-checksum = "sha256:88e9573b48b020db810e458ee6cff16b54061f984c573f940da4d6408eb38d82"
+checksum = "sha256:85b071d9325c073d2e0bdf765b1c565e3ce5afd52de4a7c5b10cbce0a09731ba"
 checksum_source = "mise-versions"
-url = "https://github.com/kayac/ecspresso/releases/download/v2.8.7/ecspresso_2.8.7_linux_amd64.tar.gz"
-url_api = "https://api.github.com/repos/kayac/ecspresso/releases/assets/592330638"
+url = "https://github.com/kayac/ecspresso/releases/download/v2.8.9/ecspresso_2.8.9_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/kayac/ecspresso/releases/assets/739724852"
 
 [[tools.terraform]]
 version = "1.16.6"
